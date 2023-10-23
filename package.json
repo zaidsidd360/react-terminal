@@ -1,0 +1,27 @@
+{
+  "name": "@zqui/react-terminal",
+  "version": "0.0.1",
+  "description": "A react component that renders a bash terminal.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup src/index.ts --format cjs,esm --dts"
+  },
+  "keywords": [
+    "terminal",
+    "bash",
+    "shell",
+    "command-line",
+    "react-terminal"
+  ],
+  "author": "zaidsidd360",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^18.2.31",
+    "react": "^18.2.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
+  }
+}

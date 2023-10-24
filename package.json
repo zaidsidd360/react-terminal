@@ -6,8 +6,8 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsup src/index.ts --format cjs,esm --dts"
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "sourcemap": "tsup src/index.ts --sourcemap"
   },
   "keywords": [
     "terminal",
@@ -21,6 +21,8 @@
   "devDependencies": {
     "@types/react": "^18.2.31",
     "react": "^18.2.0",
+    "react-textarea-autosize": "^8.5.3",
+    "styled-components": "^6.1.0",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   }

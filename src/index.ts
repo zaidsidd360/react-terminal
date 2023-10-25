@@ -1,3 +1,3 @@
-import Terminal from "./Terminal";
+import Terminal from "./components/Terminal";
 
 export { Terminal };

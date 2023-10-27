@@ -1,7 +1,34 @@
 import React from "react";
 import Prompt from "./Prompt";
+import styled from "styled-components";
 
-const PrevCommandsAndOutputs = () => {
+const CommandAndOutput = ({ prev, prompt }: any) => {
+  return (
+    <>
+      <CommandAndOutputContainer>
+        <Prompt prompt={prompt} unsetPosition />
+        <span id="command">{prev.command}</span>
+      </CommandAndOutputContainer>
+      <span>{prev.output}</span>
+    </>
+  );
+};
+
+const CommandAndOutputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  span {
+    margin-block: 0.5rem;
+  }
+
+  #command {
+    margin-left: 5px;
+  }
+`;
+
+const PrevCommandsAndOutputs = ({ prompt }: { prompt: string }) => {
   /* Once the component is ready, 
   prevCommandsAndOutputs should be fetched 
   from the global TerminalContextProvider. */
@@ -11,33 +38,27 @@ const PrevCommandsAndOutputs = () => {
       output: "hacker@anonymous",
     },
     {
-      command: "help",
-      output: "lorem ipsum dolor sit amet tempor incididunt ut labore et",
-    },
-    {
       command: "cat test.py",
       output: 'print("Hello World!")',
+    },
+    {
+      command: "echo hello world",
+      output: "hello world",
     },
   ];
   return (
     <div>
       {dummyPrevCommandsAndOutputs.map((prev) => {
-        return (
-          <>
-            <div
-              style={{ display: "flex", alignItems: "center", width: "100%" }}
-            >
-              <p style={{ color: "#00cd49", marginRight: "0.5rem" }}>
-                {"zaid@zaid-F571LH:~$"}
-              </p>
-              {prev.command}
-            </div>
-            <p>{prev.output}</p>
-          </>
-        );
+        return <CommandAndOutput prev={prev} prompt={prompt} />;
       })}
     </div>
   );
 };
+
+const CommandsAndOutputsContainer = styled.div`
+  p {
+    margin-block: 0;
+  }
+`;
 
 export default PrevCommandsAndOutputs;

@@ -1,10 +1,14 @@
 import styled from "styled-components";
 
-export const PromptSpan = styled.span`
+interface PromptSpanProps {
+  $unsetPosition?: boolean;
+}
+
+export const PromptSpan = styled.span<PromptSpanProps>`
   width: max-content;
   margin: 0;
-  position: absolute;
-  top: 0.25rem;
+  position: ${(props) => (props.$unsetPosition ? "unset" : "absolute")};
+  top: 0;
   left: 0;
-  color: #00cd49;
+  color: #70f0fe;
 `;

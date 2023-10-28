@@ -38,6 +38,16 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
           outline: none;
         }
       }
+      /* #caret {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 90;
+        content: "";
+        width: 15px;
+        height: 1.7rem;
+        background-color: red;
+      } */
     }
     &:hover {
       cursor: text;

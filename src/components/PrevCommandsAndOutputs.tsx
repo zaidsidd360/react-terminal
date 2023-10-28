@@ -28,24 +28,16 @@ const CommandAndOutputContainer = styled.div`
   }
 `;
 
-const PrevCommandsAndOutputs = ({ prompt }: { prompt: string }) => {
-  /* Once the component is ready, 
-  prevCommandsAndOutputs should be fetched 
-  from the global TerminalContextProvider. */
-  const dummyPrevCommandsAndOutputs = [
-    {
-      command: "whoami",
-      output: "hacker@anonymous",
-    },
-    {
-      command: "cat test.py",
-      output: 'print("Hello World!")',
-    },
-    {
-      command: "echo hello world",
-      output: "hello world",
-    },
-  ];
+const PrevCommandsAndOutputs = ({
+  dummyPrevCommandsAndOutputs,
+  prompt,
+}: {
+  dummyPrevCommandsAndOutputs: {
+    command: string;
+    output: string | React.JSX.Element;
+  }[];
+  prompt: string;
+}) => {
   return (
     <div>
       {dummyPrevCommandsAndOutputs.map((prev) => {

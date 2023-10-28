@@ -4,20 +4,49 @@ import TextareaAutosize from "react-textarea-autosize";
 import Prompt from "./Prompt";
 import PrevCommandsAndOutputs from "./PrevCommandsAndOutputs";
 import { useEffect, useRef, useState } from "react";
+import { processCommand } from "../utils/Utils";
 
-const Terminal = () => {
-  const prompt = "zaid@ubuntu:~$";
+interface TerminalProps {
+  prompt: string;
+  commands: Record<string, (args: string) => React.JSX.Element | string>;
+}
+
+const Terminal = ({ prompt, commands }: TerminalProps) => {
+  const [promptWidth, setPromptWidth] = useState<number>();
+
+  const [inputValue, setInputValue] = useState<string>();
+
+  const [dummyPrevCommandsAndOutputs, setDummyPrevCommandsAndOutputs] =
+    useState<
+      {
+        command: string;
+        output: string | React.JSX.Element;
+      }[]
+    >([]);
+
+  const promptRef = useRef<HTMLSpanElement>(null);
+
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  var cursorPos = 0;
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputValue(event.target.value);
+    console.log(cursorPos);
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      console.log("Yayy! you just ran a command!!");
+      if (inputValue)
+        processCommand(
+          inputValue,
+          commands,
+          setDummyPrevCommandsAndOutputs,
+          setInputValue
+        );
     }
   };
-
-  const promptRef = useRef<HTMLSpanElement>(null);
-
-  const [promptWidth, setPromptWidth] = useState<number>();
 
   useEffect(() => {
     setPromptWidth(promptRef.current?.getBoundingClientRect().width);
@@ -28,13 +57,20 @@ const Terminal = () => {
       <TopBar />
       <label htmlFor="main-terminal-input">
         <main>
-          <PrevCommandsAndOutputs prompt={prompt} />
+          <PrevCommandsAndOutputs
+            dummyPrevCommandsAndOutputs={dummyPrevCommandsAndOutputs}
+            prompt={prompt}
+          />
           <div>
             <Prompt prompt={prompt} ref={promptRef} />
+            {/* <span id="caret"></span> */}
             <TextareaAutosize
               style={{ padding: 0 }}
               id="main-terminal-input"
               onKeyDown={handleKeyDown}
+              onChange={handleChange}
+              value={inputValue}
+              ref={textAreaRef}
             />
           </div>
         </main>

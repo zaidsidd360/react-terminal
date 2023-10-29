@@ -6,13 +6,13 @@ interface TerminalContainerProps {
 
 export const TerminalContainer = styled.div<TerminalContainerProps>`
   border: 1px solid lightgray;
-  width: 50vw;
+  width: 40vw;
   height: 50vh;
   border-radius: 0.7rem;
   overflow: hidden;
   box-shadow: 2px 2px 50px lightgray, -2px -2px 50px lightgray;
 
-  main {
+  .main-terminal {
     box-sizing: border-box;
     width: 100%;
     height: 90%;
@@ -22,7 +22,7 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
     overflow-y: auto;
     color: white;
 
-    div {
+    .input-prompt {
       position: relative;
 
       textarea {
@@ -38,16 +38,9 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
           outline: none;
         }
       }
-      /* #caret {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 90;
-        content: "";
-        width: 15px;
-        height: 1.7rem;
-        background-color: red;
-      } */
+    }
+    .scroll-div {
+      visibility: hidden;
     }
     &:hover {
       cursor: text;

@@ -1,27 +1,30 @@
-import { Terminal } from "../../src/index";
+import { Terminal, TerminalContextProvider } from "../../src/index";
 import "./App.css";
 
 function App() {
+  const commands = {
+    echo: (args: string) => {
+      return args;
+    },
+    cat: (args: string) => {
+      if (args === "sum.txt")
+        return (
+          <div>
+            <span style={{ color: "lightblue" }}>def</span>{" "}
+            <span style={{ color: "yellow" }}>sum</span>(a, b): <br />{" "}
+            &nbsp;&nbsp;&nbsp;&nbsp;{" "}
+            <span style={{ color: "pink" }}>return</span> a + b
+          </div>
+        );
+      return "foo";
+    },
+  };
   return (
-    <div className="main-container">
-      <Terminal
-        prompt="z@id-ubuntu:"
-        commands={{
-          echo: (args) => {
-            return args;
-          },
-          cat: (args) => {
-            if (args === "sum.txt")
-              return (
-                <div>
-                  def sum(a, b): <br /> &nbsp;&nbsp;&nbsp;&nbsp; return a + b
-                </div>
-              );
-            return "foo";
-          },
-        }}
-      />
-    </div>
+    <TerminalContextProvider>
+      <div className="main-container">
+        <Terminal prompt="~$" commands={commands} />
+      </div>
+    </TerminalContextProvider>
   );
 }
 

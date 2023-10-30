@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import Prompt from "./Prompt";
 import styled from "styled-components";
 import { IExchange } from "../types/GlobalTypes";
+import { TerminalContext } from "../contexts/TerminalContext";
 
-const Exchange = ({ exchange, prompt }: any) => {
+interface IExchangeProps {
+  exchange: IExchange;
+  prompt: string;
+}
+
+const Exchange = ({ exchange, prompt }: IExchangeProps) => {
   return (
     <>
       <ExchangeContainer>
@@ -29,26 +35,19 @@ const ExchangeContainer = styled.div`
   }
 `;
 
-const ExchangeHistory = ({
-  exchangeHistory,
-  prompt,
-}: {
-  exchangeHistory: IExchange[];
+interface IExchangeHistoryProps {
   prompt: string;
-}) => {
+}
+
+const ExchangeHistory = ({ prompt }: IExchangeHistoryProps) => {
+  const { exchangeHistory } = useContext(TerminalContext)!;
   return (
     <div>
-      {exchangeHistory.map((exchange, i) => {
+      {exchangeHistory.map((exchange: IExchange, i: number) => {
         return <Exchange key={i} exchange={exchange} prompt={prompt} />;
       })}
     </div>
   );
 };
-
-const CommandsAndOutputsContainer = styled.div`
-  p {
-    margin-block: 0;
-  }
-`;
 
 export default ExchangeHistory;

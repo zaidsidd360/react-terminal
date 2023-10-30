@@ -1,35 +1,65 @@
 import { SetStateAction } from "react";
 import { IExchange } from "../types/GlobalTypes";
+import { clearNoArgs } from "../common/ErrorOutputs";
 
 export const processCommand = (
-  input: string,
+  base: string,
+  args: string,
   commands: Record<string, (args: string) => React.JSX.Element | string>,
+  inBuiltCommands: string[],
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
-  setInput: React.Dispatch<React.SetStateAction<string | undefined>>
+  setInputValue: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  const [base, ...argsArr] = input.trim().split(" ");
-  const args = argsArr.join(" ");
-  if (commands[base!]) {
-    const executor = commands[base!];
+  const fullCommand = `${base} ${args}`;
+  if (commands[base]) {
+    const executor = commands[base];
     typeof executor === "function" &&
       setExchangeHistory((prev) => {
         return [
           ...prev,
           {
-            command: input,
+            command: fullCommand,
             output: executor(args),
           },
         ];
       });
-  } else
+  }
+  // Handles build in commands
+  else if (inBuiltCommands.includes(base)) {
+    if (base === "clear") {
+      if (args.length !== 0) {
+        setExchangeHistory((prev) => {
+          return [
+            ...prev,
+            {
+              command: fullCommand,
+              output: clearNoArgs(),
+            },
+          ];
+        });
+      } else setExchangeHistory([]); // Clears the terminal exchange history
+    } else if (base === "echo") {
+      setExchangeHistory((prev) => {
+        return [
+          ...prev,
+          {
+            command: fullCommand,
+            output: args,
+          },
+        ];
+      });
+    }
+  }
+  // Handles unidentified commands
+  else
     setExchangeHistory((prev) => {
       return [
         ...prev,
         {
-          command: input,
-          output: `ERR: unidentified command ${input}`,
+          command: fullCommand,
+          output: `ERR: unidentified command ${fullCommand}`,
         },
       ];
     });
-  setInput("");
+  setInputValue("");
 };

@@ -3,9 +3,6 @@ import "./App.css";
 
 function App() {
   const commands = {
-    echo: (args: string) => {
-      return args;
-    },
     cat: (args: string) => {
       if (args === "sum.txt")
         return (
@@ -22,7 +19,7 @@ function App() {
   return (
     <TerminalContextProvider>
       <div className="main-container">
-        <Terminal prompt="~$" commands={commands} />
+        <Terminal commands={commands} />
       </div>
     </TerminalContextProvider>
   );

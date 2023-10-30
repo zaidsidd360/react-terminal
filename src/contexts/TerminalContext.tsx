@@ -1,23 +1,42 @@
-import { SetStateAction, createContext, useState } from "react";
+import { SetStateAction, createContext, useEffect, useState } from "react";
 import { IExchange } from "../types/GlobalTypes";
 
 export interface ITerminalContext {
   exchangeHistory: IExchange[];
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>;
+  commandHistory: string[];
+  setCommandHistory: React.Dispatch<SetStateAction<string[]>>;
+  historyPointer: number;
+  setHistoryPointer: React.Dispatch<SetStateAction<number>>;
 }
 
 export const TerminalContext = createContext<ITerminalContext | null>(null);
 
-const TerminalContextProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const TerminalContextProvider = (props: { children: React.ReactNode }) => {
   const [exchangeHistory, setExchangeHistory] = useState<IExchange[]>([]);
 
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+
+  const [historyPointer, setHistoryPointer] = useState<number>(
+    commandHistory.length
+  );
+
+  useEffect(() => {
+    setHistoryPointer(commandHistory.length);
+  }, [commandHistory]);
+
   return (
-    <TerminalContext.Provider value={{ exchangeHistory, setExchangeHistory }}>
-      {children}
+    <TerminalContext.Provider
+      value={{
+        exchangeHistory,
+        setExchangeHistory,
+        commandHistory,
+        setCommandHistory,
+        historyPointer,
+        setHistoryPointer,
+      }}
+    >
+      {props.children}
     </TerminalContext.Provider>
   );
 };

@@ -10,5 +10,5 @@ export const PromptSpan = styled.span<PromptSpanProps>`
   position: ${(props) => (props.$unsetPosition ? "unset" : "absolute")};
   top: 0;
   left: 0;
-  color: #70f0fe;
+  color: #60ec8a;
 `;

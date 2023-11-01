@@ -8,6 +8,8 @@ export interface ITerminalContext {
   setCommandHistory: React.Dispatch<SetStateAction<string[]>>;
   historyPointer: number;
   setHistoryPointer: React.Dispatch<SetStateAction<number>>;
+  pwd: string;
+  setPwd: React.Dispatch<SetStateAction<string>>;
 }
 
 export const TerminalContext = createContext<ITerminalContext | null>(null);
@@ -20,6 +22,8 @@ const TerminalContextProvider = (props: { children: React.ReactNode }) => {
   const [historyPointer, setHistoryPointer] = useState<number>(
     commandHistory.length
   );
+
+  const [pwd, setPwd] = useState<string>("");
 
   useEffect(() => {
     setHistoryPointer(commandHistory.length);
@@ -34,6 +38,8 @@ const TerminalContextProvider = (props: { children: React.ReactNode }) => {
         setCommandHistory,
         historyPointer,
         setHistoryPointer,
+        pwd,
+        setPwd,
       }}
     >
       {props.children}

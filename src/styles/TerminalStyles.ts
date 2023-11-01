@@ -8,7 +8,7 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
   border: 1px solid lightgray;
   width: 40vw;
   height: 50vh;
-  border-radius: 0.7rem;
+  border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: 2px 2px 50px lightgray, -2px -2px 50px lightgray;
 

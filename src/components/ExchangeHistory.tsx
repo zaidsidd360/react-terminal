@@ -13,7 +13,7 @@ const Exchange = ({ exchange, prompt }: IExchangeProps) => {
   return (
     <>
       <ExchangeContainer>
-        <Prompt prompt={prompt} unsetPosition />
+        <Prompt prompt={prompt} pwd={exchange.pwd} unsetPosition />
         <span id="command">{exchange.command}</span>
       </ExchangeContainer>
       <span>{exchange.output}</span>
@@ -22,8 +22,6 @@ const Exchange = ({ exchange, prompt }: IExchangeProps) => {
 };
 
 const ExchangeContainer = styled.div`
-  display: flex;
-  align-items: center;
   width: 100%;
 
   span {

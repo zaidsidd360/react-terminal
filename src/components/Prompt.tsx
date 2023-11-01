@@ -5,6 +5,7 @@ interface PromptProps {
   prompt: string;
   unsetPosition?: boolean;
   ref: React.RefObject<HTMLSpanElement>;
+  pwd: string;
 }
 
 /* Since functional components cannot recieve refs as props 
@@ -12,10 +13,15 @@ interface PromptProps {
 wrap the ref-recieving child component with a React.forwardRef call 
 which does the ref forwarding for us under the hood. */
 const Prompt = React.forwardRef<HTMLSpanElement, PromptProps>(
-  ({ prompt, unsetPosition }, ref) => {
+  ({ prompt, unsetPosition, pwd }, ref) => {
     return (
       <PromptSpan $unsetPosition={unsetPosition} ref={ref}>
         {prompt}
+        <span className="pwd">
+          ~{pwd !== "" ? "/" : ""}
+          {pwd}
+        </span>
+        $
       </PromptSpan>
     );
   }

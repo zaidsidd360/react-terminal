@@ -11,4 +11,8 @@ export const PromptSpan = styled.span<PromptSpanProps>`
   top: 0;
   left: 0;
   color: #60ec8a;
+
+  .pwd {
+    color: #4d9edc;
+  }
 `;

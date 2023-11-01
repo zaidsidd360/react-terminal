@@ -10,19 +10,35 @@ import ExchangeHistory from "./ExchangeHistory";
 interface ITerminalProps {
   prompt?: string;
   commands: Record<string, (args: string) => React.JSX.Element | string>;
+  directoryStructure: any;
 }
 
-const Terminal = ({ prompt = "user@anon~$:", commands }: ITerminalProps) => {
-  const inBuiltCommands: string[] = ["clear", "echo"];
+const Terminal = ({
+  prompt = "user@anon:",
+  commands,
+  directoryStructure,
+}: ITerminalProps) => {
+  const inBuiltCommands: string[] = [
+    "clear",
+    "echo",
+    "cd",
+    "ls",
+    "cat",
+    "pwd",
+    "mkdir",
+    "rm",
+  ];
 
   // Context
   const {
     exchangeHistory,
     setExchangeHistory,
-    setCommandHistory,
     commandHistory,
+    setCommandHistory,
     historyPointer,
     setHistoryPointer,
+    pwd,
+    setPwd,
   } = useContext(TerminalContext)!;
 
   // States
@@ -31,6 +47,8 @@ const Terminal = ({ prompt = "user@anon~$:", commands }: ITerminalProps) => {
   const [inputValue, setInputValue] = useState<string>("");
 
   const [prevInputValue, setPrevInputValue] = useState<string>("");
+
+  const [structure, setStructure] = useState({});
 
   // Refs
   const promptRef = useRef<HTMLSpanElement>(null);
@@ -51,11 +69,15 @@ const Terminal = ({ prompt = "user@anon~$:", commands }: ITerminalProps) => {
         const args = argsArr.join(" ");
         processCommand(
           base!,
-          args,
+          argsArr,
           commands,
           inBuiltCommands,
           setExchangeHistory,
-          setInputValue
+          setInputValue,
+          pwd,
+          setPwd,
+          structure,
+          setStructure
         );
       } else
         setExchangeHistory((prev) => {
@@ -64,9 +86,11 @@ const Terminal = ({ prompt = "user@anon~$:", commands }: ITerminalProps) => {
             {
               command: "",
               output: "",
+              pwd: pwd,
             },
           ];
         });
+      setPrevInputValue("");
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       /* If user has pressed the arrow up key and the historyPointer 
@@ -95,7 +119,7 @@ const Terminal = ({ prompt = "user@anon~$:", commands }: ITerminalProps) => {
   // Effects
   useEffect(() => {
     setPromptWidth(promptRef.current?.getBoundingClientRect().width);
-  }, [prompt]);
+  }, [prompt, pwd]);
 
   useEffect(() => {
     scrollDivRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -107,6 +131,10 @@ const Terminal = ({ prompt = "user@anon~$:", commands }: ITerminalProps) => {
     if (historyPointer === commandHistory.length) setInputValue(prevInputValue);
   }, [historyPointer]);
 
+  useEffect(() => {
+    setStructure(directoryStructure);
+  }, []);
+
   return (
     <TerminalContainer $promptWidth={promptWidth as number}>
       <TopBar />
@@ -114,13 +142,15 @@ const Terminal = ({ prompt = "user@anon~$:", commands }: ITerminalProps) => {
         <div className="main-terminal">
           <ExchangeHistory prompt={prompt} />
           <div className="input-prompt">
-            <Prompt prompt={prompt} ref={promptRef} />
+            <Prompt prompt={prompt} ref={promptRef} pwd={pwd} />
             <TextareaAutosize
               style={{ padding: 0 }}
               id="main-terminal-input"
               onKeyDown={handleKeyDown}
               onChange={handleChange}
               value={inputValue}
+              autoComplete="off"
+              spellCheck={false}
             />
           </div>
           <div className="scroll-div" ref={scrollDivRef} />

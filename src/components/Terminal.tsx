@@ -3,14 +3,14 @@ import { TerminalContainer } from "../styles/TerminalStyles";
 import TextareaAutosize from "react-textarea-autosize";
 import Prompt from "./Prompt";
 import { useContext, useEffect, useRef, useState } from "react";
-import { processCommand } from "../utils/Utils";
+import { processCommand } from "../common/CommandProcessor";
 import { TerminalContext, ITerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
 
 interface ITerminalProps {
   prompt?: string;
   commands: Record<string, (args: string) => React.JSX.Element | string>;
-  directoryStructure: any;
+  directoryStructure?: any;
 }
 
 const Terminal = ({
@@ -73,7 +73,6 @@ const Terminal = ({
           commands,
           inBuiltCommands,
           setExchangeHistory,
-          setInputValue,
           pwd,
           setPwd,
           structure,
@@ -90,6 +89,7 @@ const Terminal = ({
             },
           ];
         });
+      setInputValue("");
       setPrevInputValue("");
     } else if (event.key === "ArrowUp") {
       event.preventDefault();

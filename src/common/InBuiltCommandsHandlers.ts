@@ -1,29 +1,7 @@
 import { SetStateAction } from "react";
 import { IExchange } from "../types/GlobalTypes";
-
-export const BACK_REGEX = /\/?\.?[\w-_]+\/\.\./;
-
-export const Errors = {
-  COMMAND_NOT_FOUND: "-bash: $1: command not found",
-  FILE_EXISTS: "mkdir: $1: File exists",
-  NO_SUCH_FILE: "-bash: cd: $1: No such file or directory",
-  NOT_A_DIRECTORY: "-bash: cd: $1: Not a directory",
-  IS_A_DIRECTORY: "cat: $1: Is a directory",
-};
-
-export function trim(str: string, char: string) {
-  if (str[0] === char) {
-    str = str.substring(1);
-  }
-  if (str[str.length - 1] === char) {
-    str = str.substring(0, str.length - 1);
-  }
-  return str;
-}
-
-// export function isFile(entry: any) {
-//   return entry.content !== undefined;
-// }
+import { appendError, extractPath, getDirectoryByPath } from "../utils/Utils";
+import { isADirectory, noSuchFileOrDirectory, redundantMkdir } from "./Errors";
 
 export const listDir = (
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
@@ -78,14 +56,14 @@ export const cat = (
   } else if (!dir[fileName!]) {
     return appendError(
       setExchangeHistory,
-      Errors.NO_SUCH_FILE,
+      noSuchFileOrDirectory(fileName!, fullCommand.split(" ")[0] as string),
       fullCommand,
       pwd
     );
   } else if (!dir[fileName!].hasOwnProperty("content")) {
     return appendError(
       setExchangeHistory,
-      Errors.IS_A_DIRECTORY,
+      isADirectory(fileName!),
       fullCommand,
       pwd
     );
@@ -122,7 +100,7 @@ export const mkdir = (
   if (dir[newDirectory!]) {
     return appendError(
       setExchangeHistory,
-      Errors.FILE_EXISTS,
+      redundantMkdir(newDirectory!),
       fullCommand,
       pwd
     );
@@ -142,66 +120,6 @@ export const mkdir = (
   }
 };
 
-export function appendError(
-  setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
-  error: string,
-  command: string,
-  pwd: string
-) {
-  return setExchangeHistory((prev) => {
-    return [
-      ...prev,
-      {
-        command: command,
-        output: error,
-        pwd: pwd,
-      },
-    ];
-  });
-}
-
-export function extractPath(relativePath: string, rootPath: string) {
-  // Short circuit for relative path
-  if (relativePath === "") return rootPath;
-
-  // Strip trailing slash
-  relativePath = trim(relativePath, "/");
-
-  // Create raw path
-  let path = `${rootPath ? rootPath + "/" : ""}${relativePath}`;
-
-  // Strip ../ references
-  while (path.match(BACK_REGEX)) {
-    path = path.replace(BACK_REGEX, "");
-  }
-  return trim(path, "/");
-}
-
-export function getDirectoryByPath(structure: any, relativePath: string) {
-  const path = relativePath.split("/");
-
-  // Short circuit for empty root path
-  if (!path[0]) return { dir: structure };
-
-  let dir = structure;
-  let i = 0;
-  while (i < path.length) {
-    const key = path[i];
-    const child = dir[key!];
-    if (child && typeof child === "object") {
-      if (child.hasOwnProperty("content")) {
-        return { err: Errors.NOT_A_DIRECTORY.replace("$1", relativePath) };
-      } else {
-        dir = child;
-      }
-    } else {
-      return { err: Errors.NO_SUCH_FILE.replace("$1", relativePath) };
-    }
-    i++;
-  }
-  return { dir };
-}
-
 export const changeDir = (
   pwd: string,
   setPwd: React.Dispatch<React.SetStateAction<string>>,
@@ -215,7 +133,11 @@ export const changeDir = (
     return setPwd("");
   }
   const fullPath = extractPath(path, pwd);
-  const { err } = getDirectoryByPath(structure, fullPath);
+  const { err } = getDirectoryByPath(
+    structure,
+    fullPath,
+    fullCommand.split(" ")[0]
+  );
 
   if (err) {
     return appendError(setExchangeHistory, err, fullCommand, pwd);
@@ -286,7 +208,7 @@ export const rm = (
   } else {
     return appendError(
       setExchangeHistory,
-      Errors.NO_SUCH_FILE,
+      noSuchFileOrDirectory(file!, fullCommand.split(" ")[0] as string),
       fullCommand,
       pwd
     );

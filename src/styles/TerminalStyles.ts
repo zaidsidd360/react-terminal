@@ -18,7 +18,7 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
     height: 90%;
     padding: 0.5rem;
     font-size: 1.5rem;
-    background-color: #262626;
+    background-color: #1c1c1c;
     overflow-y: auto;
     color: white;
 
@@ -26,6 +26,7 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
       position: relative;
 
       textarea {
+        /* caret-color: transparent; */
         resize: none;
         width: 100%;
         border: none;

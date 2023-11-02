@@ -1,108 +1,79 @@
 import { SetStateAction } from "react";
 import { IExchange } from "../types/GlobalTypes";
-import { clearNoArgs, commandNotFound } from "../common/ErrorOutputs";
-import { cat, changeDir, getPwd, listDir, mkdir, rm } from "./commandsRB";
+import { noSuchFileOrDirectory, notADirectory } from "../common/Errors";
 
-export const processCommand = (
-  base: string,
-  argsArr: string[],
-  commands: Record<string, (args: string) => React.JSX.Element | string>,
-  inBuiltCommands: string[],
+export const BACK_REGEX = /\/?\.?[\w-_]+\/\.\./;
+
+export function trim(str: string, char: string) {
+  if (str[0] === char) {
+    str = str.substring(1);
+  }
+  if (str[str.length - 1] === char) {
+    str = str.substring(0, str.length - 1);
+  }
+  return str;
+}
+
+export function appendError(
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
-  setInputValue: React.Dispatch<React.SetStateAction<string>>,
-  pwd: string,
-  setPwd: React.Dispatch<React.SetStateAction<string>>,
+  error: string | React.JSX.Element,
+  command: string,
+  pwd: string
+) {
+  return setExchangeHistory((prev) => {
+    return [
+      ...prev,
+      {
+        command: command,
+        output: error,
+        pwd: pwd,
+      },
+    ];
+  });
+}
+
+export function extractPath(relativePath: string, rootPath: string) {
+  // Short circuit for relative path
+  if (relativePath === "") return rootPath;
+
+  // Strip trailing slash
+  relativePath = trim(relativePath, "/");
+
+  // Create raw path
+  let path = `${rootPath ? rootPath + "/" : ""}${relativePath}`;
+
+  // Strip ../ references
+  while (path.match(BACK_REGEX)) {
+    path = path.replace(BACK_REGEX, "");
+  }
+  return trim(path, "/");
+}
+
+export function getDirectoryByPath(
   structure: any,
-  setStructure: React.Dispatch<React.SetStateAction<any>>
-) => {
-  const args = argsArr.join(" ");
-  const fullCommand = `${base} ${args}`;
-  if (commands[base]) {
-    const executor = commands[base];
-    typeof executor === "function" &&
-      setExchangeHistory((prev) => {
-        return [
-          ...prev,
-          {
-            command: fullCommand,
-            output: executor(args),
-            pwd: pwd,
-          },
-        ];
-      });
-  }
-  // Handles built in commands
-  else if (inBuiltCommands.includes(base)) {
-    if (base === "clear") {
-      if (args.length !== 0) {
-        setExchangeHistory((prev) => {
-          return [
-            ...prev,
-            {
-              command: fullCommand,
-              output: clearNoArgs(),
-              pwd: pwd,
-            },
-          ];
-        });
-      } else setExchangeHistory([]); // Clears the terminal exchange history
-    } else if (base === "echo") {
-      setExchangeHistory((prev) => {
-        return [
-          ...prev,
-          {
-            command: fullCommand,
-            output: args,
-            pwd: pwd,
-          },
-        ];
-      });
-    } else if (base === "cd") {
-      changeDir(
-        pwd,
-        setPwd,
-        argsArr,
-        structure,
-        setExchangeHistory,
-        fullCommand
-      );
-    } else if (base === "ls") {
-      listDir(setExchangeHistory, argsArr, structure, pwd, fullCommand);
-    } else if (base === "cat") {
-      cat(setExchangeHistory, pwd, fullCommand, argsArr, structure);
-    } else if (base === "pwd") {
-      getPwd(pwd, setExchangeHistory);
-    } else if (base === "mkdir") {
-      mkdir(
-        setExchangeHistory,
-        pwd,
-        argsArr,
-        structure,
-        fullCommand,
-        setStructure
-      );
-    } else if (base === "rm") {
-      rm(
-        setExchangeHistory,
-        argsArr,
-        pwd,
-        structure,
-        setStructure,
-        fullCommand
-      );
+  relativePath: string,
+  base?: string
+) {
+  const path = relativePath.split("/");
+
+  // Short circuit for empty root path
+  if (!path[0]) return { dir: structure };
+
+  let dir = structure;
+  let i = 0;
+  while (i < path.length) {
+    const key = path[i];
+    const child = dir[key!];
+    if (child && typeof child === "object") {
+      if (child.hasOwnProperty("content")) {
+        return { err: notADirectory(relativePath) };
+      } else {
+        dir = child;
+      }
+    } else {
+      return { err: noSuchFileOrDirectory(relativePath, base!) };
     }
+    i++;
   }
-  // Handles unidentified commands
-  else
-    setExchangeHistory((prev) => {
-      return [
-        ...prev,
-        {
-          command: fullCommand,
-          output: commandNotFound(base),
-          pwd: pwd,
-        },
-      ];
-    });
-  setInputValue("");
-};
+  return { dir };
+}

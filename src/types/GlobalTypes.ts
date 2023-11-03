@@ -3,3 +3,9 @@ export interface IExchange {
   output: string | React.JSX.Element;
   pwd: string;
 }
+
+export interface IMultiStepCommand {
+  prompt: string;
+  default: string;
+  onSubmit: (value: any) => string | undefined;
+}

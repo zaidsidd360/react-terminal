@@ -3,7 +3,7 @@ import { IExchange } from "../types/GlobalTypes";
 import { appendError, extractPath, getDirectoryByPath } from "../utils/Utils";
 import { isADirectory, noSuchFileOrDirectory, redundantMkdir } from "./Errors";
 
-export const listDir = (
+export const ls = (
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
   argsArr: string[],
   structure: any,
@@ -120,7 +120,7 @@ export const mkdir = (
   }
 };
 
-export const changeDir = (
+export const cd = (
   pwd: string,
   setPwd: React.Dispatch<React.SetStateAction<string>>,
   args: string[],
@@ -138,7 +138,6 @@ export const changeDir = (
     fullPath,
     fullCommand.split(" ")[0]
   );
-
   if (err) {
     return appendError(setExchangeHistory, err, fullCommand, pwd);
   } else {

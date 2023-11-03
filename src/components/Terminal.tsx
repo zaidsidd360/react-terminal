@@ -6,10 +6,18 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { processCommand } from "../common/CommandProcessor";
 import { TerminalContext, ITerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
+import { IMultiStepCommand } from "../types/GlobalTypes";
 
 interface ITerminalProps {
   prompt?: string;
-  commands: Record<string, (args: string) => React.JSX.Element | string>;
+  commands: Record<
+    string,
+    | string
+    | React.JSX.Element
+    | ((args: string) => React.JSX.Element | string | void)
+    | (() => void)
+    | IMultiStepCommand[]
+  >;
   directoryStructure?: any;
 }
 
@@ -50,6 +58,10 @@ const Terminal = ({
 
   const [structure, setStructure] = useState({});
 
+  /* TODO: Add a prompt state for the terminal prompt so that
+  when multiStepCommand is active, we can pass this prompt state
+  down to to Prompt component. */
+
   // Refs
   const promptRef = useRef<HTMLSpanElement>(null);
 
@@ -64,9 +76,10 @@ const Terminal = ({
     if (event.key === "Enter") {
       event.preventDefault();
       if (inputValue) {
-        setCommandHistory(commandHistory.concat(inputValue));
+        setCommandHistory((prev) => {
+          return [...prev, inputValue];
+        });
         const [base, ...argsArr] = inputValue.trim().split(" ");
-        const args = argsArr.join(" ");
         processCommand(
           base!,
           argsArr,

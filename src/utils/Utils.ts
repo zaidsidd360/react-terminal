@@ -32,6 +32,24 @@ export function appendError(
   });
 }
 
+export function appendOutput(
+  setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
+  output: string | React.JSX.Element,
+  command: string,
+  pwd: string
+) {
+  return setExchangeHistory((prev) => {
+    return [
+      ...prev,
+      {
+        command: command,
+        output: output,
+        pwd: pwd,
+      },
+    ];
+  });
+}
+
 export function extractPath(relativePath: string, rootPath: string) {
   // Short circuit for relative path
   if (relativePath === "") return rootPath;

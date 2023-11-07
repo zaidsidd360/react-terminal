@@ -2,7 +2,7 @@ import { SetStateAction } from "react";
 import { IExchange, IMultiStepCommand } from "../types/GlobalTypes";
 import { argsNotReqd, argsReqd, commandNotFound, tooManyArgs } from "./Errors";
 import { cat, cd, getPwd, ls, mkdir, rm } from "./InBuiltCommandsHandlers";
-import { appendError, appendOutput } from "../utils/Utils";
+import { appendError, appendOutput, trim } from "../utils/Utils";
 
 export const processCommand = (
   base: string,
@@ -20,7 +20,8 @@ export const processCommand = (
   pwd: string,
   setPwd: React.Dispatch<React.SetStateAction<string>>,
   structure: any,
-  setStructure: React.Dispatch<React.SetStateAction<any>>
+  setStructure: React.Dispatch<React.SetStateAction<any>>,
+  terminalPrompt: string
 ) => {
   const args = argsArr.join(" ");
   const fullCommand = `${base} ${args}`;
@@ -30,17 +31,34 @@ export const processCommand = (
   //
   if (commands[base]) {
     const executor = commands[base];
-    typeof executor === "function" &&
-      setExchangeHistory((prev) => {
-        return [
-          ...prev,
-          {
-            command: fullCommand,
-            output: executor(args) as string | React.JSX.Element,
-            pwd: pwd,
-          },
-        ];
-      });
+    if (typeof executor === "function") {
+      appendOutput(
+        setExchangeHistory,
+        executor(args) as string | React.JSX.Element,
+        fullCommand,
+        pwd,
+        terminalPrompt
+      );
+    } else {
+      appendOutput(
+        setExchangeHistory,
+        executor as string | React.JSX.Element,
+        fullCommand,
+        pwd,
+        terminalPrompt
+      );
+    }
+    // typeof executor === "function" &&
+    //   setExchangeHistory((prev) => {
+    //     return [
+    //       ...prev,
+    //       {
+    //         command: fullCommand,
+    //         output: executor(args) as string | React.JSX.Element,
+    //         pwd, terminalPrompt: pwd, terminalPrompt,
+    //       },
+    //     ];
+    //   });
     /* TODO: Handle multistep command here and after every handle, increase the step pointer by 1 until the step pointer becomes greater than the multiStepCommand.length */
   }
   //
@@ -51,60 +69,129 @@ export const processCommand = (
     // Handle clear //
     if (base === "clear") {
       if (args.length !== 0) {
-        appendError(setExchangeHistory, argsNotReqd(base), fullCommand, pwd);
+        appendError(
+          setExchangeHistory,
+          argsNotReqd(base),
+          fullCommand,
+          pwd,
+          terminalPrompt
+        );
       } else setExchangeHistory([]); // Clears the terminal exchange history
     } else if (base === "echo") {
-      appendOutput(setExchangeHistory, args, fullCommand, pwd);
+      appendOutput(setExchangeHistory, args, fullCommand, pwd, terminalPrompt);
     }
     // Handle cd //
     else if (base === "cd") {
       if (argsArr.length > 1) {
-        appendError(setExchangeHistory, tooManyArgs(base), fullCommand, pwd);
+        appendError(
+          setExchangeHistory,
+          tooManyArgs(base),
+          fullCommand,
+          pwd,
+          terminalPrompt
+        );
       } else if (argsArr.length < 1) {
-        appendOutput(setExchangeHistory, args, fullCommand, pwd);
+        appendOutput(
+          setExchangeHistory,
+          args,
+          fullCommand,
+          pwd,
+          terminalPrompt
+        );
       } else
-        cd(pwd, setPwd, argsArr, structure, setExchangeHistory, fullCommand);
+        cd(
+          pwd,
+          terminalPrompt,
+          setPwd,
+          argsArr,
+          structure,
+          setExchangeHistory,
+          fullCommand
+        );
     }
     // Handle ls //
     else if (base === "ls") {
       if (argsArr.length > 1) {
-        appendError(setExchangeHistory, tooManyArgs(base), fullCommand, pwd);
-      } else ls(setExchangeHistory, argsArr, structure, pwd, fullCommand);
+        appendError(
+          setExchangeHistory,
+          tooManyArgs(base),
+          fullCommand,
+          pwd,
+          terminalPrompt
+        );
+      } else
+        ls(
+          setExchangeHistory,
+          argsArr,
+          structure,
+          pwd,
+          terminalPrompt,
+          fullCommand
+        );
     }
     // Handle cat //
     else if (base === "cat") {
       if (argsArr.length > 1) {
-        appendError(setExchangeHistory, tooManyArgs(base), fullCommand, pwd);
+        appendError(
+          setExchangeHistory,
+          tooManyArgs(base),
+          fullCommand,
+          pwd,
+          terminalPrompt
+        );
       } else if (argsArr.length < 1) {
         appendError(
           setExchangeHistory,
           argsReqd(base, "YOUR-FILE-NAME"),
           fullCommand,
-          pwd
+          pwd,
+          terminalPrompt
         );
-      } else cat(setExchangeHistory, pwd, fullCommand, argsArr, structure);
+      } else
+        cat(
+          setExchangeHistory,
+          pwd,
+          terminalPrompt,
+          fullCommand,
+          argsArr,
+          structure
+        );
     }
     // Handle pwd //
-    else if (base === "pwd") {
+    else if (base === "pwd, terminalPrompt") {
       if (argsArr.length !== 0) {
-        appendError(setExchangeHistory, argsNotReqd(base), fullCommand, pwd);
-      } else getPwd(pwd, setExchangeHistory);
+        appendError(
+          setExchangeHistory,
+          argsNotReqd(base),
+          fullCommand,
+          pwd,
+          terminalPrompt
+        );
+      } else getPwd(pwd, terminalPrompt, setExchangeHistory);
     }
     // Handle mkdir //
     else if (base === "mkdir") {
       if (argsArr.length > 1) {
-        appendError(setExchangeHistory, tooManyArgs(base), fullCommand, pwd);
+        appendError(
+          setExchangeHistory,
+          tooManyArgs(base),
+          fullCommand,
+          pwd,
+          terminalPrompt
+        );
       } else if (argsArr.length < 1) {
         appendError(
           setExchangeHistory,
           argsReqd(base, "NEW-DIR-NAME"),
           fullCommand,
-          pwd
+          pwd,
+          terminalPrompt
         );
       } else
         mkdir(
           setExchangeHistory,
           pwd,
+          terminalPrompt,
           argsArr,
           structure,
           fullCommand,
@@ -114,19 +201,27 @@ export const processCommand = (
     // Handle rm //
     else if (base === "rm") {
       if (argsArr.length > 1) {
-        appendError(setExchangeHistory, tooManyArgs(base), fullCommand, pwd);
+        appendError(
+          setExchangeHistory,
+          tooManyArgs(base),
+          fullCommand,
+          pwd,
+          terminalPrompt
+        );
       } else if (argsArr.length < 1) {
         appendError(
           setExchangeHistory,
           argsReqd(base, "YOUR-FILE/DIR"),
           fullCommand,
-          pwd
+          pwd,
+          terminalPrompt
         );
       } else
         rm(
           setExchangeHistory,
           argsArr,
           pwd,
+          terminalPrompt,
           structure,
           setStructure,
           fullCommand
@@ -144,6 +239,7 @@ export const processCommand = (
         {
           command: fullCommand,
           output: commandNotFound(base),
+          prompt: terminalPrompt,
           pwd: pwd,
         },
       ];

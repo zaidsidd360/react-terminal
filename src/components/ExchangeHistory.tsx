@@ -6,14 +6,13 @@ import { TerminalContext } from "../contexts/TerminalContext";
 
 interface IExchangeProps {
   exchange: IExchange;
-  prompt: string;
 }
 
-const Exchange = ({ exchange, prompt }: IExchangeProps) => {
+const Exchange = ({ exchange }: IExchangeProps) => {
   return (
     <>
       <ExchangeContainer>
-        <Prompt prompt={prompt} pwd={exchange.pwd} unsetPosition />
+        <Prompt prompt={exchange.prompt} pwd={exchange.pwd} unsetPosition />
         <span id="command">{exchange.command}</span>
       </ExchangeContainer>
       <span>{exchange.output}</span>
@@ -33,16 +32,12 @@ const ExchangeContainer = styled.div`
   }
 `;
 
-interface IExchangeHistoryProps {
-  prompt: string;
-}
-
-const ExchangeHistory = ({ prompt }: IExchangeHistoryProps) => {
+const ExchangeHistory = () => {
   const { exchangeHistory } = useContext(TerminalContext)!;
   return (
     <div>
       {exchangeHistory.map((exchange: IExchange, i: number) => {
-        return <Exchange key={i} exchange={exchange} prompt={prompt} />;
+        return <Exchange key={i} exchange={exchange} />;
       })}
     </div>
   );

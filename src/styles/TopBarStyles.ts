@@ -5,8 +5,9 @@ export const TopBarContainer = styled.header`
   justify-content: left;
   align-items: center;
   /* background-image: linear-gradient(to bottom, #efefef, #d7d7d7); */
-  height: 10%;
-  border-bottom: 1px solid lightgray;
+  height: 8%;
+  /* border-bottom: 1px solid lightgray; */
+  background-color: #252a33;
 
   span {
     border-radius: 50%;

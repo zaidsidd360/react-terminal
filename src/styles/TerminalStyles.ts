@@ -15,10 +15,10 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
   .main-terminal {
     box-sizing: border-box;
     width: 100%;
-    height: 90%;
+    height: 92%;
     padding: 0.5rem;
-    font-size: 1.5rem;
-    background-color: #1c1c1c;
+    font-size: 1rem;
+    background-color: #252a33;
     overflow-y: auto;
     color: white;
 

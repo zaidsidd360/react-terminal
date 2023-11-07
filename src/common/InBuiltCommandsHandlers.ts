@@ -8,6 +8,7 @@ export const ls = (
   argsArr: string[],
   structure: any,
   pwd: string,
+  prompt: string,
   fullCommand: string
 ) => {
   const path = "";
@@ -15,7 +16,7 @@ export const ls = (
   const { err, dir } = getDirectoryByPath(structure, fullPath);
 
   if (err) {
-    return appendError(setExchangeHistory, err, fullCommand, pwd);
+    return appendError(setExchangeHistory, err, fullCommand, pwd, prompt);
   } else {
     let flags = { a: false, l: false };
     argsArr.forEach((val) => {
@@ -32,6 +33,7 @@ export const ls = (
         {
           command: fullCommand,
           output: content.join(" "),
+          prompt: prompt,
           pwd: pwd,
         },
       ];
@@ -42,6 +44,7 @@ export const ls = (
 export const cat = (
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
   pwd: string,
+  prompt: string,
   fullCommand: string,
   argsArr: string[],
   structure: any
@@ -52,20 +55,22 @@ export const cat = (
   const fullPath = extractPath((relativePath as string[]).join("/"), pwd);
   const { err, dir } = getDirectoryByPath(structure, fullPath);
   if (err) {
-    return appendError(setExchangeHistory, err, fullCommand, pwd);
+    return appendError(setExchangeHistory, err, fullCommand, pwd, prompt);
   } else if (!dir[fileName!]) {
     return appendError(
       setExchangeHistory,
       noSuchFileOrDirectory(fileName!, fullCommand.split(" ")[0] as string),
       fullCommand,
-      pwd
+      pwd,
+      prompt
     );
   } else if (!dir[fileName!].hasOwnProperty("content")) {
     return appendError(
       setExchangeHistory,
       isADirectory(fileName!),
       fullCommand,
-      pwd
+      pwd,
+      prompt
     );
   } else {
     const content = dir[fileName!].content.replace(/\n$/, "");
@@ -75,6 +80,7 @@ export const cat = (
         {
           command: fullCommand,
           output: content,
+          prompt: prompt,
           pwd: pwd,
         },
       ];
@@ -85,6 +91,7 @@ export const cat = (
 export const mkdir = (
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
   pwd: string,
+  prompt: string,
   argsArr: string[],
   structure: any,
   fullCommand: string,
@@ -102,7 +109,8 @@ export const mkdir = (
       setExchangeHistory,
       redundantMkdir(newDirectory!),
       fullCommand,
-      pwd
+      pwd,
+      prompt
     );
   } else {
     dir[newDirectory!] = {};
@@ -112,6 +120,7 @@ export const mkdir = (
         {
           command: fullCommand,
           output: "",
+          prompt: prompt,
           pwd: pwd,
         },
       ];
@@ -122,6 +131,7 @@ export const mkdir = (
 
 export const cd = (
   pwd: string,
+  prompt: string,
   setPwd: React.Dispatch<React.SetStateAction<string>>,
   args: string[],
   structure: any,
@@ -139,7 +149,7 @@ export const cd = (
     fullCommand.split(" ")[0]
   );
   if (err) {
-    return appendError(setExchangeHistory, err, fullCommand, pwd);
+    return appendError(setExchangeHistory, err, fullCommand, pwd, prompt);
   } else {
     setExchangeHistory((prev) => {
       return [
@@ -147,6 +157,7 @@ export const cd = (
         {
           command: fullCommand,
           output: "",
+          prompt: prompt,
           pwd: pwd,
         },
       ];
@@ -157,6 +168,7 @@ export const cd = (
 
 export const getPwd = (
   pwd: string,
+  prompt: string,
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>
 ) => {
   const directory = `/${pwd}`;
@@ -166,6 +178,7 @@ export const getPwd = (
       {
         command: "pwd",
         output: directory,
+        prompt: prompt,
         pwd: pwd,
       },
     ];
@@ -176,6 +189,7 @@ export const rm = (
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
   argsArr: string[],
   pwd: string,
+  prompt: string,
   structure: any,
   setStructure: React.Dispatch<React.SetStateAction<any>>,
   fullCommand: string
@@ -199,6 +213,7 @@ export const rm = (
         {
           command: fullCommand,
           output: "",
+          prompt: prompt,
           pwd: pwd,
         },
       ];
@@ -209,7 +224,8 @@ export const rm = (
       setExchangeHistory,
       noSuchFileOrDirectory(file!, fullCommand.split(" ")[0] as string),
       fullCommand,
-      pwd
+      pwd,
+      prompt
     );
   }
 };

@@ -13,32 +13,7 @@ function App() {
             <span style={{ color: "pink" }}>return</span> a + b
           </div>
         );
-      return "foo";
     },
-    "npm init": [
-      {
-        prompt: "project name",
-        default: "foo",
-        onSubmit: (value: string) => {
-          if (value.length < 3)
-            return "Project name cannot be less than 4 characters.";
-        },
-      },
-      {
-        prompt: "version",
-        default: "1.0.0",
-        onSubmit: (value: number) => {
-          if (typeof value !== "number") return "Invalid Version: " + value;
-        },
-      },
-      {
-        prompt: "description",
-        default: "",
-        onSubmit: (value: string) => {
-          if (typeof value !== "string") return "Invalid Description: " + value;
-        },
-      },
-    ],
     gii: (
       <>
         <div>hii</div>
@@ -78,12 +53,14 @@ function App() {
         "✌⊂(✰‿✰)つ✌ Thanks for checking out the tool! There is a lot that you can do with react-bash and I'm excited to see all of the fun commands and projects build on top of it!",
     },
   };
-
-  console.log(Array.isArray(commands["npm init"]));
   return (
     <TerminalContextProvider>
       <div className="main-container">
-        <Terminal commands={commands} directoryStructure={structure} />
+        <Terminal
+          commands={commands}
+          directoryStructure={structure}
+          prompt="zaid@F571LH:"
+        />
       </div>
     </TerminalContextProvider>
   );

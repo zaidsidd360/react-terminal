@@ -7,16 +7,16 @@ import { processCommand } from "../common/CommandProcessor";
 import { TerminalContext, ITerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
 import { IMultiStepCommand } from "../types/GlobalTypes";
+import { appendOutput, trim } from "../utils/Utils";
 
 interface ITerminalProps {
   prompt?: string;
-  commands: Record<
+  commands?: Record<
     string,
     | string
     | React.JSX.Element
     | ((args: string) => React.JSX.Element | string | void)
     | (() => void)
-    | IMultiStepCommand[]
   >;
   directoryStructure?: any;
 }
@@ -58,10 +58,6 @@ const Terminal = ({
 
   const [structure, setStructure] = useState({});
 
-  /* TODO: Add a prompt state for the terminal prompt so that
-  when multiStepCommand is active, we can pass this prompt state
-  down to to Prompt component. */
-
   // Refs
   const promptRef = useRef<HTMLSpanElement>(null);
 
@@ -80,28 +76,22 @@ const Terminal = ({
           return [...prev, inputValue];
         });
         const [base, ...argsArr] = inputValue.trim().split(" ");
+        // if (commands)
+        // Change name to processUserCommand
         processCommand(
           base!,
           argsArr,
-          commands,
+          commands!,
           inBuiltCommands,
           setExchangeHistory,
           pwd,
           setPwd,
           structure,
-          setStructure
+          setStructure,
+          prompt
         );
-      } else
-        setExchangeHistory((prev) => {
-          return [
-            ...prev,
-            {
-              command: "",
-              output: "",
-              pwd: pwd,
-            },
-          ];
-        });
+        // Add else clause to processInBuiltCommand
+      } else appendOutput(setExchangeHistory, "", "", pwd, prompt);
       setInputValue("");
       setPrevInputValue("");
     } else if (event.key === "ArrowUp") {
@@ -146,14 +136,14 @@ const Terminal = ({
 
   useEffect(() => {
     setStructure(directoryStructure);
-  }, []);
+  }, [directoryStructure]);
 
   return (
     <TerminalContainer $promptWidth={promptWidth as number}>
       <TopBar />
       <label htmlFor="main-terminal-input">
         <div className="main-terminal">
-          <ExchangeHistory prompt={prompt} />
+          <ExchangeHistory />
           <div className="input-prompt">
             <Prompt prompt={prompt} ref={promptRef} pwd={pwd} />
             <TextareaAutosize

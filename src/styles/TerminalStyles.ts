@@ -4,20 +4,26 @@ interface TerminalContainerProps {
   $promptWidth: number;
 }
 
+// TODO: Change default scrollbar styles
+
 export const TerminalContainer = styled.div<TerminalContainerProps>`
-  border: 1px solid lightgray;
+  /* border: 1px solid lightgray; */
   width: 40vw;
   height: 50vh;
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
   overflow: hidden;
   box-shadow: 2px 2px 50px lightgray, -2px -2px 50px lightgray;
+  position: absolute;
+  /* z-index: 999;
+  width: 100%;
+  height: 100%; */
 
   .main-terminal {
     box-sizing: border-box;
     width: 100%;
     height: 92%;
     padding: 0.5rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
     background-color: #252a33;
     overflow-y: auto;
     color: white;

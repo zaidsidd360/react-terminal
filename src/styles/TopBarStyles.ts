@@ -4,10 +4,18 @@ export const TopBarContainer = styled.header`
   display: flex;
   justify-content: left;
   align-items: center;
-  /* background-image: linear-gradient(to bottom, #efefef, #d7d7d7); */
   height: 8%;
-  /* border-bottom: 1px solid lightgray; */
   background-color: #252a33;
+  border-bottom: 1px solid #5d697e;
+  text-align: center;
+  position: relative;
+
+  div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
   span {
     border-radius: 50%;

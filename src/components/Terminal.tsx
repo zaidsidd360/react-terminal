@@ -3,21 +3,18 @@ import { TerminalContainer } from "../styles/TerminalStyles";
 import TextareaAutosize from "react-textarea-autosize";
 import Prompt from "./Prompt";
 import { useContext, useEffect, useRef, useState } from "react";
-import { processCommand } from "../common/CommandProcessor";
+import {
+  processInBuiltCommand,
+  processUserCommand,
+} from "../common/CommandProcessor";
 import { TerminalContext, ITerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
-import { IMultiStepCommand } from "../types/GlobalTypes";
-import { appendOutput, trim } from "../utils/Utils";
+import { IUserCommands } from "../types/GlobalTypes";
+import { appendOutput } from "../utils/Utils";
 
 interface ITerminalProps {
   prompt?: string;
-  commands?: Record<
-    string,
-    | string
-    | React.JSX.Element
-    | ((args: string) => React.JSX.Element | string | void)
-    | (() => void)
-  >;
+  commands?: IUserCommands;
   directoryStructure?: any;
 }
 
@@ -76,21 +73,27 @@ const Terminal = ({
           return [...prev, inputValue];
         });
         const [base, ...argsArr] = inputValue.trim().split(" ");
-        // if (commands)
-        // Change name to processUserCommand
-        processCommand(
-          base!,
-          argsArr,
-          commands!,
-          inBuiltCommands,
-          setExchangeHistory,
-          pwd,
-          setPwd,
-          structure,
-          setStructure,
-          prompt
-        );
-        // Add else clause to processInBuiltCommand
+        if (inBuiltCommands.includes(base as string)) {
+          processInBuiltCommand(
+            base!,
+            pwd,
+            argsArr,
+            setExchangeHistory,
+            prompt,
+            setPwd,
+            structure,
+            setStructure
+          );
+        } else {
+          processUserCommand(
+            base!,
+            argsArr,
+            commands!,
+            setExchangeHistory,
+            pwd,
+            prompt
+          );
+        }
       } else appendOutput(setExchangeHistory, "", "", pwd, prompt);
       setInputValue("");
       setPrevInputValue("");
@@ -140,7 +143,7 @@ const Terminal = ({
 
   return (
     <TerminalContainer $promptWidth={promptWidth as number}>
-      <TopBar />
+      <TopBar prompt={prompt} pwd={pwd} />
       <label htmlFor="main-terminal-input">
         <div className="main-terminal">
           <ExchangeHistory />

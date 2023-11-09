@@ -4,7 +4,7 @@ import { argsNotReqd, argsReqd, commandNotFound, tooManyArgs } from "./Errors";
 import { cat, cd, getPwd, ls, mkdir, rm } from "./InBuiltCommandsHandlers";
 import { appendError, appendOutput, trim } from "../utils/Utils";
 
-export const processCommand = (
+export const processUserCommand = (
   base: string,
   argsArr: string[],
   commands: Record<
@@ -13,15 +13,10 @@ export const processCommand = (
     | React.JSX.Element
     | ((args: string) => React.JSX.Element | string | void)
     | (() => void)
-    | IMultiStepCommand[]
   >,
-  inBuiltCommands: string[],
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
   pwd: string,
-  setPwd: React.Dispatch<React.SetStateAction<string>>,
-  structure: any,
-  setStructure: React.Dispatch<React.SetStateAction<any>>,
-  terminalPrompt: string
+  prompt: string
 ) => {
   const args = argsArr.join(" ");
   const fullCommand = `${base} ${args}`;
@@ -37,195 +32,8 @@ export const processCommand = (
         executor(args) as string | React.JSX.Element,
         fullCommand,
         pwd,
-        terminalPrompt
+        prompt
       );
-    } else {
-      appendOutput(
-        setExchangeHistory,
-        executor as string | React.JSX.Element,
-        fullCommand,
-        pwd,
-        terminalPrompt
-      );
-    }
-    // typeof executor === "function" &&
-    //   setExchangeHistory((prev) => {
-    //     return [
-    //       ...prev,
-    //       {
-    //         command: fullCommand,
-    //         output: executor(args) as string | React.JSX.Element,
-    //         pwd, terminalPrompt: pwd, terminalPrompt,
-    //       },
-    //     ];
-    //   });
-    /* TODO: Handle multistep command here and after every handle, increase the step pointer by 1 until the step pointer becomes greater than the multiStepCommand.length */
-  }
-  //
-  // HANDLES BUILT IN COMMANDS
-  // ^^^^^^^^^^^^^^^^^^^^^^^^^
-  //
-  else if (inBuiltCommands.includes(base)) {
-    // Handle clear //
-    if (base === "clear") {
-      if (args.length !== 0) {
-        appendError(
-          setExchangeHistory,
-          argsNotReqd(base),
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else setExchangeHistory([]); // Clears the terminal exchange history
-    } else if (base === "echo") {
-      appendOutput(setExchangeHistory, args, fullCommand, pwd, terminalPrompt);
-    }
-    // Handle cd //
-    else if (base === "cd") {
-      if (argsArr.length > 1) {
-        appendError(
-          setExchangeHistory,
-          tooManyArgs(base),
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else if (argsArr.length < 1) {
-        appendOutput(
-          setExchangeHistory,
-          args,
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else
-        cd(
-          pwd,
-          terminalPrompt,
-          setPwd,
-          argsArr,
-          structure,
-          setExchangeHistory,
-          fullCommand
-        );
-    }
-    // Handle ls //
-    else if (base === "ls") {
-      if (argsArr.length > 1) {
-        appendError(
-          setExchangeHistory,
-          tooManyArgs(base),
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else
-        ls(
-          setExchangeHistory,
-          argsArr,
-          structure,
-          pwd,
-          terminalPrompt,
-          fullCommand
-        );
-    }
-    // Handle cat //
-    else if (base === "cat") {
-      if (argsArr.length > 1) {
-        appendError(
-          setExchangeHistory,
-          tooManyArgs(base),
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else if (argsArr.length < 1) {
-        appendError(
-          setExchangeHistory,
-          argsReqd(base, "YOUR-FILE-NAME"),
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else
-        cat(
-          setExchangeHistory,
-          pwd,
-          terminalPrompt,
-          fullCommand,
-          argsArr,
-          structure
-        );
-    }
-    // Handle pwd //
-    else if (base === "pwd, terminalPrompt") {
-      if (argsArr.length !== 0) {
-        appendError(
-          setExchangeHistory,
-          argsNotReqd(base),
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else getPwd(pwd, terminalPrompt, setExchangeHistory);
-    }
-    // Handle mkdir //
-    else if (base === "mkdir") {
-      if (argsArr.length > 1) {
-        appendError(
-          setExchangeHistory,
-          tooManyArgs(base),
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else if (argsArr.length < 1) {
-        appendError(
-          setExchangeHistory,
-          argsReqd(base, "NEW-DIR-NAME"),
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else
-        mkdir(
-          setExchangeHistory,
-          pwd,
-          terminalPrompt,
-          argsArr,
-          structure,
-          fullCommand,
-          setStructure
-        );
-    }
-    // Handle rm //
-    else if (base === "rm") {
-      if (argsArr.length > 1) {
-        appendError(
-          setExchangeHistory,
-          tooManyArgs(base),
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else if (argsArr.length < 1) {
-        appendError(
-          setExchangeHistory,
-          argsReqd(base, "YOUR-FILE/DIR"),
-          fullCommand,
-          pwd,
-          terminalPrompt
-        );
-      } else
-        rm(
-          setExchangeHistory,
-          argsArr,
-          pwd,
-          terminalPrompt,
-          structure,
-          setStructure,
-          fullCommand
-        );
     }
   }
   //
@@ -239,9 +47,167 @@ export const processCommand = (
         {
           command: fullCommand,
           output: commandNotFound(base),
-          prompt: terminalPrompt,
+          prompt: prompt,
           pwd: pwd,
         },
       ];
     });
+};
+
+//
+// HANDLES BUILT IN COMMANDS
+// ^^^^^^^^^^^^^^^^^^^^^^^^^
+//
+export const processInBuiltCommand = (
+  base: string,
+  pwd: string,
+  argsArr: string[],
+  setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
+  prompt: string,
+  setPwd: React.Dispatch<React.SetStateAction<string>>,
+  structure: any,
+  setStructure: React.Dispatch<React.SetStateAction<any>>
+) => {
+  const args = argsArr.join(" ");
+  const fullCommand = `${base} ${args}`;
+  // Handle clear //
+  if (base === "clear") {
+    if (args.length !== 0) {
+      appendError(
+        setExchangeHistory,
+        argsNotReqd(base),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else setExchangeHistory([]); // Clears the terminal exchange history
+  } else if (base === "echo") {
+    appendOutput(setExchangeHistory, args, fullCommand, pwd, prompt);
+  }
+  // Handle cd //
+  else if (base === "cd") {
+    if (argsArr.length > 1) {
+      appendError(
+        setExchangeHistory,
+        tooManyArgs(base),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else if (argsArr.length < 1) {
+      appendOutput(setExchangeHistory, args, fullCommand, pwd, prompt);
+    } else
+      cd(
+        pwd,
+        prompt,
+        setPwd,
+        argsArr,
+        structure,
+        setExchangeHistory,
+        fullCommand
+      );
+  }
+  // Handle ls //
+  else if (base === "ls") {
+    if (argsArr.length > 1) {
+      appendError(
+        setExchangeHistory,
+        tooManyArgs(base),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else ls(setExchangeHistory, argsArr, structure, pwd, prompt, fullCommand);
+  }
+  // Handle cat //
+  else if (base === "cat") {
+    if (argsArr.length > 1) {
+      appendError(
+        setExchangeHistory,
+        tooManyArgs(base),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else if (argsArr.length < 1) {
+      appendError(
+        setExchangeHistory,
+        argsReqd(base, "YOUR-FILE-NAME"),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else
+      cat(setExchangeHistory, pwd, prompt, fullCommand, argsArr, structure);
+  }
+  // Handle pwd //
+  else if (base === "pwd") {
+    if (argsArr.length !== 0) {
+      appendError(
+        setExchangeHistory,
+        argsNotReqd(base),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else getPwd(pwd, prompt, setExchangeHistory);
+  }
+  // Handle mkdir //
+  else if (base === "mkdir") {
+    if (argsArr.length > 1) {
+      appendError(
+        setExchangeHistory,
+        tooManyArgs(base),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else if (argsArr.length < 1) {
+      appendError(
+        setExchangeHistory,
+        argsReqd(base, "NEW-DIR-NAME"),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else
+      mkdir(
+        setExchangeHistory,
+        pwd,
+        prompt,
+        argsArr,
+        structure,
+        fullCommand,
+        setStructure
+      );
+  }
+  // Handle rm //
+  else if (base === "rm") {
+    if (argsArr.length > 1) {
+      appendError(
+        setExchangeHistory,
+        tooManyArgs(base),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else if (argsArr.length < 1) {
+      appendError(
+        setExchangeHistory,
+        argsReqd(base, "YOUR-FILE/DIR"),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else
+      rm(
+        setExchangeHistory,
+        argsArr,
+        pwd,
+        prompt,
+        structure,
+        setStructure,
+        fullCommand
+      );
+  }
 };

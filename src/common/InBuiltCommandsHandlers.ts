@@ -1,6 +1,11 @@
 import { SetStateAction } from "react";
 import { IExchange } from "../types/GlobalTypes";
-import { appendError, extractPath, getDirectoryByPath } from "../utils/Utils";
+import {
+  appendError,
+  appendOutput,
+  extractPath,
+  getDirectoryByPath,
+} from "../utils/Utils";
 import { isADirectory, noSuchFileOrDirectory, redundantMkdir } from "./Errors";
 
 // TODO: Remove all setExchangeHistory calls and replace them with appendOutput calls.
@@ -29,17 +34,13 @@ export const ls = (
     if (!flags.a) {
       content = content.filter((name) => name[0] !== ".");
     }
-    return setExchangeHistory((prev) => {
-      return [
-        ...prev,
-        {
-          command: fullCommand,
-          output: content.join(" "),
-          prompt: prompt,
-          pwd: pwd,
-        },
-      ];
-    });
+    return appendOutput(
+      setExchangeHistory,
+      content.join(" "),
+      fullCommand,
+      pwd,
+      prompt
+    );
   }
 };
 
@@ -76,17 +77,7 @@ export const cat = (
     );
   } else {
     const content = dir[fileName!].content.replace(/\n$/, "");
-    return setExchangeHistory((prev) => {
-      return [
-        ...prev,
-        {
-          command: fullCommand,
-          output: content,
-          prompt: prompt,
-          pwd: pwd,
-        },
-      ];
-    });
+    return appendOutput(setExchangeHistory, content, fullCommand, pwd, prompt);
   }
 };
 
@@ -116,17 +107,7 @@ export const mkdir = (
     );
   } else {
     dir[newDirectory!] = {};
-    setExchangeHistory((prev) => {
-      return [
-        ...prev,
-        {
-          command: fullCommand,
-          output: "",
-          prompt: prompt,
-          pwd: pwd,
-        },
-      ];
-    });
+    appendOutput(setExchangeHistory, "", fullCommand, pwd, prompt);
     return setStructure(deepCopy);
   }
 };
@@ -153,17 +134,7 @@ export const cd = (
   if (err) {
     return appendError(setExchangeHistory, err, fullCommand, pwd, prompt);
   } else {
-    setExchangeHistory((prev) => {
-      return [
-        ...prev,
-        {
-          command: fullCommand,
-          output: "",
-          prompt: prompt,
-          pwd: pwd,
-        },
-      ];
-    });
+    appendOutput(setExchangeHistory, "", fullCommand, pwd, prompt);
     return setPwd(fullPath);
   }
 };
@@ -174,17 +145,7 @@ export const getPwd = (
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>
 ) => {
   const directory = `/${pwd}`;
-  return setExchangeHistory((prev) => {
-    return [
-      ...prev,
-      {
-        command: "pwd",
-        output: directory,
-        prompt: prompt,
-        pwd: pwd,
-      },
-    ];
-  });
+  appendOutput(setExchangeHistory, directory, "pwd", pwd, prompt);
 };
 
 export const rm = (
@@ -204,22 +165,8 @@ export const rm = (
   const { dir } = getDirectoryByPath(deepCopy, fullPath);
 
   if (dir[file!]) {
-    // folder deletion requires the recursive flags `-r` or `-R`
-    // if (!isFile(dir[file]) && !(flags.r || flags.R)) {
-    //   return appendError(state, Errors.IS_A_DIRECTORY, path);
-    // }
     delete dir[file!];
-    setExchangeHistory((prev) => {
-      return [
-        ...prev,
-        {
-          command: fullCommand,
-          output: "",
-          prompt: prompt,
-          pwd: pwd,
-        },
-      ];
-    });
+    appendOutput(setExchangeHistory, "", fullCommand, pwd, prompt);
     return setStructure(deepCopy);
   } else {
     return appendError(

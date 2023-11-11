@@ -8,8 +8,6 @@ import {
 } from "../utils/Utils";
 import { isADirectory, noSuchFileOrDirectory, redundantMkdir } from "./Errors";
 
-// TODO: Remove all setExchangeHistory calls and replace them with appendOutput calls.
-
 export const ls = (
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
   argsArr: string[],

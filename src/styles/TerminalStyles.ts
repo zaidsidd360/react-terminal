@@ -4,8 +4,6 @@ interface TerminalContainerProps {
   $promptWidth: number;
 }
 
-// TODO: Change default scrollbar styles
-
 export const TerminalContainer = styled.div<TerminalContainerProps>`
   /* border: 1px solid lightgray; */
   width: 40vw;
@@ -46,11 +44,24 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
         }
       }
     }
+
     .scroll-div {
       visibility: hidden;
     }
+
     &:hover {
       cursor: text;
+    }
+
+    &::-webkit-scrollbar {
+      width: 0.7rem;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
     }
   }
 `;

@@ -21,7 +21,7 @@ export const TopBarContainer = styled.header`
     border-radius: 50%;
     height: 50%;
     aspect-ratio: 1;
-    margin-inline: 0.5rem;
+    margin-left: 0.5rem;
   }
 
   #btn-red {

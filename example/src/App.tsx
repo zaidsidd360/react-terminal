@@ -13,12 +13,17 @@ function App() {
             <span style={{ color: "pink" }}>return</span> a + b
           </div>
         );
+      else return "";
     },
     gii: (
       <>
         <div>hii</div>
       </>
     ),
+    "foo bar": () => {
+      window.alert("hellooooo");
+      return "";
+    },
   };
 
   const structure = {
@@ -39,7 +44,12 @@ function App() {
     },
     public: {
       file1: {
-        content: "The is the content for file1 in the <public> directory.",
+        content: (
+          <div>
+            Yoooo <br /> hello <br /> melloo <br /> foooo
+          </div>
+        ),
+        // "The is the content for file1 in the <public> directory."
       },
       file2: {
         content: "The is the content for file2 in the <public> directory.",

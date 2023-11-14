@@ -74,7 +74,8 @@ export const cat = (
       prompt
     );
   } else {
-    const content = dir[fileName!].content.replace(/\n$/, "");
+    const content = dir[fileName!].content;
+    // .replace(/\n$/, "")
     return appendOutput(setExchangeHistory, content, fullCommand, pwd, prompt);
   }
 };

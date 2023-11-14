@@ -7,16 +7,7 @@ export interface IExchange {
 
 export type IUserCommands = Record<
   string,
-  | string
-  | React.JSX.Element
-  | ((args: string) => React.JSX.Element | string | void)
-  | (() => void)
+  string | React.JSX.Element | ((args: string) => React.JSX.Element | string)
 >;
 // &
 //   Partial<Record<"echo" | "ls" | "mkdir" | "cd" | "cat" | "pwd" | "rm", never>>;
-
-export interface IMultiStepCommand {
-  prompt: string;
-  default: string;
-  onSubmit: (value: any) => string | undefined;
-}

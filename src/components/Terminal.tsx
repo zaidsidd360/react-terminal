@@ -53,7 +53,7 @@ const Terminal = ({
 
   const [prevInputValue, setPrevInputValue] = useState<string>("");
 
-  const [structure, setStructure] = useState({});
+  const [structure, setStructure] = useState(directoryStructure);
 
   // Refs
   const promptRef = useRef<HTMLSpanElement>(null);
@@ -132,7 +132,7 @@ const Terminal = ({
   }, [exchangeHistory]);
 
   useEffect(() => {
-    /* If historyPointer has reached commandHistory.length, 
+    /* If historyPointer has reached commandHistory.length,
     set the input value to the last written command/prevInputValue.*/
     if (historyPointer === commandHistory.length) setInputValue(prevInputValue);
   }, [historyPointer]);

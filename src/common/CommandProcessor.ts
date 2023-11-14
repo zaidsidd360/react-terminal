@@ -18,34 +18,49 @@ export const processUserCommand = (
 ) => {
   const args = argsArr.join(" ");
   const fullCommand = `${base} ${args}`;
-  if (commands[base]) {
-    const executor = commands[base];
+  if (commands[`${fullCommand}`]) {
+    const executor = commands[`${fullCommand}`];
     if (typeof executor === "function") {
+      appendOutput(setExchangeHistory, executor(""), fullCommand, pwd, prompt);
+    } else
       appendOutput(
         setExchangeHistory,
-        executor(args) as string | React.JSX.Element,
+        executor as string | React.JSX.Element,
         fullCommand,
         pwd,
         prompt
       );
-    }
+  } else if (commands[base]) {
+    const executor = commands[base];
+    if (typeof executor === "function") {
+      appendOutput(
+        setExchangeHistory,
+        executor(args),
+        fullCommand,
+        pwd,
+        prompt
+      );
+    } else
+      appendOutput(
+        setExchangeHistory,
+        executor as string | React.JSX.Element,
+        fullCommand,
+        pwd,
+        prompt
+      );
   }
   //
   // HANDLES UNIDENTIFIED COMMANDS
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   //
   else
-    setExchangeHistory((prev) => {
-      return [
-        ...prev,
-        {
-          command: fullCommand,
-          output: commandNotFound(base),
-          prompt: prompt,
-          pwd: pwd,
-        },
-      ];
-    });
+    appendOutput(
+      setExchangeHistory,
+      commandNotFound(base),
+      fullCommand,
+      pwd,
+      prompt
+    );
 };
 
 //

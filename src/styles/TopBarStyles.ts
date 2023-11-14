@@ -6,7 +6,7 @@ export const TopBarContainer = styled.header`
   align-items: center;
   height: 8%;
   background-color: #252a33;
-  border-bottom: 1px solid #5d697e;
+  /* border-bottom: 1px solid #5d697e; */
   text-align: center;
   position: relative;
 
@@ -19,7 +19,7 @@ export const TopBarContainer = styled.header`
 
   span {
     border-radius: 50%;
-    height: 50%;
+    height: 45%;
     aspect-ratio: 1;
     margin-left: 0.5rem;
   }

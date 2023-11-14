@@ -1,29 +1,23 @@
 import { SetStateAction } from "react";
-import { IExchange, IMultiStepCommand } from "../types/GlobalTypes";
+import { IExchange, IUserCommands } from "../types/GlobalTypes";
 import { argsNotReqd, argsReqd, commandNotFound, tooManyArgs } from "./Errors";
 import { cat, cd, getPwd, ls, mkdir, rm } from "./InBuiltCommandsHandlers";
 import { appendError, appendOutput, trim } from "../utils/Utils";
 
+//
+// HANDLES USER DEFINED COMMANDS
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//
 export const processUserCommand = (
   base: string,
   argsArr: string[],
-  commands: Record<
-    string,
-    | string
-    | React.JSX.Element
-    | ((args: string) => React.JSX.Element | string | void)
-    | (() => void)
-  >,
+  commands: IUserCommands,
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
   pwd: string,
   prompt: string
 ) => {
   const args = argsArr.join(" ");
   const fullCommand = `${base} ${args}`;
-  //
-  // HANDLES USER DEFINED COMMANDS
-  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  //
   if (commands[base]) {
     const executor = commands[base];
     if (typeof executor === "function") {
@@ -82,6 +76,7 @@ export const processInBuiltCommand = (
       );
     } else setExchangeHistory([]); // Clears the terminal exchange history
   } else if (base === "echo") {
+    // TODO: Handle case for strings passed with "" & ''.
     appendOutput(setExchangeHistory, args, fullCommand, pwd, prompt);
   }
   // Handle cd //

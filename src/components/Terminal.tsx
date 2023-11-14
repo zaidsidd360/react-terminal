@@ -7,7 +7,7 @@ import {
   processInBuiltCommand,
   processUserCommand,
 } from "../common/CommandProcessor";
-import { TerminalContext, ITerminalContext } from "../contexts/TerminalContext";
+import { TerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
 import { IUserCommands } from "../types/GlobalTypes";
 import { appendOutput } from "../utils/Utils";

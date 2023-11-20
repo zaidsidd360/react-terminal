@@ -104,7 +104,7 @@ const Terminal = ({
       the input to prevInputValue. This way when the user hits the 
       arrow down key continously, and the historyPointer reaches 
       commandHistory.length again (this part is handled with the 
-      last useEffect), the inputValue will automatically change 
+      last useEffect call), the inputValue will automatically change 
       to prevInputValue. */
       if (historyPointer === commandHistory.length)
         setPrevInputValue(inputValue);

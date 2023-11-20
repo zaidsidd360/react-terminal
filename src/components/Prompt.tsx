@@ -1,4 +1,4 @@
-import React, { ForwardedRef, LegacyRef, RefObject } from "react";
+import React from "react";
 import { PromptSpan } from "../styles/PromptStyles";
 
 interface PromptProps {

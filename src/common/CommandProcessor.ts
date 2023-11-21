@@ -2,7 +2,7 @@ import { SetStateAction } from "react";
 import { IExchange, IUserCommands } from "../types/GlobalTypes";
 import { argsNotReqd, argsReqd, commandNotFound, tooManyArgs } from "./Errors";
 import { cat, cd, getPwd, ls, mkdir, rm } from "./InBuiltCommandsHandlers";
-import { appendError, appendOutput, trim } from "../utils/Utils";
+import { appendError, appendOutput } from "../utils/Utils";
 
 //
 // HANDLES USER DEFINED COMMANDS
@@ -190,6 +190,15 @@ export const processInBuiltCommand = (
         fullCommand,
         setStructure
       );
+  }
+  // Handle date //
+  else if(base === "date") {
+    if(argsArr.length !== 0) {
+      appendError(setExchangeHistory, tooManyArgs(base), fullCommand, pwd, prompt);
+    } else {
+      const date = new Date();
+      appendOutput(setExchangeHistory, date.toString(), fullCommand, pwd, prompt);
+    }
   }
   // Handle rm //
   else if (base === "rm") {

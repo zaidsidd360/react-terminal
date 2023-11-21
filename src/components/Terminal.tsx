@@ -34,6 +34,7 @@ const Terminal = ({
     "pwd",
     "mkdir",
     "rm",
+    "date"
   ];
 
   // Context

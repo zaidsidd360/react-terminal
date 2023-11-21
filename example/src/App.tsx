@@ -68,6 +68,7 @@ function App() {
       <div className="main-container">
         <Terminal
           commands={commands}
+          showTopBar={false}
           directoryStructure={structure}
           prompt="zaid@F571LH:"
         />

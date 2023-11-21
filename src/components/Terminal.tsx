@@ -16,12 +16,14 @@ interface ITerminalProps {
   prompt?: string;
   commands?: IUserCommands;
   directoryStructure?: any;
+  showTopBar?: boolean;
 }
 
 const Terminal = ({
   prompt = "user@anon:",
   commands,
   directoryStructure,
+  showTopBar = true
 }: ITerminalProps) => {
   const inBuiltCommands: string[] = [
     "clear",
@@ -142,8 +144,8 @@ const Terminal = ({
   }, [directoryStructure]);
 
   return (
-    <TerminalContainer $promptWidth={promptWidth as number}>
-      <TopBar prompt={prompt} pwd={pwd} />
+    <TerminalContainer $promptWidth={promptWidth as number} $showTopBar={showTopBar}>
+      {showTopBar &&  <TopBar prompt={prompt} pwd={pwd} />} 
       <label htmlFor="main-terminal-input">
         <div className="main-terminal">
           <ExchangeHistory />

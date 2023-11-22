@@ -44,11 +44,7 @@ function App() {
     },
     public: {
       file1: {
-        content: (
-          <div>
-            Yoooo <br /> hello <br /> melloo <br /> foooo
-          </div>
-        ),
+        content: "This is the content for file1 in the <public> directory" 
         // "The is the content for file1 in the <public> directory."
       },
       file2: {

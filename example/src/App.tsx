@@ -68,9 +68,10 @@ function App() {
       <div className="main-container">
         <Terminal
           commands={commands}
-          showTopBar={false}
+          showTopBar={true}
           directoryStructure={structure}
           prompt="zaid@F571LH:"
+          topBarHeight="8%"
         />
       </div>
     </TerminalContextProvider>

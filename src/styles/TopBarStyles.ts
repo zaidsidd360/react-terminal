@@ -1,10 +1,14 @@
 import styled from "styled-components";
 
-export const TopBarContainer = styled.header`
+interface ITopBarContainerProps {
+  $topBarHeight: string;
+}
+
+export const TopBarContainer = styled.header<ITopBarContainerProps>`
   display: flex;
   justify-content: left;
   align-items: center;
-  height: 8%;
+  height: ${(props) => props.$topBarHeight};
   background-color: #252a33;
   /* border-bottom: 1px solid #5d697e; */
   text-align: center;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 interface TerminalContainerProps {
   $promptWidth: number;
   $showTopBar: boolean;
+  $topBarHeight: string;
 }
 
 export const TerminalContainer = styled.div<TerminalContainerProps>`
@@ -20,7 +21,7 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
   .main-terminal {
     box-sizing: border-box;
     width: 100%;
-    height: ${(props) => props.$showTopBar ? "92%" : "100%"};
+    height: ${(props) => props.$showTopBar ? `calc(100% - ${props.$topBarHeight})` : "100%"};
     padding: 0.5rem;
     font-size: 1.2rem;
     background-color: #252a33;

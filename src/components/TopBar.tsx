@@ -5,13 +5,14 @@ import Prompt from "./Prompt";
 interface ITopBarProps {
   prompt: string;
   pwd: string;
+  topBarHeight: string;
 }
 
 // TODO: Add TopBar buttons callback functions
-const TopBar = ({ prompt, pwd }: ITopBarProps) => {
+const TopBar = ({ prompt, pwd, topBarHeight }: ITopBarProps) => {
   return (
     <>
-      <TopBarContainer>
+      <TopBarContainer $topBarHeight={topBarHeight}>
         <span id="btn-red" />
         <span id="btn-yellow" />
         <span id="btn-green" />

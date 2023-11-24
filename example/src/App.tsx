@@ -59,10 +59,27 @@ function App() {
         "✌⊂(✰‿✰)つ✌ Thanks for checking out the tool! There is a lot that you can do with react-bash and I'm excited to see all of the fun commands and projects build on top of it!",
     },
   };
+
+  const btn1Callback = () => {
+    alert("Hello this is from the button 1")
+  }
+  
+  
+  const btn2Callback = () => {
+    alert("Hello this is from the button 2")
+  }
+
+  const btn3Callback = () => {
+    alert("Hello this is from the button 3")
+  }
+
   return (
-    <TerminalContextProvider>
+    // <TerminalContextProvider>
       <div className="main-container">
         <Terminal
+          btn2Callback={btn2Callback}
+          btn3Callback={btn3Callback}
+          btn1Callback={btn1Callback}
           commands={commands}
           showTopBar={true}
           directoryStructure={structure}
@@ -70,7 +87,7 @@ function App() {
           topBarHeight="8%"
         />
       </div>
-    </TerminalContextProvider>
+    // </TerminalContextProvider>
   );
 }
 

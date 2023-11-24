@@ -18,6 +18,9 @@ interface ITerminalProps {
   directoryStructure?: any;
   showTopBar?: boolean;
   topBarHeight?: string;
+  btn1Callback?: (args: any) => any;
+  btn2Callback?: (args: any) => any;
+  btn3Callback?: (args: any) => any;
 }
 
 const Terminal = ({
@@ -25,7 +28,10 @@ const Terminal = ({
   commands,
   directoryStructure,
   showTopBar = true,
-  topBarHeight = "8%"
+  topBarHeight = "8%",
+  btn1Callback,
+  btn2Callback,
+  btn3Callback
 }: ITerminalProps) => {
   const inBuiltCommands: string[] = [
     "clear",
@@ -148,7 +154,15 @@ const Terminal = ({
 
   return (
     <TerminalContainer  $topBarHeight={topBarHeight} $promptWidth={promptWidth as number} $showTopBar={showTopBar}>
-      {showTopBar &&  <TopBar topBarHeight={topBarHeight} prompt={prompt} pwd={pwd} />} 
+      {showTopBar && 
+        <TopBar 
+          btn1Callback={btn1Callback} 
+          btn2Callback={btn2Callback} 
+          btn3Callback={btn3Callback} 
+          topBarHeight={topBarHeight} 
+          prompt={prompt} 
+          pwd={pwd} />
+      } 
       <label htmlFor="main-terminal-input">
         <div className="main-terminal">
           <ExchangeHistory />

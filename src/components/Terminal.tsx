@@ -31,7 +31,7 @@ const Terminal = ({
   topBarHeight = "8%",
   btn1Callback,
   btn2Callback,
-  btn3Callback
+  btn3Callback,
 }: ITerminalProps) => {
   const inBuiltCommands: string[] = [
     "clear",
@@ -42,7 +42,7 @@ const Terminal = ({
     "pwd",
     "mkdir",
     "rm",
-    "date"
+    "date",
   ];
 
   // Context
@@ -93,7 +93,7 @@ const Terminal = ({
             prompt,
             setPwd,
             structure,
-            setStructure
+            setStructure,
           );
         } else {
           processUserCommand(
@@ -102,7 +102,7 @@ const Terminal = ({
             commands!,
             setExchangeHistory,
             pwd,
-            prompt
+            prompt,
           );
         }
       } else appendOutput(setExchangeHistory, "", "", pwd, prompt);
@@ -110,15 +110,16 @@ const Terminal = ({
       setPrevInputValue("");
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
-      /* If user has pressed the arrow up key and the historyPointer 
-      is at commandHistory.length, save whatever is already written in 
-      the input to prevInputValue. This way when the user hits the 
-      arrow down key continously, and the historyPointer reaches 
-      commandHistory.length again (this part is handled with the 
-      last useEffect call), the inputValue will automatically change 
+      /* If user has pressed the arrow up key and the historyPointer
+      is at commandHistory.length, save whatever is already written in
+      the input to prevInputValue. This way when the user hits the
+      arrow down key continously, and the historyPointer reaches
+      commandHistory.length again (this part is handled with the
+      last useEffect call), the inputValue will automatically change
       to prevInputValue. */
-      if (historyPointer === commandHistory.length)
+      if (historyPointer === commandHistory.length) {
         setPrevInputValue(inputValue);
+      }
       // The main ArrowUp event starts from here.
       setInputValue(commandHistory[historyPointer - 1]!);
       if (historyPointer > 0) {
@@ -153,16 +154,22 @@ const Terminal = ({
   }, [directoryStructure]);
 
   return (
-    <TerminalContainer  $topBarHeight={topBarHeight} $promptWidth={promptWidth as number} $showTopBar={showTopBar}>
-      {showTopBar && 
-        <TopBar 
-          btn1Callback={btn1Callback} 
-          btn2Callback={btn2Callback} 
-          btn3Callback={btn3Callback} 
-          topBarHeight={topBarHeight} 
-          prompt={prompt} 
-          pwd={pwd} />
-      } 
+    <TerminalContainer
+      $topBarHeight={topBarHeight}
+      $promptWidth={promptWidth as number}
+      $showTopBar={showTopBar}
+    >
+      {showTopBar &&
+        (
+          <TopBar
+            btn1Callback={btn1Callback}
+            btn2Callback={btn2Callback}
+            btn3Callback={btn3Callback}
+            topBarHeight={topBarHeight}
+            prompt={prompt}
+            pwd={pwd}
+          />
+        )}
       <label htmlFor="main-terminal-input">
         <div className="main-terminal">
           <ExchangeHistory />

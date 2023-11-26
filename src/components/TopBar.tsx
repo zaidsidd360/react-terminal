@@ -11,7 +11,10 @@ interface ITopBarProps {
   btn3Callback?: (args: any) => any;
 }
 
-const TopBar = ({ prompt, pwd, topBarHeight, btn1Callback, btn2Callback, btn3Callback }: ITopBarProps) => {
+const TopBar = (
+  { prompt, pwd, topBarHeight, btn1Callback, btn2Callback, btn3Callback }:
+    ITopBarProps,
+) => {
   return (
     <>
       <TopBarContainer $topBarHeight={topBarHeight}>

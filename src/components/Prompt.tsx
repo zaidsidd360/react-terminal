@@ -10,8 +10,8 @@ interface PromptProps {
   smallAndFaded?: boolean;
 }
 
-/* Since functional components cannot recieve refs as props, we must 
-wrap the ref-recieving child component with a React.forwardRef call 
+/* Since functional components cannot recieve refs as props, we must
+wrap the ref-recieving child component with a React.forwardRef call
 which does the ref forwarding for us under the hood. */
 const Prompt = React.forwardRef<HTMLSpanElement, PromptProps>(
   ({ prompt, unsetPosition, pwd, dontRenderDollar, smallAndFaded }, ref) => {
@@ -31,6 +31,6 @@ const Prompt = React.forwardRef<HTMLSpanElement, PromptProps>(
         </>
       </PromptSpan>
     );
-  }
+  },
 );
 export default Prompt;

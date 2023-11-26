@@ -1,4 +1,4 @@
-import { SetStateAction, createContext, useEffect, useState } from "react";
+import { createContext, SetStateAction, useEffect, useState } from "react";
 import { IExchange } from "../types/GlobalTypes";
 
 export interface ITerminalContext {
@@ -20,7 +20,7 @@ const TerminalContextProvider = (props: { children: React.ReactNode }) => {
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
 
   const [historyPointer, setHistoryPointer] = useState<number>(
-    commandHistory.length
+    commandHistory.length,
   );
 
   const [pwd, setPwd] = useState<string>("");

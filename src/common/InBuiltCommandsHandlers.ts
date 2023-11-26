@@ -14,7 +14,7 @@ export const ls = (
   structure: any,
   pwd: string,
   prompt: string,
-  fullCommand: string
+  fullCommand: string,
 ) => {
   const path = "";
   const fullPath = extractPath(path, pwd);
@@ -37,7 +37,7 @@ export const ls = (
       content.join(" "),
       fullCommand,
       pwd,
-      prompt
+      prompt,
     );
   }
 };
@@ -48,7 +48,7 @@ export const cat = (
   prompt: string,
   fullCommand: string,
   argsArr: string[],
-  structure: any
+  structure: any,
 ) => {
   const path = argsArr[0];
   const relativePath = path?.split("/");
@@ -63,7 +63,7 @@ export const cat = (
       noSuchFileOrDirectory(fileName!, fullCommand.split(" ")[0] as string),
       fullCommand,
       pwd,
-      prompt
+      prompt,
     );
   } else if (!dir[fileName!].hasOwnProperty("content")) {
     return appendError(
@@ -71,7 +71,7 @@ export const cat = (
       isADirectory(fileName!),
       fullCommand,
       pwd,
-      prompt
+      prompt,
     );
   } else {
     const content = dir[fileName!].content;
@@ -87,7 +87,7 @@ export const mkdir = (
   argsArr: string[],
   structure: any,
   fullCommand: string,
-  setStructure: React.Dispatch<React.SetStateAction<any>>
+  setStructure: React.Dispatch<React.SetStateAction<any>>,
 ) => {
   const path = argsArr[0];
   const relativePath = (path as string).split("/");
@@ -102,7 +102,7 @@ export const mkdir = (
       redundantMkdir(newDirectory!),
       fullCommand,
       pwd,
-      prompt
+      prompt,
     );
   } else {
     dir[newDirectory!] = {};
@@ -118,7 +118,7 @@ export const cd = (
   args: string[],
   structure: any,
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
-  fullCommand: string
+  fullCommand: string,
 ) => {
   const path = args[0];
   if (!path || path === "/") {
@@ -128,7 +128,7 @@ export const cd = (
   const { err } = getDirectoryByPath(
     structure,
     fullPath,
-    fullCommand.split(" ")[0]
+    fullCommand.split(" ")[0],
   );
   if (err) {
     return appendError(setExchangeHistory, err, fullCommand, pwd, prompt);
@@ -141,7 +141,7 @@ export const cd = (
 export const getPwd = (
   pwd: string,
   prompt: string,
-  setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>
+  setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
 ) => {
   const directory = `/${pwd}`;
   appendOutput(setExchangeHistory, directory, "pwd", pwd, prompt);
@@ -154,7 +154,7 @@ export const rm = (
   prompt: string,
   structure: any,
   setStructure: React.Dispatch<React.SetStateAction<any>>,
-  fullCommand: string
+  fullCommand: string,
 ) => {
   const path = argsArr[0];
   const relativePath = path!.split("/");
@@ -173,7 +173,7 @@ export const rm = (
       noSuchFileOrDirectory(file!, fullCommand.split(" ")[0] as string),
       fullCommand,
       pwd,
-      prompt
+      prompt,
     );
   }
 };

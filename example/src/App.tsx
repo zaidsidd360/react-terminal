@@ -74,7 +74,7 @@ function App() {
   }
 
   return (
-    // <TerminalContextProvider>
+    <TerminalContextProvider>
       <div className="main-container">
         <Terminal
           btn2Callback={btn2Callback}
@@ -87,7 +87,7 @@ function App() {
           topBarHeight="8%"
         />
       </div>
-    // </TerminalContextProvider>
+    </TerminalContextProvider>
   );
 }
 

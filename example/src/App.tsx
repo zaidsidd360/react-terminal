@@ -44,7 +44,7 @@ function App() {
     },
     public: {
       file1: {
-        content: "This is the content for file1 in the <public> directory" 
+        content: "This is the content for file1 in the <public> directory",
         // "The is the content for file1 in the <public> directory."
       },
       file2: {
@@ -61,17 +61,16 @@ function App() {
   };
 
   const btn1Callback = () => {
-    alert("Hello this is from the button 1")
-  }
-  
-  
+    alert("Hello this is from the button 1");
+  };
+
   const btn2Callback = () => {
-    alert("Hello this is from the button 2")
-  }
+    alert("Hello this is from the button 2");
+  };
 
   const btn3Callback = () => {
-    alert("Hello this is from the button 3")
-  }
+    alert("Hello this is from the button 3");
+  };
 
   return (
     <TerminalContextProvider>
@@ -85,6 +84,7 @@ function App() {
           directoryStructure={structure}
           prompt="zaid@F571LH:"
           topBarHeight="8%"
+          theme="light"
         />
       </div>
     </TerminalContextProvider>

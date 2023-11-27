@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import { ITheme } from "../types/GlobalTypes";
 
 interface ITopBarContainerProps {
   $topBarHeight: string;
+  $currTheme: ITheme;
 }
 
 export const TopBarContainer = styled.header<ITopBarContainerProps>`
@@ -9,7 +11,8 @@ export const TopBarContainer = styled.header<ITopBarContainerProps>`
   justify-content: left;
   align-items: center;
   height: ${(props) => props.$topBarHeight};
-  background-color: #252a33;
+  /* background-color: #252a33; */
+  background-color: ${({ $currTheme }) => $currTheme.topBarBg};
   /* border-bottom: 1px solid #5d697e; */
   text-align: center;
   position: relative;

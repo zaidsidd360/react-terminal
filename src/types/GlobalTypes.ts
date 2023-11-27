@@ -11,3 +11,11 @@ export type IUserCommands = Record<
 >;
 // &
 //   Partial<Record<"echo" | "ls" | "mkdir" | "cd" | "cat" | "pwd" | "rm", never>>;
+
+export interface ITheme {
+  terminalBg: string;
+  topBarBg: string;
+  promptColor: string;
+  workingDirColor: string;
+  textColor: string;
+}

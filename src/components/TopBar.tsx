@@ -1,23 +1,30 @@
 import React from "react";
 import { TopBarContainer } from "../styles/TopBarStyles";
 import Prompt from "./Prompt";
+import { ITheme } from "../types/GlobalTypes";
 
 interface ITopBarProps {
   prompt: string;
   pwd: string;
   topBarHeight: string;
+  terminalTheme: ITheme;
   btn1Callback?: (args: any) => any;
   btn2Callback?: (args: any) => any;
   btn3Callback?: (args: any) => any;
 }
 
-const TopBar = (
-  { prompt, pwd, topBarHeight, btn1Callback, btn2Callback, btn3Callback }:
-    ITopBarProps,
-) => {
+const TopBar = ({
+  prompt,
+  pwd,
+  topBarHeight,
+  terminalTheme,
+  btn1Callback,
+  btn2Callback,
+  btn3Callback,
+}: ITopBarProps) => {
   return (
     <>
-      <TopBarContainer $topBarHeight={topBarHeight}>
+      <TopBarContainer $topBarHeight={topBarHeight} $currTheme={terminalTheme}>
         <span onClick={btn1Callback} id="btn-red" />
         <span onClick={btn2Callback} id="btn-yellow" />
         <span onClick={btn3Callback} id="btn-green" />
@@ -28,6 +35,7 @@ const TopBar = (
             unsetPosition
             dontRenderDollar
             smallAndFaded
+            terminalTheme={terminalTheme}
           />
         </div>
       </TopBarContainer>

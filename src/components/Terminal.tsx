@@ -1,16 +1,12 @@
 import TopBar from "./TopBar";
 import { TerminalContainer } from "../styles/TerminalStyles";
-import TextareaAutosize from "react-textarea-autosize";
-import Prompt from "./Prompt";
 import { useContext, useEffect, useRef, useState } from "react";
-import {
-  processInBuiltCommand,
-  processUserCommand,
-} from "../common/CommandProcessor";
 import { TerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
-import { IUserCommands } from "../types/GlobalTypes";
-import { appendOutput } from "../utils/Utils";
+import { ITheme, IUserCommands } from "../types/GlobalTypes";
+import useTheme from "../hooks/UseTheme";
+import InputField from "./InputField";
+import Prompt from "./Prompt";
 
 interface ITerminalProps {
   prompt?: string;
@@ -18,6 +14,7 @@ interface ITerminalProps {
   directoryStructure?: any;
   showTopBar?: boolean;
   topBarHeight?: string;
+  theme?: "dark" | "light" | "hacker" | ITheme;
   btn1Callback?: (args: any) => any;
   btn2Callback?: (args: any) => any;
   btn3Callback?: (args: any) => any;
@@ -29,110 +26,24 @@ const Terminal = ({
   directoryStructure,
   showTopBar = true,
   topBarHeight = "8%",
+  theme = "dark",
   btn1Callback,
   btn2Callback,
   btn3Callback,
 }: ITerminalProps) => {
-  const inBuiltCommands: string[] = [
-    "clear",
-    "echo",
-    "cd",
-    "ls",
-    "cat",
-    "pwd",
-    "mkdir",
-    "rm",
-    "date",
-  ];
-
   // Context
-  const {
-    exchangeHistory,
-    setExchangeHistory,
-    commandHistory,
-    setCommandHistory,
-    historyPointer,
-    setHistoryPointer,
-    pwd,
-    setPwd,
-  } = useContext(TerminalContext)!;
+  const { exchangeHistory, pwd } = useContext(TerminalContext)!;
 
   // States
   const [promptWidth, setPromptWidth] = useState<number>();
-
-  const [inputValue, setInputValue] = useState<string>("");
-
-  const [prevInputValue, setPrevInputValue] = useState<string>("");
-
   const [structure, setStructure] = useState(directoryStructure);
 
   // Refs
   const promptRef = useRef<HTMLSpanElement>(null);
-
   const scrollDivRef = useRef<HTMLDivElement>(null);
 
-  // Event Handlers
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue(event.target.value);
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      if (inputValue) {
-        setCommandHistory((prev) => {
-          return [...prev, inputValue];
-        });
-        const [base, ...argsArr] = inputValue.trim().split(" ");
-        if (inBuiltCommands.includes(base as string)) {
-          processInBuiltCommand(
-            base!,
-            pwd,
-            argsArr,
-            setExchangeHistory,
-            prompt,
-            setPwd,
-            structure,
-            setStructure,
-          );
-        } else {
-          processUserCommand(
-            base!,
-            argsArr,
-            commands!,
-            setExchangeHistory,
-            pwd,
-            prompt,
-          );
-        }
-      } else appendOutput(setExchangeHistory, "", "", pwd, prompt);
-      setInputValue("");
-      setPrevInputValue("");
-    } else if (event.key === "ArrowUp") {
-      event.preventDefault();
-      /* If user has pressed the arrow up key and the historyPointer
-      is at commandHistory.length, save whatever is already written in
-      the input to prevInputValue. This way when the user hits the
-      arrow down key continously, and the historyPointer reaches
-      commandHistory.length again (this part is handled with the
-      last useEffect call), the inputValue will automatically change
-      to prevInputValue. */
-      if (historyPointer === commandHistory.length) {
-        setPrevInputValue(inputValue);
-      }
-      // The main ArrowUp event starts from here.
-      setInputValue(commandHistory[historyPointer - 1]!);
-      if (historyPointer > 0) {
-        setHistoryPointer(historyPointer - 1);
-      }
-    } else if (event.key === "ArrowDown") {
-      event.preventDefault();
-      if (historyPointer < commandHistory.length) {
-        setInputValue(commandHistory[historyPointer + 1]!);
-        setHistoryPointer(historyPointer + 1);
-      }
-    }
-  };
+  // Theme
+  const terminalTheme = useTheme(theme);
 
   // Effects
   useEffect(() => {
@@ -143,46 +54,40 @@ const Terminal = ({
     scrollDivRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [exchangeHistory]);
 
-  useEffect(() => {
-    /* If historyPointer has reached commandHistory.length,
-    set the input value to the last written command/prevInputValue.*/
-    if (historyPointer === commandHistory.length) setInputValue(prevInputValue);
-  }, [historyPointer]);
-
-  useEffect(() => {
-    setStructure(directoryStructure);
-  }, [directoryStructure]);
-
   return (
     <TerminalContainer
       $topBarHeight={topBarHeight}
       $promptWidth={promptWidth as number}
       $showTopBar={showTopBar}
+      $currTheme={terminalTheme}
     >
-      {showTopBar &&
-        (
-          <TopBar
-            btn1Callback={btn1Callback}
-            btn2Callback={btn2Callback}
-            btn3Callback={btn3Callback}
-            topBarHeight={topBarHeight}
-            prompt={prompt}
-            pwd={pwd}
-          />
-        )}
+      {showTopBar && (
+        <TopBar
+          btn1Callback={btn1Callback}
+          btn2Callback={btn2Callback}
+          btn3Callback={btn3Callback}
+          topBarHeight={topBarHeight}
+          prompt={prompt}
+          pwd={pwd}
+          terminalTheme={terminalTheme}
+        />
+      )}
       <label htmlFor="main-terminal-input">
         <div className="main-terminal">
-          <ExchangeHistory />
+          <ExchangeHistory terminalTheme={terminalTheme} />
           <div className="input-prompt">
-            <Prompt prompt={prompt} ref={promptRef} pwd={pwd} />
-            <TextareaAutosize
-              style={{ padding: 0 }}
-              id="main-terminal-input"
-              onKeyDown={handleKeyDown}
-              onChange={handleChange}
-              value={inputValue}
-              autoComplete="off"
-              spellCheck={false}
+            <Prompt
+              prompt={prompt}
+              ref={promptRef}
+              pwd={pwd}
+              terminalTheme={terminalTheme}
+            />
+            <InputField
+              prompt={prompt}
+              pwd={pwd}
+              structure={structure}
+              setStructure={setStructure}
+              commands={commands!}
             />
           </div>
           <div className="scroll-div" ref={scrollDivRef} />

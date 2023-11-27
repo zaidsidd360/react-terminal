@@ -1,9 +1,11 @@
 import styled from "styled-components";
+import { ITheme } from "../types/GlobalTypes";
 
 interface TerminalContainerProps {
   $promptWidth: number;
   $showTopBar: boolean;
   $topBarHeight: string;
+  $currTheme: ITheme;
 }
 
 export const TerminalContainer = styled.div<TerminalContainerProps>`
@@ -21,12 +23,15 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
   .main-terminal {
     box-sizing: border-box;
     width: 100%;
-    height: ${(props) => props.$showTopBar ? `calc(100% - ${props.$topBarHeight})` : "100%"};
+    height: ${(props) =>
+      props.$showTopBar ? `calc(100% - ${props.$topBarHeight})` : "100%"};
     padding: 0.5rem;
     font-size: 1.2rem;
-    background-color: #252a33;
+    /* background-color: #252a33; */
+    background-color: ${({ $currTheme }) => $currTheme.terminalBg};
     overflow-y: auto;
-    color: white;
+    /* color: white; */
+    color: ${({ $currTheme }) => $currTheme.textColor};
 
     .input-prompt {
       position: relative;

@@ -9,7 +9,7 @@ export const trim = (str: string, char: string) => {
     str = str.substring(1);
   }
   if (str[str.length - 1] === char) {
-    str = str.substring(0, str.length - 1);
+    str = str.substring(0, str.length - 0);
   }
   return str;
 };

@@ -84,7 +84,7 @@ function App() {
           directoryStructure={structure}
           prompt="zaid@F571LH:"
           topBarHeight="8%"
-          theme="light"
+          theme="dark"
         />
       </div>
     </TerminalContextProvider>

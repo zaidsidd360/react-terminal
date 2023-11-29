@@ -20,15 +20,19 @@ const Exchange = ({ exchange, terminalTheme }: IExchangeProps) => {
           terminalTheme={terminalTheme}
         />
         <span id="command">{exchange.command}</span>
+        <br />
+        <span>{exchange.output}</span>
       </ExchangeContainer>
-      <span>{exchange.output}</span>
     </>
   );
 };
 
 const ExchangeContainer = styled.div`
   width: 100%;
-
+  word-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
   span {
     margin-block: 0.5rem;
   }
@@ -41,13 +45,13 @@ const ExchangeContainer = styled.div`
 const ExchangeHistory = ({ terminalTheme }: { terminalTheme: ITheme }) => {
   const { exchangeHistory } = useContext(TerminalContext)!;
   return (
-    <div>
+    <>
       {exchangeHistory.map((exchange: IExchange, i: number) => {
         return (
           <Exchange key={i} exchange={exchange} terminalTheme={terminalTheme} />
         );
       })}
-    </div>
+    </>
   );
 };
 

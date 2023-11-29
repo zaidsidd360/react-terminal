@@ -13,6 +13,9 @@ const useTheme = (theme: string | ITheme): ITheme => {
       case "dark":
         setTerminalTheme(themes.dark!);
         break;
+      case "hacker":
+        setTerminalTheme(themes.hacker!);
+        break;
       default:
         setTerminalTheme(theme as ITheme);
     }

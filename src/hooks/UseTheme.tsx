@@ -6,19 +6,10 @@ const useTheme = (theme: string | ITheme): ITheme => {
   const [terminalTheme, setTerminalTheme] = useState<ITheme>(themes.dark!);
 
   useEffect(() => {
-    switch (theme) {
-      case "light":
-        setTerminalTheme(themes.light!);
-        break;
-      case "dark":
-        setTerminalTheme(themes.dark!);
-        break;
-      case "hacker":
-        setTerminalTheme(themes.hacker!);
-        break;
-      default:
-        setTerminalTheme(theme as ITheme);
+    if (typeof theme === "string") {
+      return setTerminalTheme(themes[theme] as ITheme);
     }
+    setTerminalTheme(theme as ITheme);
   }, [theme]);
 
   return terminalTheme!;

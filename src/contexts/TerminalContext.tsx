@@ -20,7 +20,7 @@ const TerminalContextProvider = (props: { children: React.ReactNode }) => {
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
 
   const [historyPointer, setHistoryPointer] = useState<number>(
-    commandHistory.length,
+    commandHistory.length
   );
 
   const [pwd, setPwd] = useState<string>("");

@@ -16,6 +16,7 @@ interface ITerminalProps {
   topBarHeight?: string;
   theme?: "dark" | "light" | "hacker" | ITheme;
   welcomeMessage?: string | React.JSX.Element;
+  showTopBarPrompt?: boolean;
   btn1Callback?: (args: any) => any;
   btn2Callback?: (args: any) => any;
   btn3Callback?: (args: any) => any;
@@ -29,6 +30,7 @@ const Terminal = ({
   topBarHeight = "8%",
   theme = "dark",
   welcomeMessage,
+  showTopBarPrompt = true,
   btn1Callback,
   btn2Callback,
   btn3Callback,
@@ -72,6 +74,7 @@ const Terminal = ({
           prompt={prompt}
           pwd={pwd}
           terminalTheme={terminalTheme}
+          showTopBarPrompt={showTopBarPrompt}
         />
       )}
       <label htmlFor="main-terminal-input">

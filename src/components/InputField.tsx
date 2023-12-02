@@ -1,6 +1,5 @@
 import TextareaAutosize from "react-textarea-autosize";
-import Prompt from "./Prompt";
-import { ITheme, IUserCommands } from "../types/GlobalTypes";
+import { IUserCommands } from "../types/GlobalTypes";
 import React, { useContext, useEffect, useState } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
 import { inBuiltCommands } from "../common/constants";
@@ -34,6 +33,7 @@ const InputField = ({
     setPwd,
   } = useContext(TerminalContext)!;
 
+  // States
   const [inputValue, setInputValue] = useState<string>("");
   const [prevInputValue, setPrevInputValue] = useState<string>("");
 
@@ -100,6 +100,7 @@ const InputField = ({
     }
   };
 
+  // Effects
   useEffect(() => {
     /* If historyPointer has reached commandHistory.length,
     set the input value to the last written command/prevInputValue.*/

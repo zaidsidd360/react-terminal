@@ -8,6 +8,7 @@ interface ITopBarProps {
   pwd: string;
   topBarHeight: string;
   terminalTheme: ITheme;
+  showTopBarPrompt: boolean;
   btn1Callback?: (args: any) => any;
   btn2Callback?: (args: any) => any;
   btn3Callback?: (args: any) => any;
@@ -18,6 +19,7 @@ const TopBar = ({
   pwd,
   topBarHeight,
   terminalTheme,
+  showTopBarPrompt,
   btn1Callback,
   btn2Callback,
   btn3Callback,
@@ -28,16 +30,18 @@ const TopBar = ({
         <span onClick={btn1Callback} id="btn-red" />
         <span onClick={btn2Callback} id="btn-yellow" />
         <span onClick={btn3Callback} id="btn-green" />
-        <div>
-          <Prompt
-            prompt={prompt}
-            pwd={pwd}
-            unsetPosition
-            dontRenderDollar
-            smallAndFaded
-            terminalTheme={terminalTheme}
-          />
-        </div>
+        {showTopBarPrompt && (
+          <div>
+            <Prompt
+              prompt={prompt}
+              pwd={pwd}
+              unsetPosition
+              dontRenderDollar
+              smallAndFaded
+              terminalTheme={terminalTheme}
+            />
+          </div>
+        )}
       </TopBarContainer>
     </>
   );

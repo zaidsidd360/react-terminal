@@ -1,7 +1,7 @@
 import React from "react";
 import { TopBarContainer } from "../styles/TopBarStyles";
 import Prompt from "./Prompt";
-import { ITheme } from "../types/GlobalTypes";
+import ITheme from "../types/ThemeType";
 
 interface ITopBarProps {
   prompt: string;

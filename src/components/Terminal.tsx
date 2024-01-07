@@ -3,7 +3,8 @@ import { TerminalContainer } from "../styles/TerminalStyles";
 import { useContext, useEffect, useRef, useState } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
-import { ITheme, IUserCommands } from "../types/GlobalTypes";
+import IUserCommands from "../types/UserCommandType";
+import ITheme from "../types/ThemeType";
 import useTheme from "../hooks/UseTheme";
 import InputField from "./InputField";
 import Prompt from "./Prompt";
@@ -28,6 +29,7 @@ const Terminal = ({
   directoryStructure,
   showTopBar = true,
   topBarHeight = "8%",
+  // TODO: Add terminal border radius here.
   theme = "dark",
   welcomeMessage,
   showTopBarPrompt = true,
@@ -57,6 +59,11 @@ const Terminal = ({
   useEffect(() => {
     scrollDivRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [exchangeHistory]);
+
+  //Testing (Remove before publishing)
+  useEffect(() => {
+    console.log("Mounted!")
+  }, [])
 
   return (
     <TerminalContainer

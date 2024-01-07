@@ -1,19 +1,22 @@
+import { useState } from "react";
 import { Terminal, TerminalContextProvider } from "../../src/index";
 import "./App.css";
 
 function App() {
+
+  const [showTerminal, setShowTerminal] = useState(true)
   const commands = {
     bat: (args: string) => {
-      if (args === "sum.txt")
+      if (args === "sum.js")
         return (
           <div>
-            <span style={{ color: "lightblue" }}>def</span>{" "}
-            <span style={{ color: "yellow" }}>sum</span>(a, b): <br />{" "}
+            <span style={{ color: "lightblue" }}>const</span>{" "}
+            <span style={{ color: "yellow" }}>sum = </span>(a, b) ={">"} {"{"} <br />{" "}
             &nbsp;&nbsp;&nbsp;&nbsp;{" "}
-            <span style={{ color: "pink" }}>return</span> a + b
+            <span style={{ color: "pink" }}>return</span> a + b <br />
+            <span>{"}"}</span>
           </div>
         );
-      else return "";
     },
     gii: (
       <>
@@ -22,8 +25,8 @@ function App() {
     ),
     "foo bar": () => {
       window.alert("hellooooo");
-      return "";
     },
+    hello: "Yoooooooooo"
   };
 
   const structure = {
@@ -75,7 +78,7 @@ function App() {
   return (
     <TerminalContextProvider>
       <div className="main-container">
-        <Terminal
+        {showTerminal ? <Terminal
           btn2Callback={btn2Callback}
           btn3Callback={btn3Callback}
           btn1Callback={btn1Callback}
@@ -85,8 +88,9 @@ function App() {
           prompt="zaid@F571LH:"
           topBarHeight="8%"
           theme="dark"
-        />
+        /> : "Click on Show Terminal"}
       </div>
+      <button onClick={() => { setShowTerminal(!showTerminal) }}>{showTerminal ? "Hide Terminal" : "Show Terminal"}</button>
     </TerminalContextProvider>
   );
 }

@@ -1,5 +1,5 @@
 import TextareaAutosize from "react-textarea-autosize";
-import { IUserCommands } from "../types/GlobalTypes";
+import IUserCommands from "../types/UserCommandType";
 import React, { useContext, useEffect, useState } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
 import { inBuiltCommands } from "../common/constants";

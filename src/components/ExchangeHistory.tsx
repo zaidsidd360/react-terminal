@@ -1,8 +1,22 @@
 import React, { useContext } from "react";
 import Prompt from "./Prompt";
-import styled from "styled-components";
-import { IExchange, ITheme } from "../types/GlobalTypes";
+import IExchange from "../types/ExchangeType";
+import ITheme from "../types/ThemeType";
 import { TerminalContext } from "../contexts/TerminalContext";
+import { ExchangeContainer } from "../styles/ExchangeStyles";
+
+const ExchangeHistory = ({ terminalTheme }: { terminalTheme: ITheme }) => {
+  const { exchangeHistory } = useContext(TerminalContext)!;
+  return (
+    <>
+      {exchangeHistory.map((exchange: IExchange, i: number) => {
+        return (
+          <Exchange key={i} exchange={exchange} terminalTheme={terminalTheme} />
+        );
+      })}
+    </>
+  );
+};
 
 interface IExchangeProps {
   exchange: IExchange;
@@ -23,34 +37,6 @@ const Exchange = ({ exchange, terminalTheme }: IExchangeProps) => {
         <br />
         <span>{exchange.output}</span>
       </ExchangeContainer>
-    </>
-  );
-};
-
-const ExchangeContainer = styled.div`
-  width: 100%;
-  word-wrap: break-word;
-  hyphens: auto;
-  -webkit-hyphens: auto;
-  -moz-hyphens: auto;
-  span {
-    margin-block: 0.5rem;
-  }
-
-  #command {
-    margin-left: 5px;
-  }
-`;
-
-const ExchangeHistory = ({ terminalTheme }: { terminalTheme: ITheme }) => {
-  const { exchangeHistory } = useContext(TerminalContext)!;
-  return (
-    <>
-      {exchangeHistory.map((exchange: IExchange, i: number) => {
-        return (
-          <Exchange key={i} exchange={exchange} terminalTheme={terminalTheme} />
-        );
-      })}
     </>
   );
 };

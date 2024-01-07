@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ITheme } from "../types/GlobalTypes";
+import ITheme from "../types/ThemeType";
 
 interface TerminalContainerProps {
   $promptWidth: number;

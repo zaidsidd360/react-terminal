@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { PromptSpan } from "../styles/PromptStyles";
-import { ITheme } from "../types/GlobalTypes";
+import ITheme from "../types/ThemeType";
 
 interface PromptProps {
   prompt: string;

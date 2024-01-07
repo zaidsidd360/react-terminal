@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import { IExchange } from "../types/GlobalTypes";
+import IExchange from "../types/ExchangeType";
 import { noSuchFileOrDirectory, notADirectory } from "../common/Errors";
 
 export const BACK_REGEX = /\/?\.?[\w-_]+\/\.\./;
@@ -19,7 +19,7 @@ export const appendError = (
   error: string | React.JSX.Element,
   command: string,
   pwd: string,
-  prompt: string,
+  prompt: string
 ) => {
   return setExchangeHistory((prev) => {
     return [
@@ -39,7 +39,7 @@ export const appendOutput = (
   output: string | React.JSX.Element,
   command: string,
   pwd: string,
-  prompt: string,
+  prompt: string
 ) => {
   return setExchangeHistory((prev) => {
     return [
@@ -74,7 +74,7 @@ export const extractPath = (relativePath: string, rootPath: string) => {
 export const getDirectoryByPath = (
   structure: any,
   relativePath: string,
-  base?: string,
+  base?: string
 ) => {
   const path = relativePath.split("/");
 

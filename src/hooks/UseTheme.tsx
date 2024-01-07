@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ITheme } from "../types/GlobalTypes";
+import ITheme from "../types/ThemeType";
 import { themes } from "../common/Themes";
 
 const useTheme = (theme: string | ITheme): ITheme => {

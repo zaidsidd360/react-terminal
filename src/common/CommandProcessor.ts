@@ -1,34 +1,40 @@
 import { SetStateAction } from "react";
-import { IExchange, IUserCommands } from "../types/GlobalTypes";
+import IExchange from "../types/ExchangeType";
+import IUserCommands from "../types/UserCommandType";
 import { argsNotReqd, argsReqd, commandNotFound, tooManyArgs } from "./Errors";
 import { cat, cd, getPwd, ls, mkdir, rm } from "./InBuiltCommandsHandlers";
 import { appendError, appendOutput } from "../utils/Utils";
 
-//
+// =============================
 // HANDLES USER DEFINED COMMANDS
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-//
+// =============================
 export const processUserCommand = (
   base: string,
   argsArr: string[],
   commands: IUserCommands,
   setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
   pwd: string,
-  prompt: string,
+  prompt: string
 ) => {
   const args = argsArr.join(" ");
   const fullCommand = `${base} ${args}`;
   if (commands[`${fullCommand}`]) {
     const executor = commands[`${fullCommand}`];
     if (typeof executor === "function") {
-      appendOutput(setExchangeHistory, executor(""), fullCommand, pwd, prompt);
+      appendOutput(
+        setExchangeHistory,
+        executor() as string | React.JSX.Element,
+        fullCommand,
+        pwd,
+        prompt
+      );
     } else {
       appendOutput(
         setExchangeHistory,
         executor as string | React.JSX.Element,
         fullCommand,
         pwd,
-        prompt,
+        prompt
       );
     }
   } else if (commands[base]) {
@@ -36,10 +42,10 @@ export const processUserCommand = (
     if (typeof executor === "function") {
       appendOutput(
         setExchangeHistory,
-        executor(args),
+        executor(args) as string | React.JSX.Element,
         fullCommand,
         pwd,
-        prompt,
+        prompt
       );
     } else {
       appendOutput(
@@ -47,28 +53,27 @@ export const processUserCommand = (
         executor as string | React.JSX.Element,
         fullCommand,
         pwd,
-        prompt,
+        prompt
       );
     }
-  } //
+  }
+  // =============================
   // HANDLES UNIDENTIFIED COMMANDS
-  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  //
+  // =============================
   else {
     appendOutput(
       setExchangeHistory,
       commandNotFound(base),
       fullCommand,
       pwd,
-      prompt,
+      prompt
     );
   }
 };
 
-//
+// =========================
 // HANDLES BUILT IN COMMANDS
-// ^^^^^^^^^^^^^^^^^^^^^^^^^
-//
+// =========================
 export const processInBuiltCommand = (
   base: string,
   pwd: string,
@@ -77,7 +82,7 @@ export const processInBuiltCommand = (
   prompt: string,
   setPwd: React.Dispatch<React.SetStateAction<string>>,
   structure: any,
-  setStructure: React.Dispatch<React.SetStateAction<any>>,
+  setStructure: React.Dispatch<React.SetStateAction<any>>
 ) => {
   const args = argsArr.join(" ");
   const fullCommand = `${base} ${args}`;
@@ -91,7 +96,7 @@ export const processInBuiltCommand = (
             argsNotReqd(base),
             fullCommand,
             pwd,
-            prompt,
+            prompt
           );
         } else setExchangeHistory([]); // Clears the terminal exchange history
       }
@@ -112,7 +117,7 @@ export const processInBuiltCommand = (
             tooManyArgs(base),
             fullCommand,
             pwd,
-            prompt,
+            prompt
           );
         } else if (argsArr.length < 1) {
           appendOutput(setExchangeHistory, args, fullCommand, pwd, prompt);
@@ -124,7 +129,7 @@ export const processInBuiltCommand = (
             argsArr,
             structure,
             setExchangeHistory,
-            fullCommand,
+            fullCommand
           );
         }
       }
@@ -138,16 +143,11 @@ export const processInBuiltCommand = (
             tooManyArgs(base),
             fullCommand,
             pwd,
-            prompt,
+            prompt
           );
-        } else {ls(
-            setExchangeHistory,
-            argsArr,
-            structure,
-            pwd,
-            prompt,
-            fullCommand,
-          );}
+        } else {
+          ls(setExchangeHistory, argsArr, structure, pwd, prompt, fullCommand);
+        }
       }
       break;
     // Handle cat //
@@ -159,7 +159,7 @@ export const processInBuiltCommand = (
             tooManyArgs(base),
             fullCommand,
             pwd,
-            prompt,
+            prompt
           );
         } else if (argsArr.length < 1) {
           appendError(
@@ -167,16 +167,11 @@ export const processInBuiltCommand = (
             argsReqd(base, "YOUR-FILE-NAME"),
             fullCommand,
             pwd,
-            prompt,
+            prompt
           );
-        } else {cat(
-            setExchangeHistory,
-            pwd,
-            prompt,
-            fullCommand,
-            argsArr,
-            structure,
-          );}
+        } else {
+          cat(setExchangeHistory, pwd, prompt, fullCommand, argsArr, structure);
+        }
       }
       break;
     // Handle pwd //
@@ -188,7 +183,7 @@ export const processInBuiltCommand = (
             argsNotReqd(base),
             fullCommand,
             pwd,
-            prompt,
+            prompt
           );
         } else getPwd(pwd, prompt, setExchangeHistory);
       }
@@ -202,7 +197,7 @@ export const processInBuiltCommand = (
             tooManyArgs(base),
             fullCommand,
             pwd,
-            prompt,
+            prompt
           );
         } else if (argsArr.length < 1) {
           appendError(
@@ -210,7 +205,7 @@ export const processInBuiltCommand = (
             argsReqd(base, "NEW-DIR-NAME"),
             fullCommand,
             pwd,
-            prompt,
+            prompt
           );
         } else {
           mkdir(
@@ -220,7 +215,7 @@ export const processInBuiltCommand = (
             argsArr,
             structure,
             fullCommand,
-            setStructure,
+            setStructure
           );
         }
       }
@@ -234,7 +229,7 @@ export const processInBuiltCommand = (
             tooManyArgs(base),
             fullCommand,
             pwd,
-            prompt,
+            prompt
           );
         } else if (argsArr.length < 1) {
           appendError(
@@ -242,7 +237,7 @@ export const processInBuiltCommand = (
             argsReqd(base, "YOUR-FILE/DIR"),
             fullCommand,
             pwd,
-            prompt,
+            prompt
           );
         } else {
           rm(
@@ -252,7 +247,7 @@ export const processInBuiltCommand = (
             prompt,
             structure,
             setStructure,
-            fullCommand,
+            fullCommand
           );
         }
       }
@@ -265,7 +260,7 @@ export const processInBuiltCommand = (
           tooManyArgs(base),
           fullCommand,
           pwd,
-          prompt,
+          prompt
         );
       } else {
         const date = new Date();
@@ -274,7 +269,7 @@ export const processInBuiltCommand = (
           date.toString(),
           fullCommand,
           pwd,
-          prompt,
+          prompt
         );
       }
     }

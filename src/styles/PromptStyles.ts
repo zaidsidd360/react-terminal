@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ITheme } from "../types/GlobalTypes";
+import ITheme from "../types/ThemeType";
 
 interface PromptSpanProps {
   $unsetPosition?: boolean;
@@ -19,7 +19,7 @@ export const PromptSpan = styled.span<PromptSpanProps>`
 
   .pwd {
     color: ${(props) =>
-      props.$smallAndFaded ? "#6a778a" : `${props.$currTheme.workingDirColor}`};
+      props.$smallAndFaded ? "#6a778a" : `${props.$currTheme.pwdColor}`};
     margin-inline: 0;
     /* color: #4d9edc; */
     /* "#60ec8a" */

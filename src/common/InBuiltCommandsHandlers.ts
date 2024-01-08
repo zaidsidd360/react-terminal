@@ -160,13 +160,13 @@ export const rm = (
   const relativePath = path!.split("/");
   const file = relativePath.pop();
   const fullPath = extractPath(relativePath.join("/"), pwd);
-  const deepCopy = JSON.parse(JSON.stringify(structure));
-  const { dir } = getDirectoryByPath(deepCopy, fullPath);
+  const newStructure = { ...structure };
+  const { dir } = getDirectoryByPath(newStructure, fullPath);
 
   if (dir[file!]) {
     delete dir[file!];
     appendOutput(setExchangeHistory, "", fullCommand, pwd, prompt);
-    return setStructure(deepCopy);
+    return setStructure(newStructure);
   } else {
     return appendError(
       setExchangeHistory,

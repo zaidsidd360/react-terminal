@@ -47,14 +47,26 @@ function App() {
     },
     public: {
       file1: {
-        content: "This is the content for file1 in the <public> directory",
+        content: <div>"This is the content for file1 in the {"<public>"} directory" <br /> Helloo</div>,
         // "The is the content for file1 in the <public> directory."
       },
       file2: {
         content: "The is the content for file2 in the <public> directory.",
       },
-      file3: {
-        content: "The is the content for file3 in the <public> directory.",
+      "script.js": {
+        content: (
+          <pre>
+            <code>
+              {`
+                const recursivePrint = (name, index) => {
+                    if(index === 5) return;
+                    console.log(name)
+                    recursivePrint(name, index + 1)
+                }
+              `}
+            </code>
+          </pre>
+        ),
       },
     },
     "README.md": {

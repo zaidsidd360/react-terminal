@@ -42,6 +42,7 @@ const InputField = ({
     setInputValue(event.target.value);
   };
 
+  // Keyboard events
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -97,6 +98,19 @@ const InputField = ({
         setInputValue(commandHistory[historyPointer + 1]!);
         setHistoryPointer(historyPointer + 1);
       }
+    } else if (event.key === "Tab") {
+      // A very naive implementation for autocompletion of commands.
+
+      /* TODO: Somehow add a suggestion thing (this should happen every inputValue.OnChange) for 
+      commands which allows users to see the suggested command before deciding to opt for autocompletion. */
+
+      // UPDATE: This is wayy more complicated than I had previously thought. 💀
+
+      event.preventDefault();
+      Object.keys(commands).forEach((command) => {
+        if (command.slice(0, inputValue.length) === inputValue)
+          setInputValue(command);
+      });
     }
   };
 

@@ -1,6 +1,6 @@
 import TextareaAutosize from "react-textarea-autosize";
 import IUserCommands from "../types/UserCommandType";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
 import { inBuiltCommands } from "../common/constants";
 import {
@@ -36,10 +36,26 @@ const InputField = ({
   // States
   const [inputValue, setInputValue] = useState<string>("");
   const [prevInputValue, setPrevInputValue] = useState<string>("");
+  const [caretPos, setCaretPos] = useState<{ x: number, y: number }>();
+
+  // Refs
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   // Event Handlers
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
+    // const textArea = textAreaRef.current
+    // if (textArea) {
+
+    // }
+    const caretPosition = textAreaRef.current?.selectionStart;
+    const rect = textAreaRef.current?.getBoundingClientRect();
+    setCaretPos({
+      x: rect!.left - caretPosition!,
+      y: rect!.top - caretPosition!
+    })
+    console.log(caretPos)
+    // console.log('Caret position:', caretPosition);
   };
 
   // Keyboard events
@@ -130,6 +146,7 @@ const InputField = ({
       value={inputValue}
       autoComplete="off"
       spellCheck={false}
+      ref={textAreaRef}
     />
   );
 };

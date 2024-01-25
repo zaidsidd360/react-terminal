@@ -1,4 +1,3 @@
-import React from "react";
 import { TopBarContainer } from "../styles/TopBarStyles";
 import Prompt from "./Prompt";
 import ITheme from "../types/ThemeType";

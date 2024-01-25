@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import Prompt from "./Prompt";
 import IExchange from "../types/ExchangeType";
 import ITheme from "../types/ThemeType";

@@ -102,6 +102,7 @@ function App() {
           theme="dark"
         /> : "Click on Show Terminal"}
       </div>
+      This button is to test whether the component retains its state upon unmount and remount.
       <button onClick={() => { setShowTerminal(!showTerminal) }}>{showTerminal ? "Hide Terminal" : "Show Terminal"}</button>
     </TerminalContextProvider>
   );

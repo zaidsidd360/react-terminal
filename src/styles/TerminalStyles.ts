@@ -49,6 +49,16 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
         &:focus {
           outline: none;
         }
+        /* &::after {
+          content: "";
+          z-index: 2000;
+          position: absolute;
+          left: 345px;
+          top: 0;
+          width: 20px;
+          height: 30px;
+          background-color: red;
+        } */
       }
     }
 

@@ -2,17 +2,19 @@ import TextareaAutosize from "react-textarea-autosize";
 import IUserCommands from "../types/UserCommandType";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
-import { inBuiltCommands } from "../common/constants";
+import { inBuiltCommands } from "../errors/constants";
 import {
 	processInBuiltCommand,
 	processUserCommand,
-} from "../common/CommandProcessor";
+} from "../commandProcessors/CommandProcessor";
 import { appendOutput } from "../utils/Utils";
 import useCaretPosition from "../hooks/UseCaretPosition";
-import useAutoComplete from "../hooks/UseAutoComplete";
-import styled from "styled-components";
+import usePrediction from "../hooks/UsePrediction";
+import PredictionSpan from "../styles/PredictionStyles";
 
 interface InputFieldProps {
+	commandPrediction: boolean;
+	predictionColor: string;
 	promptWidth: number;
 	prompt: string;
 	pwd: string;
@@ -22,6 +24,8 @@ interface InputFieldProps {
 }
 
 const InputField = ({
+	commandPrediction,
+	predictionColor,
 	structure,
 	setStructure,
 	commands,
@@ -29,6 +33,7 @@ const InputField = ({
 	prompt,
 	promptWidth,
 }: InputFieldProps) => {
+	// Contexts
 	const {
 		setExchangeHistory,
 		commandHistory,
@@ -38,16 +43,15 @@ const InputField = ({
 		setPwd,
 	} = useContext(TerminalContext)!;
 
+	// Constants
 	const autoCompleteOptions = [...Object.keys(commands), ...inBuiltCommands];
 
 	// States
 	const [inputValue, setInputValue] = useState<string>("");
 	const [prevInputValue, setPrevInputValue] = useState<string>("");
-	const [suggestion, setSuggestion] = useState<string>("");
 
 	// Refs
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
-	const textAreaLeft = textAreaRef.current?.getBoundingClientRect().left;
 
 	// Hooks
 	const caretPosition = useCaretPosition(
@@ -55,13 +59,11 @@ const InputField = ({
 		promptWidth,
 		inputValue
 	);
-	const autoCompleteValue = useAutoComplete(autoCompleteOptions, inputValue);
+	const autoCompleteValue = usePrediction(autoCompleteOptions, inputValue);
 
 	// Event Handlers
 	const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setInputValue(event.target.value);
-		console.log(caretPosition);
-		console.log(autoCompleteValue);
 	};
 
 	// Keyboard events
@@ -73,6 +75,7 @@ const InputField = ({
 					return [...prev, inputValue];
 				});
 				const [base, ...argsArr] = inputValue.trim().split(" ");
+				// TODO: Disable inbuilt commands related to directory structure.
 				if (inBuiltCommands.includes(base as string)) {
 					processInBuiltCommand(
 						base!,
@@ -121,8 +124,6 @@ const InputField = ({
 				setHistoryPointer(historyPointer + 1);
 			}
 		} else if (event.key === "Tab") {
-			// A very naive implementation for autocompletion of commands.
-
 			event.preventDefault();
 			if (autoCompleteValue) {
 				setInputValue(autoCompleteValue);
@@ -138,13 +139,6 @@ const InputField = ({
 			setInputValue(prevInputValue);
 	}, [historyPointer]);
 
-	const SuggestionSpan = styled.span`
-		color: gray;
-		position: fixed;
-		left: calc(${caretPosition.x + "px"} + 0.5rem);
-		border: 1px solid lightblue;
-	`;
-
 	return (
 		<>
 			<TextareaAutosize
@@ -157,11 +151,13 @@ const InputField = ({
 				spellCheck={false}
 				ref={textAreaRef}
 			/>
-			{/* Testing for the caret postition, remove before publishing */}
-			{inputValue && inputValue.length > 0 && (
-				<SuggestionSpan>
+			{inputValue && inputValue.length > 0 && commandPrediction && (
+				<PredictionSpan
+					$caretPosition={caretPosition}
+					$predictionColor={predictionColor}
+				>
 					{autoCompleteValue.slice(inputValue.length)}
-				</SuggestionSpan>
+				</PredictionSpan>
 			)}
 		</>
 	);

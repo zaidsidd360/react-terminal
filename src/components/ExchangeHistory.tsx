@@ -6,39 +6,50 @@ import { TerminalContext } from "../contexts/TerminalContext";
 import { ExchangeContainer } from "../styles/ExchangeStyles";
 
 const ExchangeHistory = ({ terminalTheme }: { terminalTheme: ITheme }) => {
-  const { exchangeHistory } = useContext(TerminalContext)!;
-  return (
-    <>
-      {exchangeHistory.map((exchange: IExchange, i: number) => {
-        return (
-          <Exchange key={i} exchange={exchange} terminalTheme={terminalTheme} />
-        );
-      })}
-    </>
-  );
+	const { exchangeHistory } = useContext(TerminalContext)!;
+	return (
+		<>
+			{exchangeHistory.map((exchange: IExchange, i: number) => {
+				return (
+					<Exchange
+						key={i}
+						exchange={exchange}
+						terminalTheme={terminalTheme}
+					/>
+				);
+			})}
+		</>
+	);
 };
 
 interface IExchangeProps {
-  exchange: IExchange;
-  terminalTheme: ITheme;
+	exchange: IExchange;
+	terminalTheme: ITheme;
 }
 
 const Exchange = ({ exchange, terminalTheme }: IExchangeProps) => {
-  return (
-    <>
-      <ExchangeContainer>
-        <Prompt
-          prompt={exchange.prompt}
-          pwd={exchange.pwd}
-          unsetPosition
-          terminalTheme={terminalTheme}
-        />
-        <span id="command">{exchange.command}</span>
-        <br />
-        <span>{exchange.output}</span>
-      </ExchangeContainer>
-    </>
-  );
+	if (typeof exchange !== "string") {
+		return (
+			<>
+				<ExchangeContainer>
+					<Prompt
+						prompt={exchange.prompt}
+						pwd={exchange.pwd}
+						unsetPosition
+						terminalTheme={terminalTheme}
+					/>
+					<span id="command">{exchange.command}</span>
+					<br />
+					<span>{exchange.output}</span>
+				</ExchangeContainer>
+			</>
+		);
+	} else
+		return (
+			<>
+				<span>{exchange}</span>
+			</>
+		);
 };
 
 export default ExchangeHistory;

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const useAutoComplete = (options: string[], inputValue: string) => {
+const usePrediction = (options: string[], inputValue: string) => {
 	const [autocompleteValue, setAutocompleteValue] = useState("");
 	const timeoutRef = useRef<number | null>(null);
 
@@ -34,4 +34,4 @@ const useAutoComplete = (options: string[], inputValue: string) => {
 	return autocompleteValue;
 };
 
-export default useAutoComplete;
+export default usePrediction;

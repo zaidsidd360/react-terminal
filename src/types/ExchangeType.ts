@@ -1,6 +1,10 @@
-export default interface IExchange {
-  command: string;
-  output: string | React.JSX.Element;
-  prompt: string;
-  pwd: string;
-}
+type IExchange =
+	| {
+			command: string;
+			output: string | React.JSX.Element;
+			prompt: string;
+			pwd: string;
+	  }
+	| string;
+
+export default IExchange;

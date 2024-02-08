@@ -13,6 +13,10 @@ interface ITerminalProps {
 	prompt?: string;
 	commands?: IUserCommands;
 	directoryStructure?: any;
+	height?: string;
+	width?: string;
+	borderRadius?: string;
+	commandPrediction?: boolean;
 	showTopBar?: boolean;
 	topBarHeight?: string;
 	theme?: "dark" | "light" | "hacker" | ITheme;
@@ -23,22 +27,28 @@ interface ITerminalProps {
 	btn3Callback?: (args: any) => any;
 }
 
-const Terminal = ({
-	prompt = "user@anon:",
-	commands,
-	directoryStructure,
-	showTopBar = true,
-	topBarHeight = "8%",
-	// TODO: Add terminal border radius here.
-	theme = "dark",
-	welcomeMessage,
-	showTopBarPrompt = true,
-	btn1Callback,
-	btn2Callback,
-	btn3Callback,
-}: ITerminalProps) => {
+const Terminal = (props: ITerminalProps) => {
+	const {
+		prompt = "user@anon:",
+		commands,
+		directoryStructure,
+		height = "50vh",
+		width = "40vw",
+		borderRadius = "0.5rem",
+		commandPrediction = true,
+		showTopBar = true,
+		topBarHeight = "8%",
+		theme = "dark",
+		welcomeMessage,
+		showTopBarPrompt = true,
+		btn1Callback,
+		btn2Callback,
+		btn3Callback,
+	} = props;
+
 	// Context
-	const { exchangeHistory, pwd } = useContext(TerminalContext)!;
+	const { exchangeHistory, pwd, setExchangeHistory } =
+		useContext(TerminalContext)!;
 
 	// States
 	const [promptWidth, setPromptWidth] = useState<number>();
@@ -62,7 +72,12 @@ const Terminal = ({
 
 	//Testing (Remove before publishing)
 	useEffect(() => {
-		console.log("Mounted!");
+		if (
+			welcomeMessage &&
+			typeof welcomeMessage === "string" &&
+			welcomeMessage.length > 0
+		)
+			setExchangeHistory([welcomeMessage]);
 	}, []);
 
 	return (
@@ -71,6 +86,9 @@ const Terminal = ({
 			$promptWidth={promptWidth as number}
 			$showTopBar={showTopBar}
 			$currTheme={terminalTheme}
+			$height={height}
+			$width={width}
+			$borderRadius={borderRadius}
 		>
 			{showTopBar && (
 				<TopBar
@@ -86,7 +104,7 @@ const Terminal = ({
 			)}
 			<label htmlFor="main-terminal-input">
 				<div className="main-terminal">
-					{welcomeMessage && welcomeMessage}
+					{/* {welcomeMessage && welcomeMessage} */}
 					<ExchangeHistory terminalTheme={terminalTheme} />
 					<div className="input-prompt">
 						<Prompt
@@ -96,6 +114,8 @@ const Terminal = ({
 							terminalTheme={terminalTheme}
 						/>
 						<InputField
+							predictionColor={terminalTheme.predictionColor}
+							commandPrediction={commandPrediction}
 							promptWidth={promptWidth!}
 							prompt={prompt}
 							pwd={pwd}

@@ -68,12 +68,12 @@ function App() {
 					<pre>
 						<code>
 							{`
-                const recursivePrint = (name, index) => {
-                    if(index === 5) return;
-                    console.log(name)
-                    recursivePrint(name, index + 1)
-                }
-              `}
+	              const recursivePrint = (name, index) => {
+	                  if(index === 5) return;
+	                  console.log(name)
+	                  recursivePrint(name, index + 1)
+	              }
+	            `}
 						</code>
 					</pre>
 				),
@@ -110,7 +110,8 @@ function App() {
 						directoryStructure={structure}
 						prompt="zaid@F571LH:"
 						topBarHeight="8%"
-						theme="dark"
+						theme="light"
+						welcomeMessage="Welcome to the terminal!!"
 					/>
 				) : (
 					"Click on Show Terminal"

@@ -13,14 +13,13 @@ function useCaretPosition(
 			if (!textarea) return;
 
 			const rect = textarea.getBoundingClientRect();
-			const selectionStart = textarea.selectionStart;
+			const selectionStart = textarea.selectionEnd;
 			const lineHeight = parseInt(getComputedStyle(textarea).lineHeight);
+			const fontSize = parseFloat(getComputedStyle(textarea).fontSize);
 			const horizontalPosition =
-				rect.left + promptWidth + 5 + selectionStart * 7.5;
+				rect.left + promptWidth + (selectionStart * fontSize) / 2 - 5;
 
-			let lineNumberStart = 0;
-
-			const verticalPosition = rect.top + lineNumberStart * lineHeight;
+			const verticalPosition = rect.top;
 
 			caretPosition.current = {
 				x: horizontalPosition,

@@ -12,7 +12,7 @@ import useCaretPosition from "../hooks/UseCaretPosition";
 import usePrediction from "../hooks/UsePrediction";
 import PredictionSpan from "../styles/PredictionStyles";
 
-interface InputFieldProps {
+interface IInputFieldProps {
 	commandPrediction: boolean;
 	predictionColor: string;
 	promptWidth: number;
@@ -32,7 +32,7 @@ const InputField = ({
 	pwd,
 	prompt,
 	promptWidth,
-}: InputFieldProps) => {
+}: IInputFieldProps) => {
 	// Contexts
 	const {
 		setExchangeHistory,

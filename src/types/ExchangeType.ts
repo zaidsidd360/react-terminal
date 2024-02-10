@@ -5,6 +5,7 @@ type IExchange =
 			prompt: string;
 			pwd: string;
 	  }
-	| string;
+	| string
+	| React.JSX.Element;
 
 export default IExchange;

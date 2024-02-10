@@ -311,15 +311,20 @@ export const processInBuiltCommand = (
 // ================================================================
 // EXPOSED FUNCTION SO USERS CAN ADD EXCHANGES OnClick/OTHER EVENTS
 // ================================================================
-export const appendExchange = (command: string, output: string) => {
-	const { setExchangeHistory, pwd } = useContext(TerminalContext)!;
-	const exchange: IExchange = {
-		command: command,
-		output: output,
-		pwd: pwd,
-		prompt: "", // TODO: Find some way to get the prompt here.
-	};
-	setExchangeHistory((prev) => {
-		return [...prev, exchange];
-	});
-};
+// export const useExchange = (
+// 	command: string,
+// 	output: string,
+// 	prompt: string,
+// 	pwd?: string
+// ) => {
+// 	const { setExchangeHistory } = useContext(TerminalContext)!;
+// 	const exchange: IExchange = {
+// 		command: command,
+// 		output: output,
+// 		pwd: pwd || "",
+// 		prompt: prompt,
+// 	};
+// 	return setExchangeHistory((prev) => {
+// 		return [...prev, exchange];
+// 	});
+// };

@@ -34,12 +34,12 @@ const Terminal = (props: ITerminalProps) => {
 		directoryStructure,
 		height = "50vh",
 		width = "40vw",
-		borderRadius = "0.5rem",
-		commandPrediction = true,
+		borderRadius = "1rem",
+		commandPrediction = false,
 		showTopBar = true,
 		topBarHeight = "8%",
 		theme = "dark",
-		welcomeMessage,
+		welcomeMessage = "",
 		showTopBarPrompt = true,
 		btn1Callback,
 		btn2Callback,
@@ -47,7 +47,7 @@ const Terminal = (props: ITerminalProps) => {
 	} = props;
 
 	// Context
-	const { exchangeHistory, pwd, setExchangeHistory } =
+	const { exchangeHistory, pwd, commandHistory, welcomeMessageCallback } =
 		useContext(TerminalContext)!;
 
 	// States
@@ -70,14 +70,10 @@ const Terminal = (props: ITerminalProps) => {
 		scrollDivRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [exchangeHistory]);
 
-	//Testing (Remove before publishing)
 	useEffect(() => {
-		if (
-			welcomeMessage &&
-			typeof welcomeMessage === "string" &&
-			welcomeMessage.length > 0
-		)
-			setExchangeHistory([welcomeMessage]);
+		if (commandHistory.length == 0) {
+			welcomeMessageCallback(welcomeMessage);
+		}
 	}, []);
 
 	return (
@@ -104,7 +100,6 @@ const Terminal = (props: ITerminalProps) => {
 			)}
 			<label htmlFor="main-terminal-input">
 				<div className="main-terminal">
-					{/* {welcomeMessage && welcomeMessage} */}
 					<ExchangeHistory terminalTheme={terminalTheme} />
 					<div className="input-prompt">
 						<Prompt

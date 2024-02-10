@@ -1,5 +1,9 @@
-import { useState } from "react";
-import { Terminal, TerminalContextProvider } from "../../src/index";
+import { useEffect, useState } from "react";
+import {
+	Terminal,
+	TerminalContextProvider,
+	useExchange,
+} from "../../src/index";
 import "./App.css";
 
 function App() {
@@ -93,8 +97,12 @@ function App() {
 		alert("Hello this is from the button 2");
 	};
 
+	// This breaks the app because useExchange uses the TerminalContext under the hood which can't be accessed unless this components return statement returns the necessary jsx.
+
+	// const appendExchange = useExchange();
+
 	const btn3Callback = () => {
-		alert("Hello this is from the button 3");
+		// appendExchange("command", "outttputtt", "yooo");
 	};
 
 	return (
@@ -110,8 +118,7 @@ function App() {
 						directoryStructure={structure}
 						prompt="zaid@F571LH:"
 						topBarHeight="8%"
-						theme="light"
-						welcomeMessage="Welcome to the terminal!!"
+						theme="dark"
 					/>
 				) : (
 					"Click on Show Terminal"

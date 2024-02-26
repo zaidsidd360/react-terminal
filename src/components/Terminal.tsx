@@ -1,6 +1,6 @@
 import TopBar from "./TopBar";
 import { TerminalContainer } from "../styles/TerminalStyles";
-import { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
 import IUserCommands from "../types/UserCommandType";
@@ -27,7 +27,7 @@ interface ITerminalProps {
 	btn3Callback?: (args: any) => any;
 }
 
-const Terminal = (props: ITerminalProps) => {
+const Terminal = (props: ITerminalProps): React.JSX.Element => {
 	const {
 		prompt = "user@anon:",
 		commands,

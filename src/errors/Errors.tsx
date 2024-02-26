@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 // TODO: Move all the errors into separate files
-export const argsNotReqd = (base: string) => {
+export const argsNotReqd = (base: string): React.JSX.Element => {
 	return (
 		<>
 			"The {base} command doesn't take any arguments. Did you mean{" "}
@@ -11,7 +11,7 @@ export const argsNotReqd = (base: string) => {
 	);
 };
 
-export const commandNotFound = (base: string) => {
+export const commandNotFound = (base: string): React.JSX.Element => {
 	return (
 		<>
 			bash: <Highlight>{base}</Highlight>: command not found
@@ -19,7 +19,7 @@ export const commandNotFound = (base: string) => {
 	);
 };
 
-export const redundantMkdir = (args: string) => {
+export const redundantMkdir = (args: string): React.JSX.Element => {
 	return (
 		<>
 			bash: mkdir: cannot create directory '<Highlight>{args}</Highlight>
@@ -28,7 +28,7 @@ export const redundantMkdir = (args: string) => {
 	);
 };
 
-export const notADirectory = (args: string) => {
+export const notADirectory = (args: string): React.JSX.Element => {
 	return (
 		<>
 			bash: cd: not a directory: <Highlight>{args}</Highlight>
@@ -36,7 +36,10 @@ export const notADirectory = (args: string) => {
 	);
 };
 
-export const noSuchFileOrDirectory = (args: string, base: string) => {
+export const noSuchFileOrDirectory = (
+	args: string,
+	base: string
+): React.JSX.Element => {
 	return (
 		<>
 			{base}: <Highlight>{args}</Highlight>: No such file or directory
@@ -44,7 +47,7 @@ export const noSuchFileOrDirectory = (args: string, base: string) => {
 	);
 };
 
-export const isADirectory = (args: string) => {
+export const isADirectory = (args: string): React.JSX.Element => {
 	return (
 		<>
 			bash: cat: <Highlight>{args}</Highlight>: Is a directory
@@ -52,11 +55,14 @@ export const isADirectory = (args: string) => {
 	);
 };
 
-export const tooManyArgs = (base: string) => {
+export const tooManyArgs = (base: string): React.JSX.Element => {
 	return <>bash: {base}: too many arguments</>;
 };
 
-export const argsReqd = (base: string, suggestion: string) => {
+export const argsReqd = (
+	base: string,
+	suggestion: string
+): React.JSX.Element => {
 	return (
 		<>
 			"The {base} command requires one argument. Did you mean{" "}

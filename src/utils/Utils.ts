@@ -75,7 +75,15 @@ export const getDirectoryByPath = (
 	structure: any,
 	relativePath: string,
 	base?: string
-) => {
+):
+	| {
+			dir: any;
+			err?: undefined;
+	  }
+	| {
+			err: React.JSX.Element;
+			dir?: undefined;
+	  } => {
 	const path = relativePath.split("/");
 
 	// Short circuit for empty root path

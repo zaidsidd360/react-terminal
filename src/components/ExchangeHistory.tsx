@@ -5,7 +5,11 @@ import ITheme from "../types/ThemeType";
 import { TerminalContext } from "../contexts/TerminalContext";
 import { ExchangeContainer } from "../styles/ExchangeStyles";
 
-const ExchangeHistory = ({ terminalTheme }: { terminalTheme: ITheme }) => {
+const ExchangeHistory = ({
+	terminalTheme,
+}: {
+	terminalTheme: ITheme;
+}): React.JSX.Element => {
 	const { exchangeHistory } = useContext(TerminalContext)!;
 	return (
 		<>
@@ -29,18 +33,24 @@ interface IExchangeProps {
 
 const Exchange = ({ exchange, terminalTheme }: IExchangeProps) => {
 	if (typeof exchange !== "string") {
+		const currExchange = exchange as {
+			command: string;
+			output: string | React.JSX.Element;
+			prompt: string;
+			pwd: string;
+		};
 		return (
 			<>
 				<ExchangeContainer>
 					<Prompt
-						prompt={exchange.prompt}
-						pwd={exchange.pwd}
+						prompt={currExchange.prompt}
+						pwd={currExchange.pwd}
 						unsetPosition
 						terminalTheme={terminalTheme}
 					/>
-					<span id="command">{exchange.command}</span>
+					<span id="command">{currExchange.command}</span>
 					<br />
-					<span>{exchange.output}</span>
+					<span>{currExchange.output}</span>
 				</ExchangeContainer>
 			</>
 		);

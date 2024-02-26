@@ -21,7 +21,9 @@ export interface ITerminalContext {
 
 export const TerminalContext = createContext<ITerminalContext | null>(null);
 
-const TerminalContextProvider = (props: { children: React.ReactNode }) => {
+const TerminalContextProvider = (props: {
+	children: React.ReactNode;
+}): React.JSX.Element => {
 	const [exchangeHistory, setExchangeHistory] = useState<IExchange[]>([]);
 
 	const [commandHistory, setCommandHistory] = useState<string[]>([]);

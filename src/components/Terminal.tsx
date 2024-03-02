@@ -8,6 +8,7 @@ import ITheme from "../types/ThemeType";
 import useTheme from "../hooks/UseTheme";
 import InputField from "./InputField";
 import Prompt from "./Prompt";
+import { useTerminalStore } from "../stores/TerminalStore";
 
 interface ITerminalProps {
 	prompt?: string;
@@ -46,9 +47,13 @@ const Terminal = (props: ITerminalProps): React.JSX.Element => {
 		btn3Callback,
 	} = props;
 
-	// Context
-	const { exchangeHistory, pwd, commandHistory, welcomeMessageCallback } =
-		useContext(TerminalContext)!;
+	// Zustand Store
+	const [exchangeHistory, setExchangeHistory] = useTerminalStore((state) => [
+		state.exchangeHistory,
+		state.setExchangeHistory,
+	]);
+	const pwd = useTerminalStore((state) => state.pwd);
+	const commandHistory = useTerminalStore((state) => state.commandHistory);
 
 	// States
 	const [promptWidth, setPromptWidth] = useState<number>();
@@ -71,8 +76,8 @@ const Terminal = (props: ITerminalProps): React.JSX.Element => {
 	}, [exchangeHistory]);
 
 	useEffect(() => {
-		if (commandHistory.length == 0) {
-			welcomeMessageCallback(welcomeMessage);
+		if (commandHistory.length == 0 && !!welcomeMessage) {
+			setExchangeHistory(welcomeMessage);
 		}
 	}, []);
 

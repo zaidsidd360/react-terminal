@@ -15,42 +15,32 @@ export const trim = (str: string, char: string) => {
 };
 
 export const appendError = (
-	setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
+	setExchangeHistory: (newExhange: IExchange) => void,
 	error: string | React.JSX.Element,
 	command: string,
 	pwd: string,
 	prompt: string
 ) => {
-	return setExchangeHistory((prev) => {
-		return [
-			...prev,
-			{
-				command: command,
-				output: error,
-				prompt: prompt,
-				pwd: pwd,
-			},
-		];
+	return setExchangeHistory({
+		command: command,
+		output: error,
+		prompt: prompt,
+		pwd: pwd,
 	});
 };
 
 export const appendOutput = (
-	setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
+	setExchangeHistory: (newExhange: IExchange) => void,
 	output: string | React.JSX.Element,
 	command: string,
 	pwd: string,
 	prompt: string
 ) => {
-	return setExchangeHistory((prev) => {
-		return [
-			...prev,
-			{
-				command: command,
-				output: output,
-				prompt: prompt,
-				pwd: pwd,
-			},
-		];
+	return setExchangeHistory({
+		command: command,
+		output: output,
+		prompt: prompt,
+		pwd: pwd,
 	});
 };
 

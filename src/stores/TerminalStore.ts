@@ -4,16 +4,11 @@ import IExchange from "../types/ExchangeType";
 interface TerminalState {
 	exchangeHistory: IExchange[];
 	setExchangeHistory: (newExhange: IExchange) => void;
+	clearExchangeHistory: () => void;
 	commandHistory: string[];
 	setCommandHistory: (newCommand: string) => void;
 	pwd: string;
 	setPwd: (newPwd: string) => void;
-
-	// PUT historyPointer INSIDE THE InputField.
-
-	// historyPointer: number;
-	// setHistoryPointer: React.Dispatch<SetStateAction<number>>;
-	// welcomeMessageCallback: (message: string | React.JSX.Element) => void;
 }
 
 export const useTerminalStore = create<TerminalState>((set) => ({
@@ -22,6 +17,7 @@ export const useTerminalStore = create<TerminalState>((set) => ({
 		set((state) => ({
 			exchangeHistory: [...state.exchangeHistory, newExchange],
 		})),
+	clearExchangeHistory: () => set({ exchangeHistory: [] }),
 	commandHistory: [],
 	setCommandHistory: (newCommand) =>
 		set((state) => ({

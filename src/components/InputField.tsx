@@ -11,6 +11,7 @@ import { appendOutput } from "../utils/Utils";
 import useCaretPosition from "../hooks/UseCaretPosition";
 import usePrediction from "../hooks/UsePrediction";
 import PredictionSpan from "../styles/PredictionStyles";
+import { useTerminalStore } from "../stores/TerminalStore";
 
 interface IInputFieldProps {
 	commandPrediction: boolean;
@@ -33,15 +34,15 @@ const InputField = ({
 	prompt,
 	promptWidth,
 }: IInputFieldProps) => {
-	// Contexts
-	const {
-		setExchangeHistory,
-		commandHistory,
-		setCommandHistory,
-		historyPointer,
-		setHistoryPointer,
-		setPwd,
-	} = useContext(TerminalContext)!;
+	//Zustand Store
+	const [commandHistory, setCommandHistory] = useTerminalStore((state) => [
+		state.commandHistory,
+		state.setCommandHistory,
+	]);
+	const [setExchangeHistory, clearExchangeHistory] = useTerminalStore(
+		(state) => [state.setExchangeHistory, state.clearExchangeHistory]
+	);
+	const setPwd = useTerminalStore((state) => state.setPwd);
 
 	// Constants
 	const autoCompleteOptions = [...Object.keys(commands), ...inBuiltCommands];
@@ -49,6 +50,9 @@ const InputField = ({
 	// States
 	const [inputValue, setInputValue] = useState<string>("");
 	const [prevInputValue, setPrevInputValue] = useState<string>("");
+	const [historyPointer, setHistoryPointer] = useState<number>(
+		commandHistory.length
+	);
 
 	// Refs
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -71,17 +75,16 @@ const InputField = ({
 		if (event.key === "Enter") {
 			event.preventDefault();
 			if (inputValue) {
-				setCommandHistory((prev) => {
-					return [...prev, inputValue];
-				});
+				setCommandHistory(inputValue);
 				const [base, ...argsArr] = inputValue.trim().split(" ");
-				// TODO: Disable inbuilt commands related to directory structure.
+				// TODO: Disable inbuilt commands related to directory structure if the structure prop is not available.
 				if (inBuiltCommands.includes(base as string)) {
 					processInBuiltCommand(
 						base!,
 						pwd,
 						argsArr,
 						setExchangeHistory,
+						clearExchangeHistory,
 						prompt,
 						setPwd,
 						structure,
@@ -138,6 +141,10 @@ const InputField = ({
 		if (historyPointer === commandHistory.length)
 			setInputValue(prevInputValue);
 	}, [historyPointer]);
+
+	useEffect(() => {
+		setHistoryPointer(commandHistory.length);
+	}, [commandHistory]);
 
 	return (
 		<>

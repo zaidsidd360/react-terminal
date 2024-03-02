@@ -18,7 +18,7 @@ export const processUserCommand = (
 	base: string,
 	argsArr: string[],
 	commands: IUserCommands,
-	setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
+	setExchangeHistory: (newExhange: IExchange) => void,
 	pwd: string,
 	prompt: string
 ) => {
@@ -84,9 +84,10 @@ export const processInBuiltCommand = (
 	base: string,
 	pwd: string,
 	argsArr: string[],
-	setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
+	setExchangeHistory: (newExhange: IExchange) => void,
+	clearExchangeHistory: () => void,
 	prompt: string,
-	setPwd: React.Dispatch<React.SetStateAction<string>>,
+	setPwd: (newPwd: string) => void,
 	structure: any,
 	setStructure: React.Dispatch<React.SetStateAction<any>>
 ) => {
@@ -104,7 +105,7 @@ export const processInBuiltCommand = (
 						pwd,
 						prompt
 					);
-				} else setExchangeHistory([]); // Clears the terminal exchange history
+				} else clearExchangeHistory(); // Clears the terminal exchange history
 			}
 			break;
 		// Handle echo //

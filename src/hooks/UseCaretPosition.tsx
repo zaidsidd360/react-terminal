@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 
+// A giant waste of time
 function useCaretPosition(
 	textareaRef: React.RefObject<HTMLTextAreaElement>,
 	promptWidth: number,

@@ -3,8 +3,8 @@ import { TerminalContainer } from "../styles/TerminalStyles";
 import { useContext, useEffect, useRef, useState } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
-import IUserCommands from "../types/UserCommandType";
-import ITheme from "../types/ThemeType";
+import IUserCommands from "../@types/Commands";
+import ITheme from "../@types/Theme";
 import useTheme from "../hooks/UseTheme";
 import InputField from "./InputField";
 import Prompt from "./Prompt";
@@ -32,6 +32,7 @@ const Terminal = (props: ITerminalProps) => {
 		prompt = "user@anon:",
 		commands,
 		directoryStructure,
+		// Todo: Make default height and widht 100% before publishing
 		height = "50vh",
 		width = "40vw",
 		borderRadius = "1rem",
@@ -111,7 +112,6 @@ const Terminal = (props: ITerminalProps) => {
 						<InputField
 							predictionColor={terminalTheme.predictionColor}
 							commandPrediction={commandPrediction}
-							promptWidth={promptWidth!}
 							prompt={prompt}
 							pwd={pwd}
 							structure={structure}

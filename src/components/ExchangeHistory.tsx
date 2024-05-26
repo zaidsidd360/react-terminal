@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import Prompt from "./Prompt";
-import IExchange from "../types/ExchangeType";
-import ITheme from "../types/ThemeType";
+import IExchange from "../@types/Exchange";
+import ITheme from "../@types/Theme";
 import { TerminalContext } from "../contexts/TerminalContext";
 import { ExchangeContainer } from "../styles/ExchangeStyles";
 
@@ -27,20 +27,32 @@ interface IExchangeProps {
 	terminalTheme: ITheme;
 }
 
+const isExchangeObject = (
+	exchange: IExchange
+): exchange is {
+	command: string;
+	output: string | React.JSX.Element;
+	prompt: string;
+	pwd: string;
+} => {
+	return typeof exchange !== "string";
+};
+
 const Exchange = ({ exchange, terminalTheme }: IExchangeProps) => {
-	if (typeof exchange !== "string") {
+	if (isExchangeObject(exchange)) {
+		const { prompt, pwd, command, output } = exchange;
 		return (
 			<>
 				<ExchangeContainer>
 					<Prompt
-						prompt={exchange.prompt}
-						pwd={exchange.pwd}
+						prompt={prompt as string}
+						pwd={pwd}
 						unsetPosition
 						terminalTheme={terminalTheme}
 					/>
-					<span id="command">{exchange.command}</span>
+					<span id="command">{command}</span>
 					<br />
-					<span>{exchange.output}</span>
+					<span>{output}</span>
 				</ExchangeContainer>
 			</>
 		);

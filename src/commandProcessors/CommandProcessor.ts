@@ -1,6 +1,6 @@
-import { SetStateAction, useContext } from "react";
-import IExchange from "../types/ExchangeType";
-import IUserCommands from "../types/UserCommandType";
+import { SetStateAction } from "react";
+import IExchange from "../@types/Exchange";
+import IUserCommands from "../@types/Commands";
 import {
 	argsNotReqd,
 	argsReqd,
@@ -9,7 +9,6 @@ import {
 } from "../errors/Errors";
 import { cat, cd, getPwd, ls, mkdir, rm } from "./InBuiltCommandsProcessors";
 import { appendError, appendOutput } from "../utils/Utils";
-import { TerminalContext } from "../contexts/TerminalContext";
 
 // =============================
 // HANDLES USER DEFINED COMMANDS

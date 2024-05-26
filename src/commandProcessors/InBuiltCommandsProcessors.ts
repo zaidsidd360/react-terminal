@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import IExchange from "../types/ExchangeType";
+import IExchange from "../@types/Exchange";
 import {
 	appendError,
 	appendOutput,

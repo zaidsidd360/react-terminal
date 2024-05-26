@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react";
-import {
-	Terminal,
-	TerminalContextProvider,
-	useExchange,
-} from "../../src/index";
+import { useState } from "react";
+import { Terminal, TerminalContextProvider } from "../../src/index";
 import "./App.css";
 
 function App() {
@@ -31,7 +27,7 @@ function App() {
 			window.alert("hellooooo");
 		},
 		mkbir: "YELLO",
-		"this is a very big command": "noooo",
+		thisIsAVeryBigCommand: "noooo",
 		hello: "Yoooooooooo",
 	};
 
@@ -72,12 +68,12 @@ function App() {
 					<pre>
 						<code>
 							{`
-	              const recursivePrint = (name, index) => {
-	                  if(index === 5) return;
-	                  console.log(name)
-	                  recursivePrint(name, index + 1)
-	              }
-	            `}
+        const recursivePrint = (name, index) => {
+            if(index === 5) return;
+            console.log(name)
+            recursivePrint(name, index + 1)
+        }
+      `}
 						</code>
 					</pre>
 				),
@@ -119,6 +115,7 @@ function App() {
 						prompt="zaid@F571LH:"
 						topBarHeight="8%"
 						theme="dark"
+						commandPrediction
 					/>
 				) : (
 					"Click on Show Terminal"

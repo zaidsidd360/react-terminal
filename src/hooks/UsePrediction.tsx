@@ -5,7 +5,7 @@ const usePrediction = (options: string[], inputValue: string) => {
 	const timeoutRef = useRef<number | null>(null);
 
 	const handleInputChange = () => {
-		clearTimeout(timeoutRef.current!); // Clear any existing timeout
+		clearTimeout(timeoutRef.current!);
 
 		timeoutRef.current = setTimeout(() => {
 			const input = inputValue.toLowerCase();
@@ -13,10 +13,8 @@ const usePrediction = (options: string[], inputValue: string) => {
 			let closestMatch: string | undefined = "";
 			if (input.length > 0) {
 				// Find the closest match
-				closestMatch = options.find(
-					(option: string) =>
-						option.toLowerCase() === input ||
-						option.toLowerCase().startsWith(input.toLowerCase())
+				closestMatch = options.find((option: string) =>
+					option.startsWith(inputValue)
 				);
 			}
 

@@ -1,5 +1,5 @@
-import { useContext, useEffect } from "react";
-import IExchange from "../types/ExchangeType";
+import { useContext } from "react";
+import IExchange from "../@types/Exchange";
 import { TerminalContext } from "../contexts/TerminalContext";
 
 // Well this didn't work 💀

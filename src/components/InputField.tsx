@@ -1,5 +1,5 @@
 import TextareaAutosize from "react-textarea-autosize";
-import IUserCommands from "../types/UserCommandType";
+import IUserCommands from "../@types/Commands";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
 import { inBuiltCommands } from "../errors/constants";
@@ -8,14 +8,13 @@ import {
 	processUserCommand,
 } from "../commandProcessors/CommandProcessor";
 import { appendOutput } from "../utils/Utils";
-import useCaretPosition from "../hooks/UseCaretPosition";
 import usePrediction from "../hooks/UsePrediction";
 import PredictionSpan from "../styles/PredictionStyles";
+import useCaretPosition from "use-caret-position";
 
 interface IInputFieldProps {
 	commandPrediction: boolean;
 	predictionColor: string;
-	promptWidth: number;
 	prompt: string;
 	pwd: string;
 	structure: any;
@@ -31,7 +30,6 @@ const InputField = ({
 	commands,
 	pwd,
 	prompt,
-	promptWidth,
 }: IInputFieldProps) => {
 	// Contexts
 	const {
@@ -54,16 +52,13 @@ const InputField = ({
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
 	// Hooks
-	const caretPosition = useCaretPosition(
-		textAreaRef,
-		promptWidth,
-		inputValue
-	);
+	const { x, y, getPosition } = useCaretPosition(textAreaRef);
 	const autoCompleteValue = usePrediction(autoCompleteOptions, inputValue);
 
 	// Event Handlers
 	const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setInputValue(event.target.value);
+		getPosition(textAreaRef);
 	};
 
 	// Keyboard events
@@ -139,6 +134,12 @@ const InputField = ({
 			setInputValue(prevInputValue);
 	}, [historyPointer]);
 
+	useEffect(() => {
+		if (textAreaRef.current) {
+			getPosition(textAreaRef);
+		}
+	}, []);
+
 	return (
 		<>
 			<TextareaAutosize
@@ -151,14 +152,15 @@ const InputField = ({
 				spellCheck={false}
 				ref={textAreaRef}
 			/>
-			{inputValue && inputValue.length > 0 && commandPrediction && (
-				<PredictionSpan
-					$caretPosition={caretPosition}
-					$predictionColor={predictionColor}
-				>
-					{autoCompleteValue.slice(inputValue.length)}
-				</PredictionSpan>
-			)}
+			<PredictionSpan
+				$caretPosition={{ x, y }}
+				$predictionColor={predictionColor}
+			>
+				{inputValue &&
+					inputValue.length > 0 &&
+					commandPrediction &&
+					autoCompleteValue.slice(inputValue.length)}
+			</PredictionSpan>
 		</>
 	);
 };

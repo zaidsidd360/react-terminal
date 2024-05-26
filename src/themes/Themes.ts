@@ -1,4 +1,4 @@
-import ITheme from "../types/ThemeType";
+import ITheme from "../@types/Theme";
 
 export const themes: Record<string, ITheme> = {
 	light: {
@@ -15,7 +15,7 @@ export const themes: Record<string, ITheme> = {
 		promptColor: "#5bbce9",
 		pwdColor: "lightgreen",
 		textColor: "#ededed",
-		predictionColor: "#292c2f",
+		predictionColor: "#333639",
 	},
 	hacker: {
 		terminalBg: "black",

@@ -15,11 +15,12 @@ import useCaretPosition from "use-caret-position";
 interface IInputFieldProps {
 	commandPrediction: boolean;
 	predictionColor: string;
-	prompt: string;
-	pwd: string;
 	structure: any;
 	setStructure: React.Dispatch<React.SetStateAction<any>>;
 	commands: IUserCommands;
+	pwd: string;
+	prompt: string;
+	autoCompleteAnimation: boolean;
 }
 
 const InputField = ({
@@ -30,9 +31,11 @@ const InputField = ({
 	commands,
 	pwd,
 	prompt,
+	autoCompleteAnimation,
 }: IInputFieldProps) => {
 	// Contexts
 	const {
+		exchangeHistory,
 		setExchangeHistory,
 		commandHistory,
 		setCommandHistory,
@@ -121,7 +124,20 @@ const InputField = ({
 		} else if (event.key === "Tab") {
 			event.preventDefault();
 			if (autoCompleteValue) {
-				setInputValue(autoCompleteValue);
+				if (autoCompleteAnimation) {
+					const extraText = autoCompleteValue.replace(inputValue, "");
+					const autoCompleteArray = extraText
+						.split("")
+						.join(",")
+						.split(",");
+					// Animation logic here
+					autoCompleteArray.forEach((letter, i) => {
+						setTimeout(() => {
+							setInputValue((prev) => prev + letter);
+							getPosition(textAreaRef);
+						}, i * 30);
+					});
+				} else setInputValue(autoCompleteValue);
 			}
 		}
 	};
@@ -141,7 +157,7 @@ const InputField = ({
 	}, []);
 
 	return (
-		<>
+		<div style={{ position: "relative" }}>
 			<TextareaAutosize
 				style={{ padding: 0 }}
 				id="main-terminal-input"
@@ -152,16 +168,17 @@ const InputField = ({
 				spellCheck={false}
 				ref={textAreaRef}
 			/>
-			<PredictionSpan
-				$caretPosition={{ x, y }}
-				$predictionColor={predictionColor}
-			>
-				{inputValue &&
-					inputValue.length > 0 &&
-					commandPrediction &&
-					autoCompleteValue.slice(inputValue.length)}
-			</PredictionSpan>
-		</>
+			{commandPrediction && (
+				<PredictionSpan
+					$caretPosition={{ x, y }}
+					$predictionColor={predictionColor}
+				>
+					{inputValue &&
+						inputValue.length > 0 &&
+						autoCompleteValue.slice(inputValue.length)}
+				</PredictionSpan>
+			)}
+		</div>
 	);
 };
 

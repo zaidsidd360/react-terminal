@@ -12,17 +12,10 @@ interface TerminalContainerProps {
 }
 
 export const TerminalContainer = styled.div<TerminalContainerProps>`
-	/* border: 1px solid lightgray; */
 	width: ${({ $width }) => $width};
 	height: ${({ $height }) => $height};
 	border-radius: ${({ $borderRadius }) => $borderRadius};
 	overflow: hidden;
-	/* box-shadow: 2px 2px 50px lightgray, -2px -2px 50px lightgray; */
-	position: absolute;
-	/* font-family: monospace; */
-	/* z-index: 999;
-  width: 100%;
-  height: 100%; */
 
 	.main-terminal {
 		box-sizing: border-box;
@@ -30,7 +23,7 @@ export const TerminalContainer = styled.div<TerminalContainerProps>`
 		height: ${(props) =>
 			props.$showTopBar ? `calc(100% - ${props.$topBarHeight})` : "100%"};
 		padding: 0.5rem;
-		font-size: 1.2rem;
+		font-size: 1rem;
 		/* background-color: #252a33; */
 		background-color: ${({ $currTheme }) => $currTheme.terminalBg};
 		overflow-y: auto;

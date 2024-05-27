@@ -93,12 +93,9 @@ function App() {
 		alert("Hello this is from the button 2");
 	};
 
-	// This breaks the app because useExchange uses the TerminalContext under the hood which can't be accessed unless this components return statement returns the necessary jsx.
-
-	// const appendExchange = useExchange();
-
 	const btn3Callback = () => {
 		// appendExchange("command", "outttputtt", "yooo");
+		alert("Hello this is from the button 3");
 	};
 
 	return (

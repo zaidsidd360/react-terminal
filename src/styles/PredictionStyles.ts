@@ -9,13 +9,10 @@ interface PredictionSpanPropType {
 }
 
 const PredictionSpan = styled.span<PredictionSpanPropType>`
-	/* text-shadow: 2px 2px 5px lightblue, -2px -2px 7px lightblue; */
-	/* padding-inline: 5px; */
-	/* background-color: red; */
 	color: ${({ $predictionColor }) => $predictionColor};
-	position: fixed;
+	position: absolute;
 	top: ${(props) => props.$caretPosition.y + "px"};
-	left: calc(${(props) => props.$caretPosition.x + 1 + "px"});
+	left: calc(${(props) => props.$caretPosition.x - 15 + "px"});
 `;
 
 export default PredictionSpan;

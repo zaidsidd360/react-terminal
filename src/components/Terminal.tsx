@@ -22,6 +22,7 @@ interface ITerminalProps {
 	theme?: "dark" | "light" | "hacker" | ITheme;
 	welcomeMessage?: string | React.JSX.Element;
 	showTopBarPrompt?: boolean;
+	autoCompleteAnimation?: boolean;
 	btn1Callback?: (args: any) => any;
 	btn2Callback?: (args: any) => any;
 	btn3Callback?: (args: any) => any;
@@ -32,16 +33,16 @@ const Terminal = (props: ITerminalProps) => {
 		prompt = "user@anon:",
 		commands,
 		directoryStructure,
-		// Todo: Make default height and widht 100% before publishing
-		height = "50vh",
-		width = "40vw",
-		borderRadius = "1rem",
+		height = "100%",
+		width = "100%",
+		borderRadius = "0.7rem",
 		commandPrediction = false,
 		showTopBar = true,
 		topBarHeight = "8%",
 		theme = "dark",
 		welcomeMessage = "",
 		showTopBarPrompt = true,
+		autoCompleteAnimation = false,
 		btn1Callback,
 		btn2Callback,
 		btn3Callback,
@@ -117,6 +118,7 @@ const Terminal = (props: ITerminalProps) => {
 							structure={structure}
 							setStructure={setStructure}
 							commands={commands!}
+							autoCompleteAnimation={autoCompleteAnimation}
 						/>
 					</div>
 					<div className="scroll-div" ref={scrollDivRef} />

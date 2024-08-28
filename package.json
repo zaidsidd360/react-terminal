@@ -14,7 +14,8 @@
 		"bash",
 		"shell",
 		"command-line",
-		"react-terminal"
+		"react-terminal",
+		"terminal in react"
 	],
 	"author": "zaidsidd360",
 	"license": "MIT",

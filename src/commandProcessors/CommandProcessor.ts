@@ -5,10 +5,13 @@ import {
 	argsNotReqd,
 	argsReqd,
 	commandNotFound,
+	invalidTheme,
 	tooManyArgs,
 } from "../errors/Errors";
 import { cat, cd, getPwd, ls, mkdir, rm } from "./InBuiltCommandsProcessors";
 import { appendError, appendOutput } from "../utils/Utils";
+import ITheme from "../@types/Theme";
+import { themes } from "../themes/Themes";
 
 // =============================
 // HANDLES USER DEFINED COMMANDS
@@ -87,7 +90,8 @@ export const processInBuiltCommand = (
 	prompt: string,
 	setPwd: React.Dispatch<React.SetStateAction<string>>,
 	structure: any,
-	setStructure: React.Dispatch<React.SetStateAction<any>>
+	setStructure: React.Dispatch<React.SetStateAction<any>>,
+	setTerminalTheme: React.Dispatch<React.SetStateAction<ITheme>>
 ) => {
 	const args = argsArr.join(" ");
 	const fullCommand = `${base} ${args}`;
@@ -284,8 +288,31 @@ export const processInBuiltCommand = (
 			}
 			break;
 		// Handle date //
-		case "date": {
-			if (argsArr.length !== 0) {
+		case "date":
+			{
+				if (argsArr.length !== 0) {
+					appendError(
+						setExchangeHistory,
+						tooManyArgs(base),
+						fullCommand,
+						pwd,
+						prompt
+					);
+				} else {
+					const date = new Date();
+					appendOutput(
+						setExchangeHistory,
+						date.toString(),
+						fullCommand,
+						pwd,
+						prompt
+					);
+				}
+			}
+			break;
+		// Handle setTheme //
+		case "setTheme": {
+			if (argsArr.length > 1) {
 				appendError(
 					setExchangeHistory,
 					tooManyArgs(base),
@@ -293,16 +320,23 @@ export const processInBuiltCommand = (
 					pwd,
 					prompt
 				);
-			} else {
-				const date = new Date();
-				appendOutput(
+			} else if (!argsArr[0]) {
+				appendError(
 					setExchangeHistory,
-					date.toString(),
+					argsReqd(base, "dark"),
 					fullCommand,
 					pwd,
 					prompt
 				);
-			}
+			} else if (!Object.keys(themes).includes(argsArr[0])) {
+				appendError(
+					setExchangeHistory,
+					invalidTheme(argsArr[0]),
+					fullCommand,
+					pwd,
+					prompt
+				);
+			} else setTerminalTheme(themes[argsArr[0]] as ITheme);
 		}
 	}
 };

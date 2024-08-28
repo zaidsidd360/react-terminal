@@ -68,6 +68,14 @@ export const argsReqd = (base: string, suggestion: string) => {
 	);
 };
 
+export const invalidTheme = (theme: string) => {
+	return (
+		<>
+			Invalid theme: <Highlight>{theme}</Highlight>
+		</>
+	);
+};
+
 const Highlight = styled.span`
 	background-color: #373737;
 	color: inherit;

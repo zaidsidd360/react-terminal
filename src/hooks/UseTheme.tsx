@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import ITheme from "../@types/Theme";
 import { themes } from "../themes/Themes";
 
-const useTheme = (theme: string | ITheme): ITheme => {
+const useTheme = (
+	theme: string | ITheme
+): [ITheme, React.Dispatch<React.SetStateAction<ITheme>>] => {
 	const [terminalTheme, setTerminalTheme] = useState<ITheme>(themes.dark!);
 
 	useEffect(() => {
@@ -12,7 +14,7 @@ const useTheme = (theme: string | ITheme): ITheme => {
 		setTerminalTheme(theme as ITheme);
 	}, [theme]);
 
-	return terminalTheme!;
+	return [terminalTheme!, setTerminalTheme];
 };
 
 export default useTheme;

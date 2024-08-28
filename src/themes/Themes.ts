@@ -25,5 +25,5 @@ export const themes: Record<string, ITheme> = {
 		textColor: "green",
 		predictionColor: "#0f2f15",
 	},
-	// Add new themes here
+	// Add more themes here
 };

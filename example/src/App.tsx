@@ -26,7 +26,6 @@ function App() {
 		"foo bar": () => {
 			window.alert("hellooooo");
 		},
-		mkbir: "YELLO",
 		thisIsAVeryBigCommand: "noooo",
 		hello: "Yoooooooooo",
 	};
@@ -111,7 +110,7 @@ function App() {
 						directoryStructure={structure}
 						prompt="zaid@F571LH:"
 						topBarHeight="8%"
-						theme="dark"
+						theme={"dark"}
 						commandPrediction
 					/>
 				) : (

@@ -11,6 +11,7 @@ import { appendOutput } from "../utils/Utils";
 import usePrediction from "../hooks/UsePrediction";
 import PredictionSpan from "../styles/PredictionStyles";
 import useCaretPosition from "use-caret-position";
+import ITheme from "../@types/Theme";
 
 interface IInputFieldProps {
 	commandPrediction: boolean;
@@ -21,6 +22,7 @@ interface IInputFieldProps {
 	pwd: string;
 	prompt: string;
 	autoCompleteAnimation: boolean;
+	setTerminalTheme: React.Dispatch<React.SetStateAction<ITheme>>;
 }
 
 const InputField = ({
@@ -32,6 +34,7 @@ const InputField = ({
 	pwd,
 	prompt,
 	autoCompleteAnimation,
+	setTerminalTheme,
 }: IInputFieldProps) => {
 	// Contexts
 	const {
@@ -73,7 +76,7 @@ const InputField = ({
 					return [...prev, inputValue];
 				});
 				const [base, ...argsArr] = inputValue.trim().split(" ");
-				// TODO: Disable inbuilt commands related to directory structure.
+				// TODO: Disable inbuilt commands related to directory structure if directory structure is not present.
 				if (inBuiltCommands.includes(base as string)) {
 					processInBuiltCommand(
 						base!,
@@ -83,7 +86,8 @@ const InputField = ({
 						prompt,
 						setPwd,
 						structure,
-						setStructure
+						setStructure,
+						setTerminalTheme
 					);
 				} else {
 					processUserCommand(

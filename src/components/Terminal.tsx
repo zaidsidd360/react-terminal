@@ -61,7 +61,7 @@ const Terminal = (props: ITerminalProps) => {
 	const scrollDivRef = useRef<HTMLDivElement>(null);
 
 	// Theme
-	const terminalTheme = useTheme(theme);
+	const [terminalTheme, setTerminalTheme] = useTheme(theme);
 
 	// Effects
 	useEffect(() => {
@@ -119,6 +119,7 @@ const Terminal = (props: ITerminalProps) => {
 							setStructure={setStructure}
 							commands={commands!}
 							autoCompleteAnimation={autoCompleteAnimation}
+							setTerminalTheme={setTerminalTheme}
 						/>
 					</div>
 					<div className="scroll-div" ref={scrollDivRef} />

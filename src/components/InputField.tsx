@@ -23,6 +23,7 @@ interface IInputFieldProps {
 	prompt: string;
 	autoCompleteAnimation: boolean;
 	setTerminalTheme: React.Dispatch<React.SetStateAction<ITheme>>;
+	toggleCommandState: (commandState: boolean) => void;
 }
 
 const InputField = ({
@@ -35,6 +36,7 @@ const InputField = ({
 	prompt,
 	autoCompleteAnimation,
 	setTerminalTheme,
+	toggleCommandState,
 }: IInputFieldProps) => {
 	// Contexts
 	const {
@@ -53,6 +55,7 @@ const InputField = ({
 	// States
 	const [inputValue, setInputValue] = useState<string>("");
 	const [prevInputValue, setPrevInputValue] = useState<string>("");
+	const [isCommandActive, setIsCommandActive] = useState<boolean>(false);
 
 	// Refs
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -68,9 +71,12 @@ const InputField = ({
 	};
 
 	// Keyboard events
-	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+	const handleKeyDown = async (
+		event: React.KeyboardEvent<HTMLTextAreaElement>
+	) => {
 		if (event.key === "Enter") {
 			event.preventDefault();
+			setIsCommandActive(true);
 			if (inputValue) {
 				setCommandHistory((prev) => {
 					return [...prev, inputValue];
@@ -90,7 +96,7 @@ const InputField = ({
 						setTerminalTheme
 					);
 				} else {
-					processUserCommand(
+					await processUserCommand(
 						base!,
 						argsArr,
 						commands!,
@@ -102,6 +108,7 @@ const InputField = ({
 			} else appendOutput(setExchangeHistory, "", "", pwd, prompt);
 			setInputValue("");
 			setPrevInputValue("");
+			setIsCommandActive(false);
 		} else if (event.key === "ArrowUp") {
 			event.preventDefault();
 			/* If user has pressed the arrow up key and the historyPointer
@@ -160,30 +167,37 @@ const InputField = ({
 		}
 	}, []);
 
-	return (
-		<div style={{ position: "relative" }}>
-			<TextareaAutosize
-				style={{ padding: 0 }}
-				id="main-terminal-input"
-				onKeyDown={handleKeyDown}
-				onChange={handleChange}
-				value={inputValue}
-				autoComplete="off"
-				spellCheck={false}
-				ref={textAreaRef}
-			/>
-			{commandPrediction && (
-				<PredictionSpan
-					$caretPosition={{ x, y }}
-					$predictionColor={predictionColor}
-				>
-					{inputValue &&
-						inputValue.length > 0 &&
-						autoCompleteValue.slice(inputValue.length)}
-				</PredictionSpan>
-			)}
-		</div>
-	);
+	useEffect(() => {
+		toggleCommandState(isCommandActive);
+	}, [isCommandActive]);
+
+	if (!isCommandActive)
+		return (
+			<div style={{ position: "relative" }}>
+				<TextareaAutosize
+					style={{ padding: 0 }}
+					id="main-terminal-input"
+					onKeyDown={handleKeyDown}
+					onChange={handleChange}
+					value={inputValue}
+					autoComplete="off"
+					spellCheck={false}
+					ref={textAreaRef}
+					autoFocus
+				/>
+				{commandPrediction && (
+					<PredictionSpan
+						$caretPosition={{ x, y }}
+						$predictionColor={predictionColor}
+					>
+						{inputValue &&
+							inputValue.length > 0 &&
+							autoCompleteValue.slice(inputValue.length)}
+					</PredictionSpan>
+				)}
+			</div>
+		);
+	return null;
 };
 
 export default InputField;

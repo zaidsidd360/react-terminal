@@ -4,6 +4,7 @@ import "./App.css";
 
 function App() {
 	const [showTerminal, setShowTerminal] = useState(true);
+
 	const commands = {
 		bat: (args: string) => {
 			if (args === "sum.js")
@@ -23,8 +24,9 @@ function App() {
 				<div>hii</div>
 			</>
 		),
-		"foo bar": () => {
-			window.alert("hellooooo");
+		"foo bar": async () => {
+			await new Promise((resolve) => setTimeout(resolve, 3000));
+			return "Resolved after 3 seconds!";
 		},
 		thisIsAVeryBigCommand: "noooo",
 		hello: "Yoooooooooo",

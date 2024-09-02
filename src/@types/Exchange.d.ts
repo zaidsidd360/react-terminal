@@ -1,10 +1,12 @@
+export type ObjExchange = {
+  command: string;
+  output: string | React.JSX.Element;
+  prompt: string;
+  pwd: string;
+}
+
 type IExchange =
-	| {
-			command: string;
-			output: string | React.JSX.Element;
-			prompt: string;
-			pwd: string;
-	  }
+	| ObjExchange
 	| string
 	| React.JSX.Element;
 

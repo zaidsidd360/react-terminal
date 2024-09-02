@@ -55,6 +55,7 @@ const Terminal = (props: ITerminalProps) => {
 	// States
 	const [promptWidth, setPromptWidth] = useState<number>();
 	const [structure, setStructure] = useState(directoryStructure);
+	const [isCommandActive, setIsCommandActive] = useState<boolean>(false);
 
 	// Refs
 	const promptRef = useRef<HTMLSpanElement>(null);
@@ -62,6 +63,10 @@ const Terminal = (props: ITerminalProps) => {
 
 	// Theme
 	const [terminalTheme, setTerminalTheme] = useTheme(theme);
+
+	const toggleCommandState = (commandState: boolean) => {
+		setIsCommandActive(commandState);
+	};
 
 	// Effects
 	useEffect(() => {
@@ -104,12 +109,14 @@ const Terminal = (props: ITerminalProps) => {
 				<div className="main-terminal">
 					<ExchangeHistory terminalTheme={terminalTheme} />
 					<div className="input-prompt">
-						<Prompt
-							prompt={prompt}
-							ref={promptRef}
-							pwd={pwd}
-							terminalTheme={terminalTheme}
-						/>
+						{!isCommandActive && (
+							<Prompt
+								prompt={prompt}
+								ref={promptRef}
+								pwd={pwd}
+								terminalTheme={terminalTheme}
+							/>
+						)}
 						<InputField
 							predictionColor={terminalTheme.predictionColor}
 							commandPrediction={commandPrediction}
@@ -120,6 +127,7 @@ const Terminal = (props: ITerminalProps) => {
 							commands={commands!}
 							autoCompleteAnimation={autoCompleteAnimation}
 							setTerminalTheme={setTerminalTheme}
+							toggleCommandState={toggleCommandState}
 						/>
 					</div>
 					<div className="scroll-div" ref={scrollDivRef} />

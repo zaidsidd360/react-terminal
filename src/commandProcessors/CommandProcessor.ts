@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import IExchange from "../@types/Exchange";
+import IExchange, { ObjExchange } from "../@types/Exchange";
 import IUserCommands from "../@types/Commands";
 import {
 	argsNotReqd,
@@ -16,7 +16,7 @@ import { themes } from "../themes/Themes";
 // =============================
 // HANDLES USER DEFINED COMMANDS
 // =============================
-export const processUserCommand = (
+export const processUserCommand = async (
 	base: string,
 	argsArr: string[],
 	commands: IUserCommands,
@@ -29,13 +29,36 @@ export const processUserCommand = (
 	if (commands[`${fullCommand}`]) {
 		const executor = commands[`${fullCommand}`];
 		if (typeof executor === "function") {
-			appendOutput(
-				setExchangeHistory,
-				executor() as string | React.JSX.Element,
-				fullCommand,
-				pwd,
-				prompt
-			);
+      if(executor.constructor.name === "AsyncFunction") {
+        setExchangeHistory((prev) => {
+          return [
+            ...prev,
+            {
+              command: fullCommand,
+              output: "Loading...",
+              prompt: prompt,
+              pwd: pwd,
+            },
+          ];
+        })
+        const resolvedVal = await executor();
+        setExchangeHistory((prev) => {
+          const last = prev.pop();
+          (last as ObjExchange).output = resolvedVal!;
+          return [
+            ...prev,
+            last!
+          ];
+        })
+      } else {
+        appendOutput(
+          setExchangeHistory,
+          executor() as string | React.JSX.Element,
+          fullCommand,
+          pwd,
+          prompt
+        );
+      }
 		} else {
 			appendOutput(
 				setExchangeHistory,

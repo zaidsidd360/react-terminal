@@ -5,6 +5,26 @@ import "./App.css";
 function App() {
 	const [showTerminal, setShowTerminal] = useState(true);
 
+	const fetchDadJoke = async () => {
+		try {
+			const response = await fetch("https://icanhazdadjoke.com/", {
+				headers: {
+					Accept: "application/json",
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
+			const data = await response.json();
+			return data.joke;
+			console.log(data);
+		} catch (error) {
+			console.error("Error:", error);
+		}
+	};
+
 	const commands = {
 		bat: (args: string) => {
 			if (args === "sum.js")
@@ -25,8 +45,9 @@ function App() {
 			</>
 		),
 		"foo bar": async () => {
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-			return "Resolved after 3 seconds!";
+			// await new Promise((resolve) => setTimeout(resolve, 10000));
+			const joke = await fetchDadJoke();
+			return joke;
 		},
 		thisIsAVeryBigCommand: "noooo",
 		hello: "Yoooooooooo",

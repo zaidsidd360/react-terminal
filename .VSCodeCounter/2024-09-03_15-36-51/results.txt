@@ -1,0 +1,94 @@
+Date : 2024-09-03 15:36:51
+Directory : c:\Users\hp\Desktop\react-terminal
+Total : 44 files,  3516 codes, 165 comments, 213 blanks, all 3894 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| TypeScript         |         17 |      2,500 |         39 |         73 |      2,612 |
+| TypeScript JSX     |         14 |        817 |         38 |        110 |        965 |
+| JSON               |          3 |         75 |          0 |          3 |         78 |
+| Markdown           |          2 |         47 |          0 |         10 |         57 |
+| JSON with Comments |          2 |         34 |         85 |         12 |        131 |
+| JavaScript         |          1 |         18 |          0 |          1 |         19 |
+| HTML               |          1 |         13 |          0 |          1 |         14 |
+| CSS                |          2 |         10 |          3 |          3 |         16 |
+| XML                |          2 |          2 |          0 |          0 |          2 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                  | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                     |         44 |      3,516 |        165 |        213 |      3,894 |
+| . (Files)                                                                             |          3 |         78 |         83 |         11 |        172 |
+| example                                                                               |         14 |        257 |         11 |         33 |        301 |
+| example (Files)                                                                       |          7 |        114 |          3 |         18 |        135 |
+| example\public                                                                        |          1 |          1 |          0 |          0 |          1 |
+| example\src                                                                           |          6 |        142 |          8 |         15 |        165 |
+| example\src (Files)                                                                   |          5 |        141 |          8 |         15 |        164 |
+| example\src\assets                                                                    |          1 |          1 |          0 |          0 |          1 |
+| src                                                                                   |         27 |      3,181 |         71 |        169 |      3,421 |
+| src (Files)                                                                           |          1 |          3 |          2 |          2 |          7 |
+| src\@types                                                                            |          4 |         37 |          1 |          9 |         47 |
+| src\commandProcessors                                                                 |          2 |        527 |         21 |         13 |        561 |
+| src\components                                                                        |          6 |        469 |         30 |         49 |        548 |
+| src\contexts                                                                          |          1 |         46 |          0 |         11 |         57 |
+| src\errors                                                                            |          2 |      1,740 |          1 |         14 |      1,755 |
+| src\hooks                                                                             |          4 |         98 |          3 |         28 |        129 |
+| src\styles                                                                            |          5 |        149 |          7 |         29 |        185 |
+| src\themes                                                                            |          1 |         27 |          1 |          2 |         30 |
+| src\utils                                                                             |          1 |         85 |          5 |         12 |        102 |
++---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                              | language           | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| c:\Users\hp\Desktop\react-terminal\README.md                                          | Markdown           |         28 |          0 |          1 |         29 |
+| c:\Users\hp\Desktop\react-terminal\example\.eslintrc.cjs                              | JavaScript         |         18 |          0 |          1 |         19 |
+| c:\Users\hp\Desktop\react-terminal\example\README.md                                  | Markdown           |         19 |          0 |          9 |         28 |
+| c:\Users\hp\Desktop\react-terminal\example\index.html                                 | HTML               |         13 |          0 |          1 |         14 |
+| c:\Users\hp\Desktop\react-terminal\example\package.json                               | JSON               |         28 |          0 |          1 |         29 |
+| c:\Users\hp\Desktop\react-terminal\example\public\vite.svg                            | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\hp\Desktop\react-terminal\example\src\App.css                                | CSS                |          0 |          0 |          1 |          1 |
+| c:\Users\hp\Desktop\react-terminal\example\src\App.tsx                                | TypeScript JSX     |        125 |          2 |          9 |        136 |
+| c:\Users\hp\Desktop\react-terminal\example\src\assets\react.svg                       | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\hp\Desktop\react-terminal\example\src\index.css                              | CSS                |         10 |          3 |          2 |         15 |
+| c:\Users\hp\Desktop\react-terminal\example\src\main.tsx                               | TypeScript JSX     |          6 |          2 |          2 |         10 |
+| c:\Users\hp\Desktop\react-terminal\example\src\vite-env.d.ts                          | TypeScript         |          0 |          1 |          1 |          2 |
+| c:\Users\hp\Desktop\react-terminal\example\tsconfig.json                              | JSON with Comments |         21 |          2 |          3 |         26 |
+| c:\Users\hp\Desktop\react-terminal\example\tsconfig.node.json                         | JSON               |         10 |          0 |          1 |         11 |
+| c:\Users\hp\Desktop\react-terminal\example\vite.config.ts                             | TypeScript         |          5 |          1 |          2 |          8 |
+| c:\Users\hp\Desktop\react-terminal\package.json                                       | JSON               |         37 |          0 |          1 |         38 |
+| c:\Users\hp\Desktop\react-terminal\src\@types\Commands.d.ts                           | TypeScript         |          7 |          0 |          2 |          9 |
+| c:\Users\hp\Desktop\react-terminal\src\@types\Exchange.d.ts                           | TypeScript         |         11 |          0 |          3 |         14 |
+| c:\Users\hp\Desktop\react-terminal\src\@types\Theme.d.ts                              | TypeScript         |          8 |          1 |          1 |         10 |
+| c:\Users\hp\Desktop\react-terminal\src\@types\use-caret-position.d.ts                 | TypeScript         |         11 |          0 |          3 |         14 |
+| c:\Users\hp\Desktop\react-terminal\src\commandProcessors\CommandProcessor.ts          | TypeScript         |        345 |         20 |          3 |        368 |
+| c:\Users\hp\Desktop\react-terminal\src\commandProcessors\InBuiltCommandsProcessors.ts | TypeScript         |        182 |          1 |         10 |        193 |
+| c:\Users\hp\Desktop\react-terminal\src\components\CliLoader.tsx                       | TypeScript JSX     |         20 |          5 |          8 |         33 |
+| c:\Users\hp\Desktop\react-terminal\src\components\ExchangeHistory.tsx                 | TypeScript JSX     |         62 |          0 |          6 |         68 |
+| c:\Users\hp\Desktop\react-terminal\src\components\InputField.tsx                      | TypeScript JSX     |        173 |         20 |         15 |        208 |
+| c:\Users\hp\Desktop\react-terminal\src\components\Prompt.tsx                          | TypeScript JSX     |         42 |          0 |          3 |         45 |
+| c:\Users\hp\Desktop\react-terminal\src\components\Terminal.tsx                        | TypeScript JSX     |        123 |          5 |         13 |        141 |
+| c:\Users\hp\Desktop\react-terminal\src\components\TopBar.tsx                          | TypeScript JSX     |         49 |          0 |          4 |         53 |
+| c:\Users\hp\Desktop\react-terminal\src\contexts\TerminalContext.tsx                   | TypeScript JSX     |         46 |          0 |         11 |         57 |
+| c:\Users\hp\Desktop\react-terminal\src\errors\Errors.tsx                              | TypeScript JSX     |         73 |          1 |         11 |         85 |
+| c:\Users\hp\Desktop\react-terminal\src\errors\constants.ts                            | TypeScript         |      1,667 |          0 |          3 |      1,670 |
+| c:\Users\hp\Desktop\react-terminal\src\hooks\UseCaretPosition.tsx                     | TypeScript JSX     |         34 |          1 |         10 |         45 |
+| c:\Users\hp\Desktop\react-terminal\src\hooks\UseExchange.tsx                          | TypeScript JSX     |         22 |          1 |          4 |         27 |
+| c:\Users\hp\Desktop\react-terminal\src\hooks\UsePrediction.tsx                        | TypeScript JSX     |         26 |          1 |          9 |         36 |
+| c:\Users\hp\Desktop\react-terminal\src\hooks\UseTheme.tsx                             | TypeScript JSX     |         16 |          0 |          5 |         21 |
+| c:\Users\hp\Desktop\react-terminal\src\index.ts                                       | TypeScript         |          3 |          2 |          2 |          7 |
+| c:\Users\hp\Desktop\react-terminal\src\styles\ExchangeStyles.ts                       | TypeScript         |         14 |          0 |          3 |         17 |
+| c:\Users\hp\Desktop\react-terminal\src\styles\PredictionStyles.ts                     | TypeScript         |         15 |          0 |          4 |         19 |
+| c:\Users\hp\Desktop\react-terminal\src\styles\PromptStyles.ts                         | TypeScript         |         23 |          2 |          4 |         29 |
+| c:\Users\hp\Desktop\react-terminal\src\styles\TerminalStyles.ts                       | TypeScript         |         61 |          3 |         10 |         74 |
+| c:\Users\hp\Desktop\react-terminal\src\styles\TopBarStyles.ts                         | TypeScript         |         36 |          2 |          8 |         46 |
+| c:\Users\hp\Desktop\react-terminal\src\themes\Themes.ts                               | TypeScript         |         27 |          1 |          2 |         30 |
+| c:\Users\hp\Desktop\react-terminal\src\utils\Utils.ts                                 | TypeScript         |         85 |          5 |         12 |        102 |
+| c:\Users\hp\Desktop\react-terminal\tsconfig.json                                      | JSON with Comments |         13 |         83 |          9 |        105 |
+| Total                                                                                 |                    |      3,516 |        165 |        213 |      3,894 |
++---------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

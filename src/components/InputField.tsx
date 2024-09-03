@@ -12,6 +12,7 @@ import usePrediction from "../hooks/UsePrediction";
 import PredictionSpan from "../styles/PredictionStyles";
 import useCaretPosition from "use-caret-position";
 import ITheme from "../@types/Theme";
+import CliLoader from "./CliLoader";
 
 interface IInputFieldProps {
 	commandPrediction: boolean;
@@ -51,6 +52,8 @@ const InputField = ({
 
 	// Constants
 	const autoCompleteOptions = [...Object.keys(commands), ...inBuiltCommands];
+
+	const cliLoader = <CliLoader loaderName="aesthetic2" speedMultiplier={0} />;
 
 	// States
 	const [inputValue, setInputValue] = useState<string>("");
@@ -102,7 +105,8 @@ const InputField = ({
 						commands!,
 						setExchangeHistory,
 						pwd,
-						prompt
+						prompt,
+						cliLoader
 					);
 				}
 			} else appendOutput(setExchangeHistory, "", "", pwd, prompt);

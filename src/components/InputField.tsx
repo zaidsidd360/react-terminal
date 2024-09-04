@@ -1,18 +1,21 @@
 import TextareaAutosize from "react-textarea-autosize";
 import IUserCommands from "../@types/Commands";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
 import { inBuiltCommands } from "../errors/constants";
-import {
-	processInBuiltCommand,
-	processUserCommand,
-} from "../commandProcessors/CommandProcessor";
 import { appendOutput } from "../utils/Utils";
 import usePrediction from "../hooks/UsePrediction";
 import PredictionSpan from "../styles/PredictionStyles";
 import useCaretPosition from "use-caret-position";
 import ITheme from "../@types/Theme";
 import CliLoader from "./CliLoader";
+import useCommandProcessor from "../hooks/UseCommandProcessor";
 
 interface IInputFieldProps {
 	commandPrediction: boolean;
@@ -25,6 +28,8 @@ interface IInputFieldProps {
 	autoCompleteAnimation: boolean;
 	setTerminalTheme: React.Dispatch<React.SetStateAction<ITheme>>;
 	toggleCommandState: (commandState: boolean) => void;
+	asyncCommandLoader: string;
+	asyncCommandLoaderSpeed: number;
 }
 
 const InputField = ({
@@ -38,10 +43,11 @@ const InputField = ({
 	autoCompleteAnimation,
 	setTerminalTheme,
 	toggleCommandState,
+	asyncCommandLoader,
+	asyncCommandLoaderSpeed,
 }: IInputFieldProps) => {
 	// Contexts
 	const {
-		exchangeHistory,
 		setExchangeHistory,
 		commandHistory,
 		setCommandHistory,
@@ -52,8 +58,12 @@ const InputField = ({
 
 	// Constants
 	const autoCompleteOptions = [...Object.keys(commands), ...inBuiltCommands];
-
-	const cliLoader = <CliLoader loaderName="aesthetic2" speedMultiplier={0} />;
+	const cliLoader = (
+		<CliLoader
+			loaderName={asyncCommandLoader}
+			speedMultiplier={asyncCommandLoaderSpeed}
+		/>
+	);
 
 	// States
 	const [inputValue, setInputValue] = useState<string>("");
@@ -66,6 +76,17 @@ const InputField = ({
 	// Hooks
 	const { x, y, getPosition } = useCaretPosition(textAreaRef);
 	const autoCompleteValue = usePrediction(autoCompleteOptions, inputValue);
+	const { processCommand } = useCommandProcessor(
+		commands,
+		setExchangeHistory,
+		pwd,
+		prompt,
+		cliLoader,
+		structure,
+		setStructure,
+		setPwd,
+		setTerminalTheme
+	);
 
 	// Event Handlers
 	const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -73,99 +94,114 @@ const InputField = ({
 		getPosition(textAreaRef);
 	};
 
+	// Event key handlers
+
+	/**
+	 * Handles the Enter key press event.
+	 * Processes the current input, updates command history, and clears the input field.
+	 */
+	const handleEnterKey = async () => {
+		setIsCommandActive(true);
+		if (inputValue) {
+			setCommandHistory((prev) => [...prev, inputValue]);
+			await processCommand(inputValue);
+		} else {
+			appendOutput(setExchangeHistory, "", "", pwd, prompt);
+		}
+		setInputValue("");
+		setPrevInputValue("");
+		setIsCommandActive(false);
+	};
+
+	/**
+	 * Handles the Arrow Up key press event.
+	 * Navigates backwards through command history.
+	 */
+	const handleArrowUpKey = () => {
+		// Save current input when starting to navigate history
+		// This allows returning to the in-progress command when navigating forward again
+		if (historyPointer === commandHistory.length) {
+			setPrevInputValue(inputValue);
+		}
+		// Move backwards in history if possible
+		if (historyPointer > 0) {
+			setInputValue(commandHistory[historyPointer - 1]!);
+			setHistoryPointer(historyPointer - 1);
+		}
+	};
+
+	/**
+	 * Handles the Arrow Down key press event.
+	 * Navigates forwards through command history.
+	 */
+	const handleArrowDownKey = () => {
+		if (historyPointer < commandHistory.length) {
+			setInputValue(commandHistory[historyPointer + 1]!);
+			setHistoryPointer(historyPointer + 1);
+		}
+	};
+
+	/**
+	 * Handles the Tab key press event.
+	 * Implements autocomplete functionality, with optional animation.
+	 */
+	const handleTabKey = () => {
+		if (autoCompleteValue) {
+			if (autoCompleteAnimation) {
+				const extraText = autoCompleteValue.replace(inputValue, "");
+				const autoCompleteArray = extraText
+					.split("")
+					.join(",")
+					.split(",");
+				autoCompleteArray.forEach((letter, i) => {
+					setTimeout(() => {
+						setInputValue((prev) => prev + letter);
+						getPosition(textAreaRef);
+					}, i * 30);
+				});
+			} else {
+				setInputValue(autoCompleteValue);
+			}
+		}
+	};
+
 	// Keyboard events
+	/**
+	 * Main key down event handler.
+	 * Delegates to specific handlers based on the key pressed.
+	 * @param event - The keyboard event
+	 */
 	const handleKeyDown = async (
 		event: React.KeyboardEvent<HTMLTextAreaElement>
 	) => {
-		if (event.key === "Enter") {
-			event.preventDefault();
-			setIsCommandActive(true);
-			if (inputValue) {
-				setCommandHistory((prev) => {
-					return [...prev, inputValue];
-				});
-				const [base, ...argsArr] = inputValue.trim().split(" ");
-				// TODO: Disable inbuilt commands related to directory structure if directory structure is not present.
-				if (inBuiltCommands.includes(base as string)) {
-					processInBuiltCommand(
-						base!,
-						pwd,
-						argsArr,
-						setExchangeHistory,
-						prompt,
-						setPwd,
-						structure,
-						setStructure,
-						setTerminalTheme
-					);
-				} else {
-					await processUserCommand(
-						base!,
-						argsArr,
-						commands!,
-						setExchangeHistory,
-						pwd,
-						prompt,
-						cliLoader
-					);
-				}
-			} else appendOutput(setExchangeHistory, "", "", pwd, prompt);
-			setInputValue("");
-			setPrevInputValue("");
-			setIsCommandActive(false);
-		} else if (event.key === "ArrowUp") {
-			event.preventDefault();
-			/* If user has pressed the arrow up key and the historyPointer
-      is at commandHistory.length, save whatever is already written in
-      the input to prevInputValue. This way when the user hits the
-      arrow down key continously, and the historyPointer reaches
-      commandHistory.length again (this part is handled with the
-      last useEffect call), the inputValue will automatically change
-      to prevInputValue. */
-			if (historyPointer === commandHistory.length) {
-				setPrevInputValue(inputValue);
-			}
-			// The main ArrowUp event starts from here.
-			setInputValue(commandHistory[historyPointer - 1]!);
-			if (historyPointer > 0) {
-				setHistoryPointer(historyPointer - 1);
-			}
-		} else if (event.key === "ArrowDown") {
-			event.preventDefault();
-			if (historyPointer < commandHistory.length) {
-				setInputValue(commandHistory[historyPointer + 1]!);
-				setHistoryPointer(historyPointer + 1);
-			}
-		} else if (event.key === "Tab") {
-			event.preventDefault();
-			if (autoCompleteValue) {
-				if (autoCompleteAnimation) {
-					const extraText = autoCompleteValue.replace(inputValue, "");
-					const autoCompleteArray = extraText
-						.split("")
-						.join(",")
-						.split(",");
-					// Animation logic here
-					autoCompleteArray.forEach((letter, i) => {
-						setTimeout(() => {
-							setInputValue((prev) => prev + letter);
-							getPosition(textAreaRef);
-						}, i * 30);
-					});
-				} else setInputValue(autoCompleteValue);
-			}
+		switch (event.key) {
+			case "Enter":
+				event.preventDefault();
+				await handleEnterKey();
+				break;
+			case "ArrowUp":
+				event.preventDefault();
+				handleArrowUpKey();
+				break;
+			case "ArrowDown":
+				event.preventDefault();
+				handleArrowDownKey();
+				break;
+			case "Tab":
+				event.preventDefault();
+				handleTabKey();
+				break;
 		}
 	};
 
 	// Effects
 	useEffect(() => {
-		/* If historyPointer has reached commandHistory.length,
-    set the input value to the last written command/prevInputValue.*/
+		// Restore the in-progress command when navigating past the end of command history
 		if (historyPointer === commandHistory.length)
 			setInputValue(prevInputValue);
 	}, [historyPointer]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (textAreaRef.current) {
 			getPosition(textAreaRef);
 		}

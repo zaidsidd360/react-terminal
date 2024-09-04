@@ -8,6 +8,7 @@ import ITheme from "../@types/Theme";
 import useTheme from "../hooks/UseTheme";
 import InputField from "./InputField";
 import Prompt from "./Prompt";
+import usePromptWidth from "../hooks/UsePromptWidth";
 
 interface ITerminalProps {
 	prompt?: string;
@@ -26,40 +27,43 @@ interface ITerminalProps {
 	btn1Callback?: (args: any) => any;
 	btn2Callback?: (args: any) => any;
 	btn3Callback?: (args: any) => any;
+	asyncCommandLoader?: string;
+	asyncCommandLoaderSpeed?: number;
 }
 
-const Terminal = (props: ITerminalProps) => {
-	const {
-		prompt = "user@anon:",
-		commands,
-		directoryStructure,
-		height = "100%",
-		width = "100%",
-		borderRadius = "0.7rem",
-		commandPrediction = false,
-		showTopBar = true,
-		topBarHeight = "8%",
-		theme = "dark",
-		welcomeMessage = "",
-		showTopBarPrompt = true,
-		autoCompleteAnimation = false,
-		btn1Callback,
-		btn2Callback,
-		btn3Callback,
-	} = props;
-
+const Terminal = ({
+	prompt = "user@anon:",
+	commands,
+	directoryStructure,
+	height = "100%",
+	width = "100%",
+	borderRadius = "0.7rem",
+	commandPrediction = false,
+	showTopBar = true,
+	topBarHeight = "8%",
+	theme = "dark",
+	welcomeMessage = "",
+	showTopBarPrompt = true,
+	autoCompleteAnimation = false,
+	btn1Callback,
+	btn2Callback,
+	btn3Callback,
+	asyncCommandLoader = "aesthetic2",
+	asyncCommandLoaderSpeed = 0.5,
+}: ITerminalProps) => {
 	// Context
 	const { exchangeHistory, pwd, commandHistory, welcomeMessageCallback } =
 		useContext(TerminalContext)!;
 
 	// States
-	const [promptWidth, setPromptWidth] = useState<number>();
 	const [structure, setStructure] = useState(directoryStructure);
 	const [isCommandActive, setIsCommandActive] = useState<boolean>(false);
 
 	// Refs
-	const promptRef = useRef<HTMLSpanElement>(null);
 	const scrollDivRef = useRef<HTMLDivElement>(null);
+
+	// Hooks
+	const { promptWidth, promptRef } = usePromptWidth(prompt!, pwd);
 
 	// Theme
 	const [terminalTheme, setTerminalTheme] = useTheme(theme);
@@ -69,10 +73,6 @@ const Terminal = (props: ITerminalProps) => {
 	};
 
 	// Effects
-	useEffect(() => {
-		setPromptWidth(promptRef.current?.getBoundingClientRect().width);
-	}, [prompt, pwd]);
-
 	useEffect(() => {
 		scrollDivRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [exchangeHistory]);
@@ -128,6 +128,8 @@ const Terminal = (props: ITerminalProps) => {
 							autoCompleteAnimation={autoCompleteAnimation}
 							setTerminalTheme={setTerminalTheme}
 							toggleCommandState={toggleCommandState}
+							asyncCommandLoader={asyncCommandLoader}
+							asyncCommandLoaderSpeed={asyncCommandLoaderSpeed}
 						/>
 					</div>
 					<div className="scroll-div" ref={scrollDivRef} />

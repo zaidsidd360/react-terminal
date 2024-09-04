@@ -12,6 +12,7 @@ import { cat, cd, getPwd, ls, mkdir, rm } from "./InBuiltCommandsProcessors";
 import { appendError, appendOutput } from "../utils/Utils";
 import ITheme from "../@types/Theme";
 import { themes } from "../themes/Themes";
+import CliLoader from "../components/CliLoader";
 
 // =============================
 // HANDLES USER DEFINED COMMANDS
@@ -22,7 +23,8 @@ export const processUserCommand = async (
 	commands: IUserCommands,
 	setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
 	pwd: string,
-	prompt: string
+	prompt: string,
+  cliLoader: React.JSX.Element
 ) => {
 	const args = argsArr.join(" ");
 	const fullCommand = `${base} ${args}`;
@@ -35,7 +37,7 @@ export const processUserCommand = async (
             ...prev,
             {
               command: fullCommand,
-              output: "Loading...",
+              output: cliLoader,
               prompt: prompt,
               pwd: pwd,
             },

@@ -37,6 +37,7 @@ function App() {
 
 // SomeComponent.tsx
 import { Terminal } from 'react-terminal';
+
 function SomeComponent() {
   return (
     <Terminal
@@ -113,10 +114,10 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 ## 📄 License
 
 This project is [MIT](https://opensource.org/licenses/MIT) licensed.
-```
 
 
 README is incomplete, will be updated soon.
+
 Component is almost ready to be published to npm. Until then, to run and test the project locally:
 ```bash
 git clone https://github.com/zaidsidd360/react-terminal.git

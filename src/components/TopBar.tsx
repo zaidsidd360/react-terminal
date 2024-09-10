@@ -1,6 +1,6 @@
 import { TopBarContainer } from "../styles/TopBarStyles";
 import Prompt from "./Prompt";
-import ITheme from "../@types/Theme";
+import ITheme from "../types/Theme";
 
 interface ITopBarProps {
 	prompt: string;

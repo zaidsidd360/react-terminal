@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { loaders, Loaders } from "../errors/constants";
+import { loaders, Loaders } from "../utils/constants";
 
 type CliLoaderProps = {
 	loaderName?: keyof Loaders; // Optional prop for selecting the loader

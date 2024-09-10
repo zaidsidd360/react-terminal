@@ -1,6 +1,5 @@
 import Terminal from "./components/Terminal";
 import TerminalContextProvider from "./contexts/TerminalContext";
-// import useExchange from "./hooks/UseExchange";
-// TODO: Export Errors.tsx so the users can display basic error messages easily.
+import { TerminalContext } from "./contexts/TerminalContext";
 
-export { Terminal, TerminalContextProvider };
+export { Terminal, TerminalContextProvider, TerminalContext };

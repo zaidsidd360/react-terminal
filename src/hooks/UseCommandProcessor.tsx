@@ -1,10 +1,10 @@
-import IUserCommands from "../@types/Commands";
-import ITheme from "../@types/Theme";
+import IUserCommands from "../types/Commands";
+import ITheme from "../types/Theme";
 import {
 	processInBuiltCommand,
 	processUserCommand,
 } from "../commandProcessors/CommandProcessor";
-import { inBuiltCommands } from "../errors/constants";
+import { inBuiltCommands } from "../utils/constants";
 
 const useCommandProcessor = (
 	commands: IUserCommands,

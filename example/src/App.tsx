@@ -20,8 +20,13 @@ function App() {
 			const data = await response.json();
 			return data.joke;
 			console.log(data);
-		} catch (error) {
+		} catch (error: unknown) {
 			console.error("Error:", error);
+			if (error instanceof Error) {
+				return "Error: " + error.message;
+			} else {
+				return "An unknown error occurred";
+			}
 		}
 	};
 
@@ -51,6 +56,12 @@ function App() {
 		},
 		thisIsAVeryBigCommand: "noooo",
 		hello: "Yoooooooooo",
+		kbCat: (
+			<img
+				src="https://c.tenor.com/rMxNr07CxSMAAAAC/tenor.gif"
+				alt="cat"
+			/>
+		),
 	};
 
 	const structure = {

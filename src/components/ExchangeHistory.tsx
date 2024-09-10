@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import Prompt from "./Prompt";
-import IExchange from "../@types/Exchange";
-import ITheme from "../@types/Theme";
+import IExchange from "../types/Exchange";
+import ITheme from "../types/Theme";
 import { TerminalContext } from "../contexts/TerminalContext";
 import { ExchangeContainer } from "../styles/ExchangeStyles";
 

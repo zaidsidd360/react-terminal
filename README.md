@@ -69,7 +69,7 @@ function SomeComponent() {
 | `btn1Callback`        | Callback for the first top bar button     | `(args: any) => any`       | `undefined`    |
 | `btn2Callback`        | Callback for the second top bar button    | `(args: any) => any`       | `undefined`    |
 | `btn3Callback`        | Callback for the third top bar button     | `(args: any) => any`       | `undefined`    |
-| `asyncCommandLoader`  | Loader style for async commands           | `string`                   | `"aesthetic2"` |
+| `asyncCommandLoader`  | Loader style for async commands           | `string` See them in action [here](https://jsfiddle.net/sindresorhus/2eLtsbey/embedded/result/)                 | `"aesthetic2"` |
 | `asyncCommandLoaderSpeed` | Speed multiplier for async command loader | `number` range(0, 1)               | `0.5`          |
 
 *TBD: To be defined
@@ -106,7 +106,6 @@ const customCommands = {
 <Terminal commands={customCommands} />
 ```
 
-
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/your-repo/issues).
@@ -115,33 +114,43 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 This project is [MIT](https://opensource.org/licenses/MIT) licensed.
 
-
 README is incomplete, will be updated soon.
 
 Component is almost ready to be published to npm. Until then, to run and test the project locally:
+
 ```bash
 git clone https://github.com/zaidsidd360/react-terminal.git
 ```
+
 ```bash
 cd react-terminal
 ```
+
 ```bash
 npm i
 ```
+
 or
+
 ```bash
 yarn
 ```
+
 then
+
 ```bash
 cd example
 ```
+
 repeat `npm i` or `yarn`
 and finally,
+
 ```bash
 npm run dev
 ```
-or 
+
+or
+
 ```bash
 yarn dev
 ```

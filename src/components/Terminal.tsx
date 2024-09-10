@@ -3,24 +3,28 @@ import { TerminalContainer } from "../styles/TerminalStyles";
 import { useContext, useEffect, useRef, useState } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
-import IUserCommands from "../@types/Commands";
-import ITheme from "../@types/Theme";
+import IUserCommands from "../types/Commands";
+import ITheme from "../types/Theme";
 import useTheme from "../hooks/UseTheme";
 import InputField from "./InputField";
 import Prompt from "./Prompt";
 import usePromptWidth from "../hooks/UsePromptWidth";
+import { themes } from "../themes";
+import { DirectoryStructure } from "../types/DirectoryStructure";
+
+type ThemeName = keyof typeof themes;
 
 interface ITerminalProps {
 	prompt?: string;
 	commands?: IUserCommands;
-	directoryStructure?: any;
+	directoryStructure?: DirectoryStructure;
 	height?: string;
 	width?: string;
 	borderRadius?: string;
 	commandPrediction?: boolean;
 	showTopBar?: boolean;
 	topBarHeight?: string;
-	theme?: "dark" | "light" | "hacker" | ITheme;
+	theme?: ThemeName | ITheme;
 	welcomeMessage?: string | React.JSX.Element;
 	showTopBarPrompt?: boolean;
 	autoCompleteAnimation?: boolean;

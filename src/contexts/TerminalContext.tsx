@@ -1,5 +1,5 @@
 import { createContext, SetStateAction, useEffect, useState } from "react";
-import IExchange from "../@types/Exchange";
+import IExchange from "../types/Exchange";
 
 export interface ITerminalContext {
 	exchangeHistory: IExchange[];

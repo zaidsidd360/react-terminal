@@ -1,6 +1,6 @@
 import { SetStateAction } from "react";
-import IExchange, { ObjExchange } from "../@types/Exchange";
-import IUserCommands from "../@types/Commands";
+import IExchange, { ObjExchange } from "../types/Exchange";
+import IUserCommands from "../types/Commands";
 import {
 	argsNotReqd,
 	argsReqd,
@@ -9,9 +9,9 @@ import {
 	tooManyArgs,
 } from "../errors/Errors";
 import { cat, cd, getPwd, ls, mkdir, rm } from "./InBuiltCommandsProcessors";
-import { appendError, appendOutput } from "../utils/Utils";
-import ITheme from "../@types/Theme";
-import { themes } from "../themes/Themes";
+import { appendError, appendOutput } from "../utils/helpers";
+import ITheme from "../types/Theme";
+import { themes } from "../themes";
 import CliLoader from "../components/CliLoader";
 
 // =============================
@@ -24,43 +24,40 @@ export const processUserCommand = async (
 	setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
 	pwd: string,
 	prompt: string,
-  cliLoader: React.JSX.Element
+	cliLoader: React.JSX.Element
 ) => {
 	const args = argsArr.join(" ");
 	const fullCommand = `${base} ${args}`;
 	if (commands[`${fullCommand}`]) {
 		const executor = commands[`${fullCommand}`];
 		if (typeof executor === "function") {
-      if(executor.constructor.name === "AsyncFunction") {
-        setExchangeHistory((prev) => {
-          return [
-            ...prev,
-            {
-              command: fullCommand,
-              output: cliLoader,
-              prompt: prompt,
-              pwd: pwd,
-            },
-          ];
-        })
-        const resolvedVal = await executor();
-        setExchangeHistory((prev) => {
-          const last = prev.pop();
-          (last as ObjExchange).output = resolvedVal!;
-          return [
-            ...prev,
-            last!
-          ];
-        })
-      } else {
-        appendOutput(
-          setExchangeHistory,
-          executor() as string | React.JSX.Element,
-          fullCommand,
-          pwd,
-          prompt
-        );
-      }
+			if (executor.constructor.name === "AsyncFunction") {
+				setExchangeHistory((prev) => {
+					return [
+						...prev,
+						{
+							command: fullCommand,
+							output: cliLoader,
+							prompt: prompt,
+							pwd: pwd,
+						},
+					];
+				});
+				const resolvedVal = await executor();
+				setExchangeHistory((prev) => {
+					const last = prev.pop();
+					(last as ObjExchange).output = resolvedVal!;
+					return [...prev, last!];
+				});
+			} else {
+				appendOutput(
+					setExchangeHistory,
+					executor() as string | React.JSX.Element,
+					fullCommand,
+					pwd,
+					prompt
+				);
+			}
 		} else {
 			appendOutput(
 				setExchangeHistory,

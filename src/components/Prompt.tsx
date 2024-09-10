@@ -1,6 +1,6 @@
 import React from "react";
 import { PromptSpan } from "../styles/PromptStyles";
-import ITheme from "../@types/Theme";
+import ITheme from "../types/Theme";
 
 interface PromptProps {
 	prompt: string;

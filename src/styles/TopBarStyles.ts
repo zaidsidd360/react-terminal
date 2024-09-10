@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ITheme from "../@types/Theme";
+import ITheme from "../types/Theme";
 
 interface ITopBarContainerProps {
 	$topBarHeight: string;

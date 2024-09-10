@@ -1,11 +1,11 @@
 import { SetStateAction } from "react";
-import IExchange from "../@types/Exchange";
+import IExchange from "../types/Exchange";
 import {
 	appendError,
 	appendOutput,
 	extractPath,
 	getDirectoryByPath,
-} from "../utils/Utils";
+} from "../utils/helpers";
 import {
 	isADirectory,
 	noSuchFileOrDirectory,

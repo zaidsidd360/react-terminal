@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import IExchange from "../@types/Exchange";
+import IExchange from "../types/Exchange";
 import { noSuchFileOrDirectory, notADirectory } from "../errors/Errors";
 
 export const BACK_REGEX = /\/?\.?[\w-_]+\/\.\./;

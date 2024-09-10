@@ -1,5 +1,5 @@
 import TextareaAutosize from "react-textarea-autosize";
-import IUserCommands from "../@types/Commands";
+import IUserCommands from "../types/Commands";
 import React, {
 	useContext,
 	useEffect,
@@ -8,12 +8,12 @@ import React, {
 	useState,
 } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
-import { inBuiltCommands } from "../errors/constants";
-import { appendOutput } from "../utils/Utils";
+import { inBuiltCommands } from "../utils/constants";
+import { appendOutput } from "../utils/helpers";
 import usePrediction from "../hooks/UsePrediction";
 import PredictionSpan from "../styles/PredictionStyles";
 import useCaretPosition from "use-caret-position";
-import ITheme from "../@types/Theme";
+import ITheme from "../types/Theme";
 import CliLoader from "./CliLoader";
 import useCommandProcessor from "../hooks/UseCommandProcessor";
 

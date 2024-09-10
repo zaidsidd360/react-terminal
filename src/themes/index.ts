@@ -1,4 +1,4 @@
-import ITheme from "../@types/Theme";
+import ITheme from "../types/Theme";
 
 export const themes: Record<string, ITheme> = {
 	light: {

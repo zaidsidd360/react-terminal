@@ -3,7 +3,7 @@ import ITheme from "../types/Theme";
 import {
 	processInBuiltCommand,
 	processUserCommand,
-} from "../commandProcessors/CommandProcessor";
+} from "../commands/CommandProcessor";
 import { inBuiltCommands } from "../utils/constants";
 
 const useCommandProcessor = (

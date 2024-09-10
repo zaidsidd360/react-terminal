@@ -43,7 +43,13 @@ export const processUserCommand = async (
 						},
 					];
 				});
-				const resolvedVal = await executor();
+				let resolvedVal;
+				try {
+					resolvedVal = await executor();
+				} catch (error) {
+          // TODO: Create an error component for this
+					resolvedVal = "An error occurred while executing the command.";
+				}
 				setExchangeHistory((prev) => {
 					const last = prev.pop();
 					(last as ObjExchange).output = resolvedVal!;

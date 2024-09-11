@@ -10,6 +10,7 @@ interface PromptProps {
 	dontRenderDollar?: boolean;
 	smallAndFaded?: boolean;
 	terminalTheme: ITheme;
+	isCommandActive: boolean;
 }
 
 const Prompt = React.forwardRef<HTMLSpanElement, PromptProps>(
@@ -21,6 +22,7 @@ const Prompt = React.forwardRef<HTMLSpanElement, PromptProps>(
 			dontRenderDollar,
 			smallAndFaded,
 			terminalTheme,
+			isCommandActive,
 		},
 		ref
 	) => {
@@ -30,6 +32,7 @@ const Prompt = React.forwardRef<HTMLSpanElement, PromptProps>(
 				$smallAndFaded={smallAndFaded}
 				ref={ref}
 				$currTheme={terminalTheme}
+				$isCommandActive={isCommandActive}
 			>
 				{prompt}
 				<span className="pwd">

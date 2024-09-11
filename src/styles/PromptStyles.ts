@@ -5,6 +5,7 @@ interface PromptSpanProps {
 	$unsetPosition?: boolean;
 	$smallAndFaded?: boolean;
 	$currTheme: ITheme;
+	$isCommandActive: boolean;
 }
 
 export const PromptSpan = styled.span<PromptSpanProps>`
@@ -17,6 +18,8 @@ export const PromptSpan = styled.span<PromptSpanProps>`
 	color: ${(props) =>
 		props.$smallAndFaded ? "#6a778a" : `${props.$currTheme.promptColor}`};
 	font-size: ${(props) => (props.$smallAndFaded ? "1rem" : "inherit")};
+	visibility: ${({ $isCommandActive }) =>
+		$isCommandActive ? "hidden" : "visible"};
 
 	.pwd {
 		color: ${(props) =>

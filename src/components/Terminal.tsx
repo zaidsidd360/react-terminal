@@ -109,14 +109,13 @@ const Terminal = ({
 				<div className="main-terminal">
 					<ExchangeHistory terminalTheme={terminalTheme} />
 					<div className="input-prompt">
-						{!isCommandActive && (
-							<Prompt
-								prompt={prompt}
-								ref={promptRef}
-								pwd={pwd}
-								terminalTheme={terminalTheme}
-							/>
-						)}
+						<Prompt
+							prompt={prompt}
+							ref={promptRef}
+							pwd={pwd}
+							terminalTheme={terminalTheme}
+							isCommandActive={isCommandActive}
+						/>
 						<InputField
 							predictionColor={terminalTheme.predictionColor}
 							commandPrediction={commandPrediction}

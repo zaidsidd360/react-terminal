@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import IExchange from "../types/Exchange";
 
 const usePromptWidth = (prompt: string, pwd: string) => {
 	const [promptWidth, setPromptWidth] = useState<number>();

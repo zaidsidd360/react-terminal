@@ -50,7 +50,7 @@ function App() {
 			</>
 		),
 		"foo bar": async () => {
-			// await new Promise((resolve) => setTimeout(resolve, 10000));
+			// await new Promise((resolve) => setTimeout(resolve, 5000));
 			const joke = await fetchDadJoke();
 			return joke;
 		},
@@ -146,6 +146,7 @@ function App() {
 						topBarHeight="8%"
 						theme={"dark"}
 						commandPrediction
+						asyncCommandLoader={"aesthetic2"}
 					/>
 				) : (
 					"Click on Show Terminal"

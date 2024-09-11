@@ -33,6 +33,7 @@ const CliLoader = ({
 		<div
 			style={{
 				width: "100%",
+				whiteSpace: "pre",
 			}}
 		>
 			{loader!.frames[currentFrame]}

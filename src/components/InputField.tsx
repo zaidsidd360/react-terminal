@@ -27,9 +27,10 @@ interface IInputFieldProps {
 	prompt: string;
 	autoCompleteAnimation: boolean;
 	setTerminalTheme: React.Dispatch<React.SetStateAction<ITheme>>;
-	toggleCommandState: (commandState: boolean) => void;
 	asyncCommandLoader: string;
 	asyncCommandLoaderSpeed: number;
+	isCommandActive: boolean;
+	setIsCommandActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const InputField = ({
@@ -42,9 +43,10 @@ const InputField = ({
 	prompt,
 	autoCompleteAnimation,
 	setTerminalTheme,
-	toggleCommandState,
 	asyncCommandLoader,
 	asyncCommandLoaderSpeed,
+	isCommandActive,
+	setIsCommandActive,
 }: IInputFieldProps) => {
 	// Contexts
 	const {
@@ -68,7 +70,6 @@ const InputField = ({
 	// States
 	const [inputValue, setInputValue] = useState<string>("");
 	const [prevInputValue, setPrevInputValue] = useState<string>("");
-	const [isCommandActive, setIsCommandActive] = useState<boolean>(false);
 
 	// Refs
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -95,7 +96,6 @@ const InputField = ({
 	};
 
 	// Event key handlers
-
 	/**
 	 * Handles the Enter key press event.
 	 * Processes the current input, updates command history, and clears the input field.
@@ -108,9 +108,9 @@ const InputField = ({
 		} else {
 			appendOutput(setExchangeHistory, "", "", pwd, prompt);
 		}
+		setIsCommandActive(false);
 		setInputValue("");
 		setPrevInputValue("");
-		setIsCommandActive(false);
 	};
 
 	/**
@@ -206,10 +206,6 @@ const InputField = ({
 			getPosition(textAreaRef);
 		}
 	}, []);
-
-	useEffect(() => {
-		toggleCommandState(isCommandActive);
-	}, [isCommandActive]);
 
 	if (!isCommandActive)
 		return (

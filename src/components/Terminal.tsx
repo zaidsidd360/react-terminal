@@ -72,10 +72,6 @@ const Terminal = ({
 	// Theme
 	const [terminalTheme, setTerminalTheme] = useTheme(theme);
 
-	const toggleCommandState = (commandState: boolean) => {
-		setIsCommandActive(commandState);
-	};
-
 	// Effects
 	useEffect(() => {
 		scrollDivRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -131,9 +127,10 @@ const Terminal = ({
 							commands={commands!}
 							autoCompleteAnimation={autoCompleteAnimation}
 							setTerminalTheme={setTerminalTheme}
-							toggleCommandState={toggleCommandState}
 							asyncCommandLoader={asyncCommandLoader}
 							asyncCommandLoaderSpeed={asyncCommandLoaderSpeed}
+							isCommandActive={isCommandActive}
+							setIsCommandActive={setIsCommandActive}
 						/>
 					</div>
 					<div className="scroll-div" ref={scrollDivRef} />

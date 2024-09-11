@@ -12,11 +12,94 @@ import { cat, cd, getPwd, ls, mkdir, rm } from "./InBuiltCommandsProcessors";
 import { appendError, appendOutput } from "../utils/helpers";
 import ITheme from "../types/Theme";
 import { themes } from "../themes";
-import CliLoader from "../components/CliLoader";
+
+type CommandOutput = string | React.JSX.Element;
+
+type SyncCommandExecutor = () => CommandOutput;
+type AsyncCommandExecutor = () => Promise<CommandOutput>;
+type CommandExecutorWithArgs = (args: string) => CommandOutput;
+type CommandExecutor =
+	| CommandOutput
+	| SyncCommandExecutor
+	| AsyncCommandExecutor
+	| CommandExecutorWithArgs;
 
 // =============================
 // HANDLES USER DEFINED COMMANDS
 // =============================
+const executeAsyncCommand = async (
+	executor: AsyncCommandExecutor,
+	setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
+	fullCommand: string,
+	pwd: string,
+	prompt: string,
+	cliLoader: React.JSX.Element
+) => {
+	setExchangeHistory((prev) => [
+		...prev,
+		{ command: fullCommand, output: cliLoader, prompt: prompt, pwd: pwd },
+	]);
+
+	try {
+		const resolvedVal = await executor();
+		setExchangeHistory((prev) => {
+			const last = prev.pop();
+			(last as ObjExchange).output = resolvedVal;
+			return [...prev, last!];
+		});
+	} catch (error) {
+		// TODO: Create an error component for this
+		const errorMessage = "An error occurred while executing the command.";
+		setExchangeHistory((prev) => {
+			const last = prev.pop();
+			(last as ObjExchange).output = errorMessage;
+			return [...prev, last!];
+		});
+	}
+};
+
+const executeSyncCommand = (
+	executor: SyncCommandExecutor,
+	setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
+	fullCommand: string,
+	pwd: string,
+	prompt: string
+) => {
+	appendOutput(setExchangeHistory, executor(), fullCommand, pwd, prompt);
+};
+
+const executeCommand = async (
+	executor: CommandExecutor,
+	setExchangeHistory: React.Dispatch<SetStateAction<IExchange[]>>,
+	fullCommand: string,
+	pwd: string,
+	prompt: string,
+	cliLoader: React.JSX.Element
+) => {
+	if (typeof executor === "function") {
+		if (executor.constructor.name === "AsyncFunction") {
+			await executeAsyncCommand(
+				executor as AsyncCommandExecutor,
+				setExchangeHistory,
+				fullCommand,
+				pwd,
+				prompt,
+				cliLoader
+			);
+		} else {
+			executeSyncCommand(
+				executor as SyncCommandExecutor,
+				setExchangeHistory,
+				fullCommand,
+				pwd,
+				prompt
+			);
+		}
+	} else {
+		appendOutput(setExchangeHistory, executor, fullCommand, pwd, prompt);
+	}
+};
+
 export const processUserCommand = async (
 	base: string,
 	argsArr: string[],
@@ -29,74 +112,36 @@ export const processUserCommand = async (
 	const args = argsArr.join(" ");
 	const fullCommand = `${base} ${args}`;
 	if (commands[`${fullCommand}`]) {
-		const executor = commands[`${fullCommand}`];
-		if (typeof executor === "function") {
-			if (executor.constructor.name === "AsyncFunction") {
-				setExchangeHistory((prev) => {
-					return [
-						...prev,
-						{
-							command: fullCommand,
-							output: cliLoader,
-							prompt: prompt,
-							pwd: pwd,
-						},
-					];
-				});
-				let resolvedVal;
-				try {
-					resolvedVal = await executor();
-				} catch (error) {
-          // TODO: Create an error component for this
-					resolvedVal = "An error occurred while executing the command.";
-				}
-				setExchangeHistory((prev) => {
-					const last = prev.pop();
-					(last as ObjExchange).output = resolvedVal!;
-					return [...prev, last!];
-				});
-			} else {
-				appendOutput(
-					setExchangeHistory,
-					executor() as string | React.JSX.Element,
-					fullCommand,
-					pwd,
-					prompt
-				);
-			}
-		} else {
-			appendOutput(
-				setExchangeHistory,
-				executor as string | React.JSX.Element,
-				fullCommand,
-				pwd,
-				prompt
-			);
-		}
+		await executeCommand(
+			commands[`${fullCommand}`] as CommandExecutor,
+			setExchangeHistory,
+			fullCommand,
+			pwd,
+			prompt,
+			cliLoader
+		);
 	} else if (commands[base]) {
 		const executor = commands[base];
 		if (typeof executor === "function") {
-			appendOutput(
+			await executeCommand(
+				() => (executor as CommandExecutorWithArgs)(args),
 				setExchangeHistory,
-				executor(args) as string | React.JSX.Element,
 				fullCommand,
 				pwd,
-				prompt
+				prompt,
+				cliLoader
 			);
 		} else {
-			appendOutput(
+			await executeCommand(
+				executor as CommandExecutor,
 				setExchangeHistory,
-				executor as string | React.JSX.Element,
 				fullCommand,
 				pwd,
-				prompt
+				prompt,
+				cliLoader
 			);
 		}
-	}
-	// =============================
-	// HANDLES UNIDENTIFIED COMMANDS
-	// =============================
-	else {
+	} else {
 		appendOutput(
 			setExchangeHistory,
 			commandNotFound(base),

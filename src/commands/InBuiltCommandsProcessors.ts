@@ -106,8 +106,8 @@ export const mkdir = (
 	const relativePath = (path as string).split("/");
 	const newDirectory = relativePath.pop();
 	const fullPath = extractPath(relativePath.join("/"), pwd);
-	const deepCopy = JSON.parse(JSON.stringify(structure));
-	const { dir } = getDirectoryByPath(deepCopy, fullPath);
+	const newStructure = { ...structure };
+	const { dir } = getDirectoryByPath(newStructure, fullPath);
 
 	if (dir[newDirectory!]) {
 		return appendError(
@@ -120,7 +120,7 @@ export const mkdir = (
 	} else {
 		dir[newDirectory!] = {};
 		appendOutput(setExchangeHistory, "", fullCommand, pwd, prompt);
-		return setStructure(deepCopy);
+		return setStructure(newStructure);
 	}
 };
 

@@ -54,8 +54,8 @@ function SomeComponent() {
 | Name                  | Description                               | Type                       | Default        |
 |-----------------------|-------------------------------------------|----------------------------|----------------|
 | `prompt`              | The prompt string displayed before each command | `string`              | `"user@anon:"` |
-| `commands`            | Custom commands object                    | `IUserCommands` *TBD           | `{}`           |
-| `directoryStructure`  | Initial directory structure               | `object` *TBD                  | `{}`           |
+| `commands`            | Custom commands object                    | `IUserCommands`           | `{}`           |
+| `directoryStructure`  | Initial directory structure               | `IDirectoryStructure`                  | `{}`           |
 | `height`              | Height of the terminal                    | `string` CSS units        | `"100%"`       |
 | `width`               | Width of the terminal                     | `string` CSS units         | `"100%"`       |
 | `borderRadius`        | Border radius of the terminal             | `string` CSS units         | `"0.7rem"`     |
@@ -72,7 +72,62 @@ function SomeComponent() {
 | `asyncCommandLoader`  | Loader style for async commands           | `string` See them in action [here](https://jsfiddle.net/sindresorhus/2eLtsbey/embedded/result/)                 | `"aesthetic2"` |
 | `asyncCommandLoaderSpeed` | Speed multiplier for async command loader | `number` range(0, 1)               | `0.5`          |
 
-*TBD: To be defined
+<details>
+  <summary>
+    <strong>🔍 Complicated Types</strong>
+  </summary>
+IUserCommands
+
+```ts
+type IUserCommands = Record<
+  string,
+  | string
+  | React.JSX.Element
+  | ((args?: any) => React.JSX.Element | string | void | Promise<string | void>)
+>;
+```
+
+This type defines a record where each key represents a command, and the value can be a simple string, a React element, or a function that returns a string, a React element, or a Promise.
+
+IDirectoryStructure
+
+```ts
+interface IFile {
+  content: string | JSX.Element;
+}
+
+interface IDirectory {
+  [key: string]: IFile | IDirectory;
+}
+
+type DirectoryStructure = IDirectory;
+```
+
+IDirectoryStructure represents the structure of the terminal's file system. It consists of a recursive structure of directories and files. Each directory contains files or other directories. A file has a content field, which can be a string or a React element.
+
+ITheme
+
+```ts
+export default interface ITheme {
+  terminalBg: string;
+  topBarBg: string;
+  promptColor: string;
+  pwdColor: string;
+  textColor: string;
+  predictionColor: string;
+}
+```
+
+ITheme allows customization of various terminal colors. Each property corresponds to a CSS color value:
+
+- terminalBg: Background color of the terminal.
+- topBarBg: Background color of the top bar.
+- promptColor: Color of the prompt string.
+- pwdColor: Color of the present working directory display.
+- textColor: Default text color.
+- predictionColor: Color of the command prediction text.
+
+</details>
 
 ## 🌈 Themes
 

@@ -76,7 +76,8 @@ function SomeComponent() {
   <summary>
     <strong>🔍 Complicated Types</strong>
   </summary>
-IUserCommands
+
+### `IUserCommands`
 
 ```ts
 type IUserCommands = Record<
@@ -85,11 +86,24 @@ type IUserCommands = Record<
   | React.JSX.Element
   | ((args?: any) => React.JSX.Element | string | void | Promise<string | void>)
 >;
-```
-
+``` 
 This type defines a record where each key represents a command, and the value can be a simple string, a React element, or a function that returns a string, a React element, or a Promise.
 
-IDirectoryStructure
+Example:
+
+```ts
+const commands: IUserCommands = {
+  hello: "Hello, World!", // Simple string response
+  greet: (name) => `Hello, ${name}!`, // Function that returns a string
+  react: <strong>React is awesome!</strong>, // React element
+  asyncTask: async () => {
+    await someAsyncOperation();
+    return "Task completed!"; // Async function returning a string
+  },
+};
+```
+
+### `IDirectoryStructure`
 
 ```ts
 interface IFile {
@@ -100,15 +114,34 @@ interface IDirectory {
   [key: string]: IFile | IDirectory;
 }
 
-type DirectoryStructure = IDirectory;
+type IDirectoryStructure = IDirectory;
 ```
 
 IDirectoryStructure represents the structure of the terminal's file system. It consists of a recursive structure of directories and files. Each directory contains files or other directories. A file has a content field, which can be a string or a React element.
 
-ITheme
+Example:
 
 ```ts
-export default interface ITheme {
+const fileSystem: DirectoryStructure = {
+  home: {
+    "README.md": { content: "# Welcome to the Home Directory" }, // File with string content
+    projects: {
+      "project1.txt": { content: "Project 1 details" }, // File within a nested directory
+      "project2.md": { content: <em>Project 2 documentation</em> }, // File with React element content
+    },
+  },
+  etc: {
+    config: {
+      "settings.json": { content: '{"theme": "dark"}' }, // JSON file content
+    },
+  },
+};
+```
+
+### `ITheme`
+
+```ts
+interface ITheme {
   terminalBg: string;
   topBarBg: string;
   promptColor: string;
@@ -127,6 +160,18 @@ ITheme allows customization of various terminal colors. Each property correspond
 - textColor: Default text color.
 - predictionColor: Color of the command prediction text.
 
+Example:
+
+```ts
+const customTheme: ITheme = {
+  terminalBg: "#1e1e1e", // Dark background
+  topBarBg: "#333333", // Darker top bar
+  promptColor: "#00FF00", // Bright green prompt
+  pwdColor: "#FFD700", // Golden color for directory path
+  textColor: "#FFFFFF", // White text color
+  predictionColor: "#AAAAAA", // Grey prediction text
+};
+```
 </details>
 
 ## 🌈 Themes
@@ -160,6 +205,31 @@ const customCommands = {
 
 <Terminal commands={customCommands} />
 ```
+
+## 🛠️ Built-in Commands
+
+The terminal includes several built-in commands to provide essential functionalities:
+
+- **🧹 `clear`**: Clears the terminal screen, removing all previous commands and outputs.
+
+- **🗣️ `echo [text]`**: Prints the provided `text` to the terminal. Useful for displaying messages or values of variables.
+
+- **📁 `cd [directory]`**: Changes the current working directory to the specified `directory`. Use `cd ..` to move to the parent directory.
+
+- **📂 `ls`**: Lists the contents of the current directory, including files and subdirectories.
+
+- **📄 `cat [file]`**: Displays the content of the specified `file`. Use this to read and view file contents directly in the terminal.
+
+- **📌 `pwd`**: Prints the current working directory path.
+
+- **📂 `mkdir [directory]`**: Creates a new directory with the specified `directory` name in the current location.
+
+- **🗑️ `rm [file/directory]`**: Removes the specified file or directory. Be careful, as this action is irreversible!
+
+- **📅 `date`**: Displays the current date and time.
+
+- **🎨 `setTheme [theme]`**: Changes the terminal's theme to the specified `theme`, allowing users to switch between different visual styles on the fly.
+
 
 ## 🤝 Contributing
 

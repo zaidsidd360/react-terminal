@@ -92,7 +92,7 @@ This type defines a record where each key represents a command, and the value ca
 Example:
 
 ```ts
-const commands: IUserCommands = {
+const commands = {
   hello: "Hello, World!", // Simple string response
   greet: (name) => `Hello, ${name}!`, // Function that returns a string
   react: <strong>React is awesome!</strong>, // React element
@@ -122,7 +122,7 @@ IDirectoryStructure represents the structure of the terminal's file system. It c
 Example:
 
 ```ts
-const fileSystem: DirectoryStructure = {
+const fileSystem = {
   home: {
     "README.md": { content: "# Welcome to the Home Directory" }, // File with string content
     projects: {

@@ -4,19 +4,6 @@ A sleek and customizable terminal emulator component for React applications.
 
 <!-- ![Terminal Demo](https://your-demo-gif-url.gif) -->
 
-## 📚 Quick Links
-
-- [🚀 Features](#-features)
-- [📦 Installation](#-installation)
-- [🛠️ Usage](#-usage)
-- [🎛️ Props](#-props)
-- [🌈 Themes](#-themes)
-- [🔧 Custom Commands](#-custom-commands)
-- [🛠️ Built-in Commands](#-built-in-commands)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
-- [✨ Inspiration](#-inspiration)
-
 ## 🚀 Features
 
 - 🎨 Customizable themes (7+ built-in themes)

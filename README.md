@@ -230,6 +230,8 @@ The terminal includes several built-in commands to provide essential functionali
 
 - **🎨 `setTheme [theme]`**: Changes the terminal's theme to the specified `theme`, allowing users to switch between different visual styles on the fly.
 
+Built-in commands related to the file system/directory structure are disabled if the `directoryStructure` prop is not present.
+
 
 ## 🤝 Contributing
 

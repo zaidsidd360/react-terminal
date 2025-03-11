@@ -5,12 +5,17 @@
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
 	"types": "dist/index.d.ts",
+  "homepage": "https://react-terminal-demo.onrender.com/",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaidsidd360/react-terminal.git"
   },
 	"scripts": {
 		"build": "tsup src/index.ts --format cjs,esm --dts --minify --keep-names --external react,react-dom",

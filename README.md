@@ -2,7 +2,9 @@
 
 A sleek and customizable terminal emulator component for React applications.
 
-<!-- ![Terminal Demo](https://your-demo-gif-url.gif) -->
+## 🗺️ Demo
+
+Check out the live demo here: [Live Demo](https://react-terminal-demo.onrender.com/)
 
 ## 🚀 Features
 

@@ -1,4 +1,4 @@
-import { createContext, SetStateAction, useEffect, useState } from "react";
+import React, { createContext, SetStateAction, useEffect, useState } from "react";
 import IExchange from "../types/Exchange";
 
 export interface ITerminalContext {

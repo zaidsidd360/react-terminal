@@ -1,5 +1,7 @@
+import React from "react";
+
 interface IFile {
-	content: string | JSX.Element;
+	content: string | React.JSX.Element;
 }
 
 interface IDirectory {

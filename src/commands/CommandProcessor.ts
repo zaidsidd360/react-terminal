@@ -1,4 +1,4 @@
-import { SetStateAction } from "react";
+import React, { SetStateAction } from "react";
 import IExchange, { ObjExchange } from "../types/Exchange";
 import IUserCommands from "../types/Commands";
 import {

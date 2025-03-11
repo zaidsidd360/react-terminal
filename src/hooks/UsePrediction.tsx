@@ -19,7 +19,7 @@ const usePrediction = (options: string[], inputValue: string) => {
 			}
 
 			setAutocompleteValue(closestMatch || "");
-		}, 200);
+		}, 50);
 	};
 
 	useEffect(() => {

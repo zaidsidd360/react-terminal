@@ -17,14 +17,14 @@ A sleek and customizable terminal emulator component for React applications.
 ## 📦 Installation
 
 ```bash
-npm install react-terminal
+npm install @zqui/react-terminal
 ```
 
 ## 🛠️ Usage
 
 ```jsx
 // App.tsx
-import { Terminal, TerminalContextProvider } from 'react-terminal';
+import { TerminalContextProvider } from '@zqui/react-terminal';
 
 // !Don't forget to wrap your app's entry point with TerminalContextProvider!
 function App() {
@@ -36,7 +36,7 @@ function App() {
 }
 
 // SomeComponent.tsx
-import { Terminal } from 'react-terminal';
+import Terminal from '@zqui/react-terminal';
 
 function SomeComponent() {
   return (
@@ -230,54 +230,18 @@ The terminal includes several built-in commands to provide essential functionali
 
 - **🎨 `setTheme [theme]`**: Changes the terminal's theme to the specified `theme`, allowing users to switch between different visual styles on the fly.
 
-Built-in commands related to the file system/directory structure are disabled if the `directoryStructure` prop is not present.
+## 🛠️ Troubleshooting
+
+- Async commands not working properly? Try switching off StrictMode.
+- Terminal doesn't have proper height? By default it takes the full width & height of its parent, try giving the parent some height & width.
+- Built in commands not working? Make sure to provide the `directoryStructure` prop.
+- Command prediction not working properly? Well, that's just a bug for now :cry:.
 
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/your-repo/issues).
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/react-terminal/issues).
 
 ## 📄 License
 
 This project is [MIT](https://opensource.org/licenses/MIT) licensed.
-
-README is incomplete, will be updated soon.
-
-Component is almost ready to be published to npm. Until then, to run and test the project locally:
-
-```bash
-git clone https://github.com/zaidsidd360/react-terminal.git
-```
-
-```bash
-cd react-terminal
-```
-
-```bash
-npm i
-```
-
-or
-
-```bash
-yarn
-```
-
-then
-
-```bash
-cd example
-```
-
-repeat `npm i` or `yarn`
-and finally,
-
-```bash
-npm run dev
-```
-
-or
-
-```bash
-yarn dev
-```

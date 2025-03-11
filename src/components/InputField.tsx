@@ -4,6 +4,7 @@ import React, {
 	useContext,
 	useEffect,
 	useLayoutEffect,
+	useMemo,
 	useRef,
 	useState,
 } from "react";
@@ -59,13 +60,16 @@ const InputField = ({
 	} = useContext(TerminalContext)!;
 
 	// Constants
-	const autoCompleteOptions = [...Object.keys(commands), ...inBuiltCommands];
-	const cliLoader = (
+	const autoCompleteOptions = [
+		...Object.keys(commands || {}),
+		...inBuiltCommands,
+	];
+	const cliLoader = useMemo(() => (
 		<CliLoader
 			loaderName={asyncCommandLoader}
 			speedMultiplier={asyncCommandLoaderSpeed}
 		/>
-	);
+	), [asyncCommandLoader, asyncCommandLoaderSpeed]);
 
 	// States
 	const [inputValue, setInputValue] = useState<string>("");

@@ -5,13 +5,14 @@ import {
 	processUserCommand,
 } from "../commands/CommandProcessor";
 import { inBuiltCommands } from "../utils/constants";
+import React from "react";
 
 const useCommandProcessor = (
 	commands: IUserCommands,
 	setExchangeHistory: React.Dispatch<React.SetStateAction<any>>,
 	pwd: string,
 	prompt: string,
-	cliLoader: JSX.Element,
+	cliLoader: React.JSX.Element,
 	structure: any,
 	setStructure: React.Dispatch<React.SetStateAction<any>>,
 	setPwd: React.Dispatch<React.SetStateAction<string>>,

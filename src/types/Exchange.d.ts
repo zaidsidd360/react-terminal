@@ -1,3 +1,5 @@
+import React from "react";
+
 export type ObjExchange = {
   command: string;
   output: string | React.JSX.Element;

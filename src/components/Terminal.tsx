@@ -1,6 +1,6 @@
 import TopBar from "./TopBar";
 import { TerminalContainer } from "../styles/TerminalStyles";
-import { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { TerminalContext } from "../contexts/TerminalContext";
 import ExchangeHistory from "./ExchangeHistory";
 import IUserCommands from "../types/Commands";

@@ -9,7 +9,7 @@ type CliLoaderProps = {
 const CliLoader = ({
 	loaderName = "pipe",
 	speedMultiplier = 0.5,
-}: CliLoaderProps): JSX.Element => {
+}: CliLoaderProps): React.JSX.Element => {
 	const [currentFrame, setCurrentFrame] = useState(0);
 	const loader = loaders[loaderName];
 

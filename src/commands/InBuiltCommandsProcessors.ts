@@ -1,4 +1,4 @@
-import { SetStateAction } from "react";
+import React, { SetStateAction } from "react";
 import IExchange from "../types/Exchange";
 import {
 	appendError,

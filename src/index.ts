@@ -2,4 +2,6 @@ import Terminal from "./components/Terminal";
 import TerminalContextProvider from "./contexts/TerminalContext";
 import { TerminalContext } from "./contexts/TerminalContext";
 
-export { Terminal, TerminalContextProvider, TerminalContext };
+export default Terminal;
+
+export { TerminalContextProvider, TerminalContext };
